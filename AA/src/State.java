@@ -3,15 +3,15 @@ import java.util.ArrayList;
 public class State
 {
 
-	private static ArrayList<Agent> agents;
+	private ArrayList<Agent> agents;
 	private static final int XMAX = 10;
 	private static final int YMAX = 10;
 	private static final int XMIN = 0;
 	private static final int YMIN = 0;
 
-	public static boolean isFree(final int x, final int y)
+	public boolean isFree(final int x, final int y)
 	{
-		for (Agent a : State.agents)
+		for (Agent a : this.agents)
 		{
 			if (a.isPresent(x, y))
 			{
