@@ -9,7 +9,7 @@ public class Predator extends Agent
 	@Override
 	public boolean step()
 	{
-		// TODO Auto-generated method stub
+		int rand = Agent.RAND.nextInt(5);
 		return false;
 	}
 
