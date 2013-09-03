@@ -9,11 +9,11 @@ public class State
 	private static final int XMIN = 0;
 	private static final int YMIN = 0;
 
-	public boolean isFree(final int x, final int y)
+	public boolean isFree(final Point p)
 	{
 		for (Agent a : this.agents)
 		{
-			if (a.isPresent(x, y))
+			if (a.isPresent(p))
 			{
 				return false;
 			}

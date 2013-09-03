@@ -13,10 +13,9 @@ public abstract class Agent
 		this.state = s;
 	}
 
-	public boolean isPresent(final int x, final int y)
+	public boolean isPresent(final Point p)
 	{
-		return this.currentPosition.getX() == x
-				&& this.currentPosition.getY() == y;
+		return this.currentPosition.equals(p);
 	}
 
 	public abstract boolean step();
