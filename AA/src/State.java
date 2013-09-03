@@ -3,11 +3,11 @@ import java.util.ArrayList;
 public class State
 {
 
-	private ArrayList<Agent> agents;
+	private static ArrayList<Agent> agents;
 
-	public boolean isFree(final int x, final int y)
+	public static boolean isFree(final int x, final int y)
 	{
-		for (Agent a : this.agents)
+		for (Agent a : State.agents)
 		{
 			if (a.isPresent(x, y))
 			{
