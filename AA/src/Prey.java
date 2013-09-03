@@ -1,11 +1,16 @@
-   
-
-public class Prey  extends Agent
+public class Prey extends Agent
 {
-	
-	public Prey(int x, int y)
+
+	public Prey(final int x, final int y)
 	{
-		super(x,y);
+		super(x, y);
 	}
-	
+
+	@Override
+	public boolean step()
+	{
+
+		return false;
+	}
+
 }

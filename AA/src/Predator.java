@@ -1,11 +1,16 @@
-
-
 public class Predator extends Agent
 {
-	// hi
-	public Predator(int x, int y)
+
+	public Predator(final int x, final int y)
 	{
-		super(x,y);
+		super(x, y);
+	}
+
+	@Override
+	public boolean step()
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
