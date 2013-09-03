@@ -15,7 +15,7 @@ public class Predator extends Agent
 		switch (rand)
 		{
 		case 0:
-			boolean b = State.isFree(this.coord_x - 1, this.coord_y);
+			boolean b = this.state.isFree(this.coord_x - 1, this.coord_y);
 			this.coord_x -= 1;
 			return b;
 
