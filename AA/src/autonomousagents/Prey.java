@@ -1,4 +1,7 @@
 package autonomousagents;
+
+import java.util.ArrayList;
+
 public class Prey extends Agent
 {
 
@@ -14,14 +17,15 @@ public class Prey extends Agent
 		double rand = Agent.RAND.nextDouble();
 		if (rand > 0.8)
 		{
-			// generate neighbors
-			// how many are free?
-			//
-
+			ArrayList<Point> neighbors = this.state.getNeighbors(this);
+			int numberOfPossibleDestinations = neighbors.size();
+			int nb = Agent.RAND.nextInt(numberOfPossibleDestinations);
+			this.currentPosition = neighbors.get(nb);
 		}
 		return false;
 	}
 
+	@Override
 	public boolean canIGoThere(final Point possibleDestination)
 	{
 		return this.state.isFree(possibleDestination);
