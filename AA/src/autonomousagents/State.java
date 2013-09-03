@@ -1,3 +1,5 @@
+package autonomousagents;
+
 import java.util.ArrayList;
 
 public class State
@@ -53,9 +55,29 @@ public class State
 		return p;
 	}
 
-	public ArrayList<Point> neighbors(final Point currentPoint)
+	public ArrayList<Point> getNeighbors(final Agent a)
 	{
-		ArrayList<Point> neighbors;
+		ArrayList<Point> neighbors = new ArrayList<Point>();
 
+		if (a.canIGoThere(north(a.currentPosition)))
+		{
+			neighbors.add(north(a.currentPosition));
+		}
+
+		if (a.canIGoThere(south(a.currentPosition)))
+		{
+			neighbors.add(south(a.currentPosition));
+		}
+
+		if (a.canIGoThere(west(a.currentPosition)))
+		{
+			neighbors.add(west(a.currentPosition));
+		}
+
+		if (a.canIGoThere(east(a.currentPosition)))
+		{
+			neighbors.add(east(a.currentPosition));
+		}
+		return neighbors;
 	}
 }

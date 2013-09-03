@@ -1,3 +1,4 @@
+package autonomousagents;
 public class Prey extends Agent
 {
 
