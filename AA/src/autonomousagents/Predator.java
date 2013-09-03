@@ -1,4 +1,5 @@
 package autonomousagents;
+
 public class Predator extends Agent
 {
 
@@ -13,16 +14,29 @@ public class Predator extends Agent
 	public boolean step()
 	{
 		int rand = Agent.RAND.nextInt(RADIUS);
+		boolean ate = false;
+
 		switch (rand)
 		{
 		case 0:
-			boolean b = this.state.isFree(new Point(0, 0));
-			// this.coord_x -= 1;
-			// return b;
-
-		default:
-			break;
+			ate = this.state.isFree(State.north(this.currentPosition));
+			this.currentPosition = State.north(this.currentPosition);
+		case 1:
+			ate = this.state.isFree(State.east(this.currentPosition));
+			this.currentPosition = State.east(this.currentPosition);
+		case 2:
+			ate = this.state.isFree(State.south(this.currentPosition));
+			this.currentPosition = State.south(this.currentPosition);
+		case 3:
+			ate = this.state.isFree(State.north(this.currentPosition));
+			this.currentPosition = State.north(this.currentPosition);
 		}
-		return false;
+		return ate;
+	}
+
+	@Override
+	public boolean canIGoThere(final Point p)
+	{
+		return true;
 	}
 }
