@@ -3,9 +3,9 @@ public class Predator extends Agent
 
 	private static final int RADIUS = 5;
 
-	public Predator(final Point p)
+	public Predator(final Point p, final State s)
 	{
-		super(p);
+		super(p, s);
 	}
 
 	@Override

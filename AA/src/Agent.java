@@ -3,18 +3,20 @@ import java.util.Random;
 public abstract class Agent
 {
 
-	protected Point point;
-
+	protected Point currentPosition;
+	protected final State state;
 	protected static Random RAND = new Random(0);
 
-	public Agent(final Point p)
+	public Agent(final Point p, final State s)
 	{
-		this.point = p;
+		this.currentPosition = p;
+		this.state = s;
 	}
 
 	public boolean isPresent(final int x, final int y)
 	{
-		return this.point.getX() == x && this.point.getY() == y;
+		return this.currentPosition.getX() == x
+				&& this.currentPosition.getY() == y;
 	}
 
 	public abstract boolean step();
