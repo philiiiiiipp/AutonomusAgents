@@ -18,4 +18,9 @@ public class Point
 	{
 		return this.y;
 	}
+
+	public boolean equals(final Point otherPoint)
+	{
+		return this.x == otherPoint.x && this.x == otherPoint.y;
+	}
 }
