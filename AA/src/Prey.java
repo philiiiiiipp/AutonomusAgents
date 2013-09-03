@@ -1,11 +1,11 @@
-
+   
 
 public class Prey  extends Agent
 {
 	
-	public Prey()
+	public Prey(int x, int y)
 	{
-		
+		super(x,y);
 	}
 	
 }
