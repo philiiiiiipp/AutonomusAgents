@@ -1,9 +1,9 @@
 public class Prey extends Agent
 {
 
-	public Prey(final int x, final int y)
+	public Prey(final Point p)
 	{
-		super(x, y);
+		super(p);
 	}
 
 	@Override
@@ -13,6 +13,9 @@ public class Prey extends Agent
 		double rand = Agent.RAND.nextDouble();
 		if (rand > 0.8)
 		{
+			// generate neighbors
+			// how many are free?
+			//
 
 		}
 		return false;
