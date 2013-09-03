@@ -21,4 +21,8 @@ public class Prey extends Agent
 		return false;
 	}
 
+	public boolean canIGoThere(final Point possibleDestination)
+	{
+		return this.state.isFree(possibleDestination);
+	}
 }

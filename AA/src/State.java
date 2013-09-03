@@ -52,4 +52,10 @@ public class State
 		Point p = new Point(newX, pointToTranslate.getY());
 		return p;
 	}
+
+	public ArrayList<Point> neighbors(final Point currentPoint)
+	{
+		ArrayList<Point> neighbors;
+
+	}
 }
