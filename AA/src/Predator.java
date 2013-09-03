@@ -3,9 +3,9 @@ public class Predator extends Agent
 
 	private static final int RADIUS = 5;
 
-	public Predator(final int x, final int y)
+	public Predator(final Point p)
 	{
-		super(x, y);
+		super(p);
 	}
 
 	@Override
@@ -15,9 +15,9 @@ public class Predator extends Agent
 		switch (rand)
 		{
 		case 0:
-			boolean b = this.state.isFree(this.coord_x - 1, this.coord_y);
-			this.coord_x -= 1;
-			return b;
+			// boolean b = this.state.isFree(this.point.g - 1, this.coord_y);
+			// this.coord_x -= 1;
+			// return b;
 
 		default:
 			break;
