@@ -1,9 +1,9 @@
 public class Prey extends Agent
 {
 
-	public Prey(final Point p)
+	public Prey(final Point p, final State s)
 	{
-		super(p);
+		super(p, s);
 	}
 
 	@Override
