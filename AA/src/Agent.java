@@ -1,4 +1,9 @@
 
-public class Agent {
+public class Agent 
+{
 
+	public Agent()
+	{
+		
+	}
 }
