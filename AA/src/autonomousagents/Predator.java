@@ -10,6 +10,7 @@ public class Predator extends Agent
 		super(p, s);
 	}
 
+	// comment
 	@Override
 	public boolean step()
 	{
