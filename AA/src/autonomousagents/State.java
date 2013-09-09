@@ -5,11 +5,21 @@ import java.util.ArrayList;
 public class State
 {
 
-	private ArrayList<Agent> agents;
+	private final ArrayList<Agent> agents;
 	private static final int XMAX = 10;
 	private static final int YMAX = 10;
 	private static final int XMIN = 0;
 	private static final int YMIN = 0;
+
+	public State()
+	{
+		this.agents = new ArrayList<Agent>();
+	}
+
+	public void addAgent(final Agent a)
+	{
+		this.agents.add(a);
+	}
 
 	public boolean isFree(final Point p)
 	{
@@ -79,5 +89,39 @@ public class State
 			neighbors.add(east(a.currentPosition));
 		}
 		return neighbors;
+	}
+
+	public void pprint()
+	{
+		for (int i = XMIN; i < XMAX; i++)
+		{
+			String acc = "";
+			for (int j = YMIN; j < YMAX; j++)
+			{
+				Point p = new Point(i, j);
+				boolean agentWasPresent = false;
+				for (Agent a : this.agents)
+				{
+					if (a.isPresent(p))
+					{
+						agentWasPresent = true;
+						if (a instanceof Prey)
+						{
+							acc = acc.concat("-");
+						} else
+						{
+							acc = acc.concat("+");
+						}
+						break;
+					}
+				}
+				if (!agentWasPresent)
+				{
+					acc = acc.concat("o");
+				}
+				acc = acc.concat(" ");
+			}
+			System.out.println(acc);
+		}
 	}
 }
