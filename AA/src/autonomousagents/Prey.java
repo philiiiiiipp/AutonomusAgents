@@ -22,6 +22,9 @@ public class Prey extends Agent
 			int nb = Agent.RAND.nextInt(numberOfPossibleDestinations);
 			this.currentPosition = neighbors.get(nb);
 		}
+
+		// this.currentPosition.pPrint();
+
 		return false;
 	}
 

@@ -7,7 +7,7 @@ public abstract class Agent
 
 	protected Point currentPosition;
 	protected final State state;
-	protected static Random RAND = new Random(5);
+	protected static Random RAND = new Random();
 
 	public Agent(final Point p, final State s)
 	{
