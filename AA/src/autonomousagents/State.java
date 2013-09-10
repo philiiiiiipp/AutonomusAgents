@@ -21,6 +21,11 @@ public class State
 		this.agents.add(a);
 	}
 
+	public ArrayList<Agent> getAgents()
+	{
+		return this.agents;
+	}
+
 	public boolean isFree(final Point p)
 	{
 		for (Agent a : this.agents)
