@@ -1,8 +1,9 @@
 package autonomousagents;
+
 public class Point
 {
-	final int x;
-	final int y;
+	private final int x;
+	private final int y;
 
 	public Point(final int x, final int y)
 	{
@@ -22,6 +23,6 @@ public class Point
 
 	public boolean equals(final Point otherPoint)
 	{
-		return this.x == otherPoint.x && this.x == otherPoint.y;
+		return this.x == otherPoint.getX() && this.y == otherPoint.getY();
 	}
 }

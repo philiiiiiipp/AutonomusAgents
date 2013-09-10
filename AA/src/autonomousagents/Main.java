@@ -13,24 +13,26 @@ public class Main
 		firstState.addAgent(new Prey(new Point(5, 5), firstState));
 
 		System.out.println(stepper(firstState));
-		firstState.pprint();
+		// firstState.pprint();
 	}
 
 	public static int stepper(final State theState)
 	{
 		int counterOfSteps = 0;
 		ArrayList<Agent> agents = theState.getAgents();
-
-		for (Agent agent : agents)
+		while (true)
 		{
 			counterOfSteps++;
-
-			if (agent.step())
+			for (Agent agent : agents)
 			{
-				return counterOfSteps;
-			}
-		}
-		return -1;
-	}
 
+				if (agent.step())
+				{
+					return counterOfSteps;
+				}
+			}
+			theState.pprint();
+			System.out.println();
+		}
+	}
 }

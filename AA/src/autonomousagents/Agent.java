@@ -1,4 +1,5 @@
 package autonomousagents;
+
 import java.util.Random;
 
 public abstract class Agent
@@ -6,7 +7,7 @@ public abstract class Agent
 
 	protected Point currentPosition;
 	protected final State state;
-	protected static Random RAND = new Random(0);
+	protected static Random RAND = new Random(5);
 
 	public Agent(final Point p, final State s)
 	{
