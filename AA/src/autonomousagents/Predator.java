@@ -32,7 +32,7 @@ public class Predator extends Agent
 			ate = this.state.isFree(State.north(this.currentPosition));
 			this.currentPosition = State.north(this.currentPosition);
 		}
-		return ate;
+		return !ate;
 	}
 
 	@Override
