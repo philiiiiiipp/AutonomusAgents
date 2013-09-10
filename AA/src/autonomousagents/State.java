@@ -16,6 +16,21 @@ public class State
 		this.agents = new ArrayList<Agent>();
 	}
 
+	public State(final State otherState)
+	{
+		this.agents = new ArrayList<Agent>();
+		for (Agent a : otherState.agents)
+		{
+			if (a instanceof Prey)
+			{
+				this.agents.add(new Prey(a.getPoint(), this));
+			} else
+			{
+				this.agents.add(new Predator(a.getPoint(), this));
+			}
+		}
+	}
+
 	public void addAgent(final Agent a)
 	{
 		this.agents.add(a);

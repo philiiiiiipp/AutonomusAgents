@@ -15,6 +15,11 @@ public abstract class Agent
 		this.state = s;
 	}
 
+	public Point getPoint()
+	{
+		return this.currentPosition;
+	}
+
 	public boolean isPresent(final Point p)
 	{
 		return this.currentPosition.equals(p);
