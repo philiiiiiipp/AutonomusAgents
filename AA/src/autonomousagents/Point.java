@@ -25,4 +25,9 @@ public class Point
 	{
 		return this.x == otherPoint.getX() && this.y == otherPoint.getY();
 	}
+
+	public void pPrint()
+	{
+		System.out.println("X: " + this.x + " Y: " + this.y);
+	}
 }

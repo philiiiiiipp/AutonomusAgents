@@ -53,6 +53,16 @@ public class State
 		return true;
 	}
 
+	// (0:0) North West
+	// (XMAX:0) North East
+	// (0:YMAX) South West
+	// (XMAX : YMAX) South East
+
+	/**
+	 * 
+	 * @param pointToTranslate
+	 * @return
+	 */
 	public static Point north(final Point pointToTranslate)
 	{
 		int newY = pointToTranslate.getY() == YMIN ? YMAX : pointToTranslate
@@ -80,7 +90,7 @@ public class State
 	public static Point west(final Point pointToTranslate)
 	{
 		int newX = pointToTranslate.getX() == XMIN ? XMAX : pointToTranslate
-				.getX() + 1;
+				.getX() - 1;
 		Point p = new Point(newX, pointToTranslate.getY());
 		return p;
 	}
@@ -113,10 +123,10 @@ public class State
 
 	public void pprint()
 	{
-		for (int i = XMIN; i < XMAX; i++)
+		for (int i = XMIN; i <= XMAX; i++)
 		{
 			String acc = "";
-			for (int j = YMIN; j < YMAX; j++)
+			for (int j = YMIN; j <= YMAX; j++)
 			{
 				Point p = new Point(i, j);
 				boolean agentWasPresent = false;

@@ -8,11 +8,26 @@ public class Main
 	public static void main(final String[] args)
 	{
 		State firstState = new State();
+		Predator p = new Predator(new Point(0, 0), firstState);
+		Prey pr = new Prey(new Point(5, 5), firstState);
 
-		firstState.addAgent(new Predator(new Point(0, 0), firstState));
-		firstState.addAgent(new Prey(new Point(5, 5), firstState));
+		firstState.addAgent(p);
+		firstState.addAgent(pr);
 
-		System.out.println(stepper(firstState));
+		float totNumber = 0;
+		for (int i = 0; i < 10000; i++)
+		{
+			totNumber += stepper(firstState);
+
+			firstState = new State();
+			p = new Predator(new Point(0, 0), firstState);
+			pr = new Prey(new Point(5, 5), firstState);
+
+			firstState.addAgent(p);
+			firstState.addAgent(pr);
+		}
+
+		System.out.println(totNumber / 10000);
 		// firstState.pprint();
 	}
 
@@ -30,8 +45,8 @@ public class Main
 					return counterOfSteps;
 				}
 			}
-			theState.pprint();
-			System.out.println();
+			// theState.pprint();
+			// System.out.println();
 		}
 	}
 }
