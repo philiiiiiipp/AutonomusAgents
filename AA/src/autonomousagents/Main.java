@@ -15,9 +15,22 @@ public class Main
 		firstState.addAgent(pr);
 
 		float totNumber = 0;
-		for (int i = 0; i < 10000; i++)
+		ArrayList<Integer> results = new ArrayList<Integer>();
+
+		int iterations = 10000;
+		int highest = 0;
+
+		for (int i = 0; i < iterations; i++)
 		{
-			totNumber += stepper(firstState);
+
+			int thisTime = stepper(firstState);
+
+			if (thisTime > highest)
+			{
+				highest = thisTime;
+			}
+			results.add(thisTime);
+			totNumber += thisTime;
 
 			firstState = new State();
 			p = new Predator(new Point(0, 0), firstState);
@@ -27,7 +40,21 @@ public class Main
 			firstState.addAgent(pr);
 		}
 
-		System.out.println(totNumber / 10000);
+		double average = totNumber / iterations;
+		System.out.println("Average: ");
+		System.out.println(average);
+
+		double distanceSum = 0;
+		for (int r : results)
+		{
+			distanceSum += (r - average) * (r - average);
+		}
+
+		System.out.println("Deviation: ");
+		System.out.println(Math.sqrt(distanceSum / results.size()));
+
+		System.out.println("Highest: " + highest);
+
 		// firstState.pprint();
 	}
 
