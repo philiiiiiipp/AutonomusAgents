@@ -15,7 +15,7 @@ public class Predator extends Agent
 	public boolean step()
 	{
 		int rand = Agent.RAND.nextInt(RADIUS);
-		boolean didEat = false;
+		boolean didEat;
 
 		switch (rand)
 		{
@@ -36,8 +36,11 @@ public class Predator extends Agent
 			this.currentPosition = State.west(this.currentPosition);
 			break;
 		default:
+			didEat = false;
 			break;
 		}
+		System.out.println("Returning: " + !didEat);
+		System.out.println("Casing: " + rand);
 		return !didEat;
 	}
 
