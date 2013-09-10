@@ -15,30 +15,30 @@ public class Predator extends Agent
 	public boolean step()
 	{
 		int rand = Agent.RAND.nextInt(RADIUS);
-		boolean ate = false;
+		boolean didEat = false;
 
 		switch (rand)
 		{
 		case 0:
-			ate = this.state.isFree(State.north(this.currentPosition));
+			didEat = this.state.isFree(State.north(this.currentPosition));
 			this.currentPosition = State.north(this.currentPosition);
 			break;
 		case 1:
-			ate = this.state.isFree(State.east(this.currentPosition));
+			didEat = this.state.isFree(State.east(this.currentPosition));
 			this.currentPosition = State.east(this.currentPosition);
 			break;
 		case 2:
-			ate = this.state.isFree(State.south(this.currentPosition));
+			didEat = this.state.isFree(State.south(this.currentPosition));
 			this.currentPosition = State.south(this.currentPosition);
 			break;
 		case 3:
-			ate = this.state.isFree(State.west(this.currentPosition));
+			didEat = this.state.isFree(State.west(this.currentPosition));
 			this.currentPosition = State.west(this.currentPosition);
 			break;
 		default:
 			break;
 		}
-		return !ate;
+		return !didEat;
 	}
 
 	@Override

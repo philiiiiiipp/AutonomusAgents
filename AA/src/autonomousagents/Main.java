@@ -25,7 +25,6 @@ public class Main
 			counterOfSteps++;
 			for (Agent agent : agents)
 			{
-
 				if (agent.step())
 				{
 					return counterOfSteps;
