@@ -6,10 +6,10 @@ public class State
 {
 
 	private final ArrayList<Agent> agents;
-	private static final int XMAX = 10;
-	private static final int YMAX = 10;
-	private static final int XMIN = 0;
-	private static final int YMIN = 0;
+	public static final int XMAX = 10;
+	public static final int YMAX = 10;
+	public static final int XMIN = 0;
+	public static final int YMIN = 0;
 
 	public State()
 	{

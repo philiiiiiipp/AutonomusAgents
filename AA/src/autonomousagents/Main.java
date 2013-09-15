@@ -30,6 +30,8 @@ public class Main
 		}
 		pprintStatistics(results);
 
+		new VI();
+
 	}
 
 	public static void pprintStatistics(final ArrayList<Integer> scores)
