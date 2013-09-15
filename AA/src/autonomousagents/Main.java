@@ -7,30 +7,16 @@ public class Main
 
 	public static void main(final String[] args)
 	{
-		State firstState = new State();
-		Predator p = new Predator(new Point(0, 0), firstState);
-		Prey pr = new Prey(new Point(5, 5), firstState);
+		State firstState;
+		Predator p;
+		Prey pr;
 
-		firstState.addAgent(p);
-		firstState.addAgent(pr);
-
-		float totNumber = 0;
 		ArrayList<Integer> results = new ArrayList<Integer>();
 
 		int iterations = 10000;
-		int highest = 0;
 
 		for (int i = 0; i < iterations; i++)
 		{
-
-			int thisTime = stepper(firstState);
-
-			if (thisTime > highest)
-			{
-				highest = thisTime;
-			}
-			results.add(thisTime);
-			totNumber += thisTime;
 
 			firstState = new State();
 			p = new Predator(new Point(0, 0), firstState);
@@ -38,24 +24,54 @@ public class Main
 
 			firstState.addAgent(p);
 			firstState.addAgent(pr);
+
+			results.add(stepper(firstState));
+
 		}
 
-		double average = totNumber / iterations;
-		System.out.println("Average: ");
-		System.out.println(average);
+		pprintStatistics(results);
+
+		// firstState.pprint();
+	}
+
+	public static void pprintStatistics(final ArrayList<Integer> scores)
+	{
+		double total = 0;
+		double highest = Double.MIN_VALUE;
+		for (int i : scores)
+		{
+			total += i;
+			if (highest < i)
+			{
+				highest = i;
+			}
+		}
+		double average = total / scores.size();
 
 		double distanceSum = 0;
-		for (int r : results)
+		for (int r : scores)
 		{
 			distanceSum += (r - average) * (r - average);
 		}
 
-		System.out.println("Deviation: ");
-		System.out.println(Math.sqrt(distanceSum / results.size()));
+		double median = scores.get(scores.size() / 2);
+		if (scores.size() % 2 == 0)
+		{
+			median += scores.get(scores.size() / 2 + 1);
+			median /= 2;
+		}
+
+		System.out.print("Median: ");
+		System.out.println(median);
+
+		System.out.print("Average: ");
+		System.out.println(average);
+
+		System.out.print("Deviation: ");
+		System.out.println(Math.sqrt(distanceSum / scores.size()));
 
 		System.out.println("Highest: " + highest);
 
-		// firstState.pprint();
 	}
 
 	public static int stepper(final State theState)
@@ -76,4 +92,5 @@ public class Main
 			// System.out.println();
 		}
 	}
+
 }
