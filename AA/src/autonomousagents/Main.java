@@ -28,10 +28,8 @@ public class Main
 			results.add(stepper(firstState));
 
 		}
-
 		pprintStatistics(results);
 
-		// firstState.pprint();
 	}
 
 	public static void pprintStatistics(final ArrayList<Integer> scores)
@@ -61,15 +59,10 @@ public class Main
 			median /= 2;
 		}
 
-		System.out.print("Median: ");
-		System.out.println(median);
-
-		System.out.print("Average: ");
-		System.out.println(average);
-
-		System.out.print("Deviation: ");
-		System.out.println(Math.sqrt(distanceSum / scores.size()));
-
+		System.out.println("Median: " + median);
+		System.out.println("Average: " + average);
+		System.out.println("Deviation: "
+				+ Math.sqrt(distanceSum / scores.size()));
 		System.out.println("Highest: " + highest);
 
 	}
