@@ -14,11 +14,18 @@ public class ValueIteration
 				{
 					for (int yPrey = 0; yPrey < 11; yPrey++)
 					{
+						float valueForThisState = this.stateSpace[xPred][yPred][xPrey][yPrey];
 
 					}
 				}
 			}
 		}
+	}
+
+	private float maximization(final Point preyPosition,
+			final Point predatorPosition)
+	{
+
 	}
 
 	private float reward(final Point preyPosition, final Point predatorPosition)
