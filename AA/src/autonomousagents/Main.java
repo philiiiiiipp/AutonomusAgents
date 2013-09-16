@@ -8,7 +8,10 @@ public class Main
 	public static void main(final String[] args)
 	{
 		// oldMain();
-		float epsilon = 0.0001f;
+
+		// Looks to me like no matter what, once we cleared out all 0es its
+		// converged
+		float epsilon = 500;
 		ValueIteration vi = new ValueIteration();
 
 		while (vi.sweep() > epsilon)
