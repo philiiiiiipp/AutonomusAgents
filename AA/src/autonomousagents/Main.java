@@ -19,7 +19,7 @@ public class Main
 			// go on
 		}
 
-		vi.printStates(new Point(2, 5));
+		vi.printStates(new Point(5, 5));
 	}
 
 	public static void oldMain()
