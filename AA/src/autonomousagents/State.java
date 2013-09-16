@@ -1,6 +1,7 @@
 package autonomousagents;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class State
 {
@@ -153,5 +154,37 @@ public class State
 			}
 			System.out.println(acc);
 		}
+	}
+
+	/**
+	 * Calculates, which moves the prey can possibly do, excluding the STAY
+	 * move.
+	 * 
+	 * @param preyPosition
+	 * @param predPosition
+	 * @return
+	 */
+	public static List<Point> preyCanMoveTo(final Point preyPosition,
+			final Point predPosition)
+	{
+		List<Point> resultList = new ArrayList<Point>();
+
+		Point testPoint = State.north(preyPosition);
+		if (!testPoint.equals(predPosition))
+			resultList.add(testPoint);
+
+		testPoint = State.east(preyPosition);
+		if (!testPoint.equals(predPosition))
+			resultList.add(testPoint);
+
+		testPoint = State.south(preyPosition);
+		if (!testPoint.equals(predPosition))
+			resultList.add(testPoint);
+
+		testPoint = State.west(preyPosition);
+		if (!testPoint.equals(predPosition))
+			resultList.add(testPoint);
+
+		return resultList;
 	}
 }

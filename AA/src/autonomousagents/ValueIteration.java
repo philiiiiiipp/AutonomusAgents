@@ -1,16 +1,24 @@
 package autonomousagents;
 
+import java.util.List;
+
 public class ValueIteration
 {
 	private final float[][][][] stateSpace = new float[11][11][11][11];
 
-	enum actions
-	{
-		NORTH, EAST, SOUTH, WEST, STAY
-	}
+	private static final float REWARD = 10000.0f;
+	private static final float GAMMA = 0.9f;
 
-	public void sweep()
+	private static final int NORTH = 0;
+	private static final int EAST = 1;
+	private static final int SOUTH = 2;
+	private static final int WEST = 3;
+	private static final int STAY = 4;
+
+	public float sweep()
 	{
+		float delta = 0;
+
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
 			for (int yPred = 0; yPred < 11; yPred++)
@@ -19,9 +27,30 @@ public class ValueIteration
 				{
 					for (int yPrey = 0; yPrey < 11; yPrey++)
 					{
+						float valueForThisState = this.stateSpace[xPred][yPred][xPrey][yPrey];
+						this.stateSpace[xPred][yPred][xPrey][yPrey] = maximisation(
+								new Point(xPred, yPred),
+								new Point(xPrey, yPrey));
 
+						delta = Math.max(delta, Math.abs(valueForThisState
+								- this.stateSpace[xPred][yPred][xPrey][yPrey]));
 					}
 				}
+			}
+		}
+
+		return delta;
+	}
+
+	public void printStates(final Point preyPosition)
+	{
+		for (int xPred = 0; xPred < 11; xPred++)
+		{
+			System.out.println();
+			for (int yPred = 0; yPred < 11; yPred++)
+			{
+				System.out.print(this.stateSpace[xPred][yPred][preyPosition
+						.getX()][preyPosition.getY()] + " \t ");
 			}
 		}
 	}
@@ -29,35 +58,61 @@ public class ValueIteration
 	private float maximisation(final Point predPosition,
 			final Point preyPosition)
 	{
-		Point newPredPosition;
+		if (predPosition.equals(preyPosition))
+		{
+			// EndState
+			return REWARD;
+		}
+
+		float vStar = 0;
+		Point newPredPosition = null;
 		for (int i = 0; i < 5; ++i)
 		{
 			switch (i)
 			{
-			case 0:
+			case NORTH:
 				newPredPosition = State.north(predPosition);
 				break;
-			case 1:
+			case EAST:
 				newPredPosition = State.east(predPosition);
-			case 2:
+				break;
+			case SOUTH:
 				newPredPosition = State.south(predPosition);
-			case 3:
+				break;
+			case WEST:
 				newPredPosition = State.west(predPosition);
+				break;
+			case STAY:
+				newPredPosition = predPosition;
+				break;
 			default:
 				break;
 			}
-		}
-	}
 
-	private float reward(final Point preyPosition, final Point predatorPosition)
-	{
-		if (preyPosition.equals(predatorPosition))
-		{
-			return 1.0f;
-		} else
-		{
-			return 0;
-		}
-	}
+			if (newPredPosition.equals(preyPosition))
+			{
+				// catched, max reward
+				return REWARD;
+			}
 
+			float vSPrimeTotal = 0;
+			// first for the STAY policy of the prey
+			vSPrimeTotal += 0.8 * (GAMMA * this.stateSpace[predPosition.getX()][predPosition
+					.getY()][preyPosition.getX()][preyPosition.getY()]);
+
+			// Now all the other possible moves
+			List<Point> possiblesMoves = State.preyCanMoveTo(preyPosition,
+					predPosition);
+			for (Point p : possiblesMoves)
+			{
+				vSPrimeTotal += 0.05f * (GAMMA * this.stateSpace[predPosition
+						.getX()][predPosition.getY()][p.getX()][p.getY()]);
+			}
+
+			if (vStar < vSPrimeTotal)
+				vStar = vSPrimeTotal;
+		}
+
+		return vStar;
+	}
 }

@@ -33,4 +33,24 @@ public class Prey extends Agent
 	{
 		return this.state.isFree(possibleDestination);
 	}
+
+	public float transitioinProbability(final Point currentPrey,
+			final Point nextPrey, final Point currentPredator)
+	{
+		if (currentPrey.equals(nextPrey))
+		{
+			return 8 / 10;
+		} else if (nextPrey.equals(currentPredator))
+		{
+			return 0;
+		} else
+		{
+			State trialState = new State();
+			Agent predator = new Predator(currentPredator, trialState);
+			Agent prey = new Prey(currentPrey, trialState);
+			trialState.addAgent(predator);
+			trialState.addAgent(prey);
+			return (2 / 10) * (1 / this.state.getNeighbors(this).size());
+		}
+	}
 }

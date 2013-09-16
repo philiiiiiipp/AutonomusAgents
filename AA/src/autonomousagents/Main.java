@@ -7,6 +7,20 @@ public class Main
 
 	public static void main(final String[] args)
 	{
+		// oldMain();
+		float epsilon = 0.0001f;
+		ValueIteration vi = new ValueIteration();
+
+		while (vi.sweep() > epsilon)
+		{
+			// go on
+		}
+
+		vi.printStates(new Point(2, 5));
+	}
+
+	public static void oldMain()
+	{
 		State firstState;
 		Predator p;
 		Prey pr;
@@ -31,7 +45,6 @@ public class Main
 		pprintStatistics(results);
 
 		new VI();
-
 	}
 
 	public static void pprintStatistics(final ArrayList<Integer> scores)
