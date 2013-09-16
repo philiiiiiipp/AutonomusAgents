@@ -4,6 +4,11 @@ public class ValueIteration
 {
 	private final float[][][][] stateSpace = new float[11][11][11][11];
 
+	enum actions
+	{
+		NORTH, EAST, SOUTH, WEST, STAY
+	}
+
 	public void sweep()
 	{
 		for (int xPred = 0; xPred < 11; xPred++)
@@ -17,6 +22,29 @@ public class ValueIteration
 
 					}
 				}
+			}
+		}
+	}
+
+	private float maximisation(final Point predPosition,
+			final Point preyPosition)
+	{
+		Point newPredPosition;
+		for (int i = 0; i < 5; ++i)
+		{
+			switch (i)
+			{
+			case 0:
+				newPredPosition = State.north(predPosition);
+				break;
+			case 1:
+				newPredPosition = State.east(predPosition);
+			case 2:
+				newPredPosition = State.south(predPosition);
+			case 3:
+				newPredPosition = State.west(predPosition);
+			default:
+				break;
 			}
 		}
 	}
