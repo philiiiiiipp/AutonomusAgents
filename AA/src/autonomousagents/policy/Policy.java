@@ -10,7 +10,7 @@ import autonomousagents.actions.Action;
 
 public class Policy
 {
-	Random rand = new Random(2);
+	protected static Random rand = new Random();
 
 	protected Map<State, List<Action>> currentPolicy = new HashMap<State, List<Action>>();
 
