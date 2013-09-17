@@ -10,14 +10,14 @@ import autonomousagents.actions.Action;
 
 public class Policy
 {
-	Random rand = new Random(2);
+	protected static Random RAND = new Random(2);
 
 	protected Map<State, List<Action>> currentPolicy = new HashMap<State, List<Action>>();
 
 	public Action actionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
-		float probability = this.rand.nextFloat();
+		float probability = RAND.nextFloat();
 
 		for (int i = 0; i < actionList.size(); ++i)
 		{

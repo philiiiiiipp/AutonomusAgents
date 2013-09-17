@@ -1,7 +1,5 @@
 package autonomousagents;
 
-import java.util.Random;
-
 import autonomousagents.policy.Policy;
 
 public abstract class Agent
@@ -9,7 +7,8 @@ public abstract class Agent
 	protected Policy policy;
 	protected Point currentPosition;
 	protected final Environment environment;
-	protected static Random RAND = new Random();
+
+	// protected static Random RAND = new Random();
 
 	public Agent(final Point p, final Environment environment,
 			final Policy policy)
