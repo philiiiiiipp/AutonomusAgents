@@ -11,7 +11,7 @@ public class Main
 
 		// Looks to me like no matter what, once we cleared out all 0es its
 		// converged
-		float epsilon = 500;
+		float epsilon = 0.00001f;
 		ValueIteration vi = new ValueIteration();
 
 		while (vi.sweep() > epsilon)
