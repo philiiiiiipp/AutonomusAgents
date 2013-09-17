@@ -6,7 +6,7 @@ public class ValueIteration
 {
 	private final float[][][][] stateSpace = new float[11][11][11][11];
 
-	private static final float REWARD = 10000.0f;
+	private static final float REWARD = 1000.0f;
 	private static final float GAMMA = 0.9f;
 
 	private static final int NORTH = 0;
@@ -105,8 +105,11 @@ public class ValueIteration
 					predPosition);
 			for (Point p : possiblesMoves)
 			{
-				vSPrimeTotal += 0.05f * (GAMMA * this.stateSpace[predPosition
-						.getX()][predPosition.getY()][p.getX()][p.getY()]);
+				vSPrimeTotal += 1.0f
+						/ possiblesMoves.size()
+						* 0.2
+						* (GAMMA * this.stateSpace[predPosition.getX()][predPosition
+								.getY()][p.getX()][p.getY()]);
 			}
 
 			if (vStar < vSPrimeTotal)

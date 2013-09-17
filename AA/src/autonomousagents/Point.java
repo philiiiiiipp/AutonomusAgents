@@ -30,4 +30,5 @@ public class Point
 	{
 		System.out.println("X: " + this.x + " Y: " + this.y);
 	}
+
 }
