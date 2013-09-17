@@ -1,25 +1,34 @@
 package autonomousagents;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import autonomousagents.policy.predator.PredatorRandomPolicy;
+import autonomousagents.policy.prey.PreyRandomPolicy;
 
 public class Main
 {
 
 	public static void main(final String[] args)
 	{
-		// oldMain();
+		oldMain();
 
 		// Looks to me like no matter what, once we cleared out all 0es its
 		// converged
-		float epsilon = 500;
-		ValueIteration vi = new ValueIteration();
 
-		while (vi.sweep() > epsilon)
-		{
-			// go on
-		}
+		// State s = new State();
+		// s.addAgent(new Predator(new Point(8, 3), s, new RandomPolicy()));
+		// s.addAgent(new Prey(new Point(1, 5), s));
 
-		vi.printStates(new Point(5, 5));
+		// float epsilon = 500;
+		// ValueIteration vi = new ValueIteration();
+		//
+		// while (vi.sweep() > epsilon)
+		// {
+		// // go on
+		// }
+		//
+		// vi.printStates(new Point(5, 5));
 	}
 
 	public static void oldMain()
@@ -30,24 +39,23 @@ public class Main
 
 		ArrayList<Integer> results = new ArrayList<Integer>();
 
-		int iterations = 10000;
+		int iterations = 1000;
 
 		for (int i = 0; i < iterations; i++)
 		{
+			Environment e = new Environment();
+			p = new Predator(new Point(0, 0), e, new PredatorRandomPolicy());
+			pr = new Prey(new Point(5, 5), e, new PreyRandomPolicy());
 
-			firstState = new State();
-			p = new Predator(new Point(0, 0), firstState);
-			pr = new Prey(new Point(5, 5), firstState);
+			e.addAgent(p);
+			e.addAgent(pr);
 
-			firstState.addAgent(p);
-			firstState.addAgent(pr);
-
-			results.add(stepper(firstState));
+			results.add(stepper(e));
 
 		}
 		pprintStatistics(results);
 
-		new VI();
+		// new VI();
 	}
 
 	public static void pprintStatistics(final ArrayList<Integer> scores)
@@ -85,10 +93,10 @@ public class Main
 
 	}
 
-	public static int stepper(final State theState)
+	public static int stepper(final Environment environment)
 	{
 		int counterOfSteps = 0;
-		ArrayList<Agent> agents = theState.getAgents();
+		List<Agent> agents = environment.getAgents();
 		while (true)
 		{
 			counterOfSteps++;

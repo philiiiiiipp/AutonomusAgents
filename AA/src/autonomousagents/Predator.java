@@ -1,47 +1,49 @@
 package autonomousagents;
 
+import autonomousagents.policy.Policy;
+
 public class Predator extends Agent
 {
 
-	private static final int RADIUS = 5;
+	// private static final int RADIUS = 5;
 
-	public Predator(final Point p, final State s)
+	public Predator(final Point p, final Environment environment,
+			final Policy policy)
 	{
-		super(p, s);
+		super(p, environment, policy);
 	}
 
 	// comment
 	@Override
 	public boolean step()
 	{
-		int rand = Agent.RAND.nextInt(RADIUS);
-		boolean eat;
-
-		switch (rand)
-		{
-		case 0:
-			eat = !this.state.isFree(State.north(this.currentPosition));
-			this.currentPosition = State.north(this.currentPosition);
-			break;
-		case 1:
-			eat = !this.state.isFree(State.east(this.currentPosition));
-			this.currentPosition = State.east(this.currentPosition);
-			break;
-		case 2:
-			eat = !this.state.isFree(State.south(this.currentPosition));
-			this.currentPosition = State.south(this.currentPosition);
-			break;
-		case 3:
-			eat = !this.state.isFree(State.west(this.currentPosition));
-			this.currentPosition = State.west(this.currentPosition);
-			break;
-		default:
-			eat = false;
-			break;
-		}
+		this.policy.actionForState(this.environment.getState()).apply(this);
+		return this.environment.isEndState();
+		// switch (rand)
+		// {
+		// case 0:
+		// eat = !this.state.isFree(State.north(this.currentPosition));
+		// this.currentPosition = State.north(this.currentPosition);
+		// break;
+		// case 1:
+		// eat = !this.state.isFree(State.east(this.currentPosition));
+		// this.currentPosition = State.east(this.currentPosition);
+		// break;
+		// case 2:
+		// eat = !this.state.isFree(State.south(this.currentPosition));
+		// this.currentPosition = State.south(this.currentPosition);
+		// break;
+		// case 3:
+		// eat = !this.state.isFree(State.west(this.currentPosition));
+		// this.currentPosition = State.west(this.currentPosition);
+		// break;
+		// default:
+		// eat = false;
+		// break;
+		// }
 		// System.out.println("Returning: " + eat);
 		// System.out.println("Casing: " + rand);
-		return eat;
+		// return eat;
 	}
 
 	@Override
