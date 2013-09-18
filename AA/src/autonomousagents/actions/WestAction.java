@@ -7,7 +7,7 @@ import autonomousagents.util.GameField;
 public class WestAction extends Action
 {
 
-	public WestAction(final float probability)
+	public WestAction(final double probability)
 	{
 		super(probability);
 	}

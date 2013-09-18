@@ -46,10 +46,10 @@ public class PreyRandomPolicy extends Policy
 
 						for (Action a : actions)
 						{
-							a.setProbability(1.0f / actions.size() * 0.2f);
+							a.setProbability(1.0d / actions.size() * 0.2d);
 						}
 
-						actions.add(new StayAction(0.8f));
+						actions.add(new StayAction(0.8d));
 
 						this.currentPolicy.put(s, actions);
 					}

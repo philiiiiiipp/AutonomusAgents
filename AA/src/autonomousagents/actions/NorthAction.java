@@ -7,7 +7,7 @@ import autonomousagents.util.GameField;
 public class NorthAction extends Action
 {
 
-	public NorthAction(final float probability)
+	public NorthAction(final double probability)
 	{
 		super(probability);
 	}

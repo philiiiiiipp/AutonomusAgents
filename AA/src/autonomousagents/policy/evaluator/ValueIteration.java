@@ -11,27 +11,30 @@ import autonomousagents.util.Direction;
 
 public class ValueIteration
 {
-	private static final float REWARD = 10;
-	private static final float GAMMA = 0.8f;
-	private static final float THETA = 0.00001f;
+	private static final double REWARD = 10;
+	private static final double GAMMA = 0.8f;
+	private static final double THETA = 0.00000001f;
 
-	public static float[][][][] evaluate(final Policy predatorPolicy,
+	public static double[][][][] evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
-		float[][][][] stateSpace = new float[11][11][11][11];
-		float delta = 0;
-		int i = 0;
+		double[][][][] stateSpace = new double[11][11][11][11];
+		double delta = 0;
+
 		do
 		{
 			delta = 0;
 			for (State s : predatorPolicy.getPolicy().keySet())
 			{
+				if (s.isTerminal())
+					continue;
+
 				int predatorX = s.predatorPoint().getX();
 				int predatorY = s.predatorPoint().getY();
 				int preyX = s.preyPoint().getX();
 				int preyY = s.preyPoint().getY();
 
-				float v = stateSpace[predatorX][predatorY][preyX][preyY];
+				double v = stateSpace[predatorX][predatorY][preyX][preyY];
 
 				stateSpace[predatorX][predatorY][preyX][preyY] = maximisation(
 						s, stateSpace, predatorPolicy, preyPolicy);
@@ -41,21 +44,15 @@ public class ValueIteration
 			}
 		} while (delta > THETA);
 
-		System.out.println(i);
 		return stateSpace;
 	}
 
-	private static float maximisation(final State s,
-			final float[][][][] stateSpace, final Policy predatorPolicy,
+	private static double maximisation(final State s,
+			final double[][][][] stateSpace, final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
-		if (s.predatorPoint().equals(s.preyPoint()))
-		{
-			// Undefined
-			return 0;
-		}
 
-		float vStar = 0;
+		double vStar = 0;
 		Point newPredPosition = null;
 		for (int i = 0; i < 5; ++i)
 		{
@@ -89,7 +86,7 @@ public class ValueIteration
 			List<Action> possibleAction = preyPolicy.actionsForState(new State(
 					newPredPosition, s.preyPoint()));
 			// State(points))
-			float vSPrimeTotal = 0;
+			double vSPrimeTotal = 0;
 			Point newPreyPoint = null;
 			for (Action a : possibleAction)
 			{

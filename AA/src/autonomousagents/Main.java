@@ -23,8 +23,8 @@ public class Main
 		// s.addAgent(new Predator(new Point(8, 3), s, new RandomPolicy()));
 		// s.addAgent(new Prey(new Point(1, 5), s));
 
-		// float epsilon = 0.001f;
-		// ValueIteration vi = new ValueIteration();
+		// float epsilon = 0.00000001f;
+		// OldValueIteration vi = new OldValueIteration();
 		//
 		// while (vi.sweep() > epsilon)
 		// {

@@ -57,31 +57,27 @@ public class Environment
 	{
 		int newY = pointToTranslate.getY() == GameField.YMIN ? GameField.YMAX
 				: pointToTranslate.getY() - 1;
-		Point p = new Point(pointToTranslate.getX(), newY);
-		return p;
+		return new Point(pointToTranslate.getX(), newY);
 	}
 
 	public static Point south(final Point pointToTranslate)
 	{
 		int newY = pointToTranslate.getY() == GameField.YMAX ? GameField.YMIN
 				: pointToTranslate.getY() + 1;
-		Point p = new Point(pointToTranslate.getX(), newY);
-		return p;
+		return new Point(pointToTranslate.getX(), newY);
 	}
 
 	public static Point east(final Point pointToTranslate)
 	{
 		int newX = pointToTranslate.getX() == GameField.XMAX ? GameField.XMIN
 				: pointToTranslate.getX() + 1;
-		Point p = new Point(newX, pointToTranslate.getY());
-		return p;
+		return new Point(newX, pointToTranslate.getY());
 	}
 
 	public static Point west(final Point pointToTranslate)
 	{
 		int newX = pointToTranslate.getX() == GameField.XMIN ? GameField.XMAX
 				: pointToTranslate.getX() - 1;
-		Point p = new Point(newX, pointToTranslate.getY());
-		return p;
+		return new Point(newX, pointToTranslate.getY());
 	}
 }

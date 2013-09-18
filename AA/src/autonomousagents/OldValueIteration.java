@@ -97,26 +97,27 @@ public class OldValueIteration
 
 			float vSPrimeTotal = 0;
 			// first for the STAY policy of the prey
-			vSPrimeTotal += 0.8 * (GAMMA * this.stateSpace[predPosition.getX()][predPosition
-					.getY()][preyPosition.getX()][preyPosition.getY()]);
+			vSPrimeTotal += 0.8 * (GAMMA * this.stateSpace[newPredPosition
+					.getX()][newPredPosition.getY()][preyPosition.getX()][preyPosition
+					.getY()]);
 
 			// Now all the other possible moves
 			List<Point> possiblesMoves = new ArrayList<Point>();
 
 			Point newPoint = Environment.north(preyPosition);
-			if (!newPoint.equals(predPosition))
+			if (!newPoint.equals(newPredPosition))
 				possiblesMoves.add(newPoint);
 
 			newPoint = Environment.east(preyPosition);
-			if (!newPoint.equals(predPosition))
+			if (!newPoint.equals(newPredPosition))
 				possiblesMoves.add(newPoint);
 
 			newPoint = Environment.south(preyPosition);
-			if (!newPoint.equals(predPosition))
+			if (!newPoint.equals(newPredPosition))
 				possiblesMoves.add(newPoint);
 
 			newPoint = Environment.west(preyPosition);
-			if (!newPoint.equals(predPosition))
+			if (!newPoint.equals(newPredPosition))
 				possiblesMoves.add(newPoint);
 
 			for (Point p : possiblesMoves)

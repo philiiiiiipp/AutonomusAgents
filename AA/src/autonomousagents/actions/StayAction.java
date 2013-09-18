@@ -6,7 +6,7 @@ import autonomousagents.Point;
 public class StayAction extends Action
 {
 
-	public StayAction(final float probability)
+	public StayAction(final double probability)
 	{
 		super(probability);
 	}

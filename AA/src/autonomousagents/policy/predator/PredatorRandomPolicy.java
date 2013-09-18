@@ -31,11 +31,11 @@ public class PredatorRandomPolicy extends Policy
 						State s = new State(predPoint, preyPoint);
 
 						List<Action> actions = new ArrayList<Action>();
-						actions.add(new NorthAction(1.0f / 5.0f));
-						actions.add(new EastAction(1.0f / 5.0f));
-						actions.add(new SouthAction(1.0f / 5.0f));
-						actions.add(new WestAction(1.0f / 5.0f));
-						actions.add(new StayAction(1.0f / 5.0f));
+						actions.add(new NorthAction(1.0d / 5.0d));
+						actions.add(new EastAction(1.0d / 5.0d));
+						actions.add(new SouthAction(1.0d / 5.0d));
+						actions.add(new WestAction(1.0d / 5.0d));
+						actions.add(new StayAction(1.0d / 5.0d));
 
 						this.currentPolicy.put(s, actions);
 					}
