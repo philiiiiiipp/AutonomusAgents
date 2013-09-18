@@ -1,5 +1,6 @@
 package autonomousagents;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ValueIteration
@@ -71,16 +72,16 @@ public class ValueIteration
 			switch (i)
 			{
 			case NORTH:
-				newPredPosition = State.north(predPosition);
+				newPredPosition = Environment.north(predPosition);
 				break;
 			case EAST:
-				newPredPosition = State.east(predPosition);
+				newPredPosition = Environment.east(predPosition);
 				break;
 			case SOUTH:
-				newPredPosition = State.south(predPosition);
+				newPredPosition = Environment.south(predPosition);
 				break;
 			case WEST:
-				newPredPosition = State.west(predPosition);
+				newPredPosition = Environment.west(predPosition);
 				break;
 			case STAY:
 				newPredPosition = predPosition;
@@ -101,8 +102,24 @@ public class ValueIteration
 					.getY()][preyPosition.getX()][preyPosition.getY()]);
 
 			// Now all the other possible moves
-			List<Point> possiblesMoves = State.preyCanMoveTo(preyPosition,
-					predPosition);
+			List<Point> possiblesMoves = new ArrayList<Point>();
+
+			Point newPoint = Environment.north(preyPosition);
+			if (!newPoint.equals(predPosition))
+				possiblesMoves.add(newPoint);
+
+			newPoint = Environment.east(preyPosition);
+			if (!newPoint.equals(predPosition))
+				possiblesMoves.add(newPoint);
+
+			newPoint = Environment.south(preyPosition);
+			if (!newPoint.equals(predPosition))
+				possiblesMoves.add(newPoint);
+
+			newPoint = Environment.west(preyPosition);
+			if (!newPoint.equals(predPosition))
+				possiblesMoves.add(newPoint);
+
 			for (Point p : possiblesMoves)
 			{
 				vSPrimeTotal += 1.0f

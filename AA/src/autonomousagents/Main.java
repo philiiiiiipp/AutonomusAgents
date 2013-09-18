@@ -20,7 +20,7 @@ public class Main
 		// s.addAgent(new Predator(new Point(8, 3), s, new RandomPolicy()));
 		// s.addAgent(new Prey(new Point(1, 5), s));
 
-		// float epsilon = 500;
+		// float epsilon = 10;
 		// ValueIteration vi = new ValueIteration();
 		//
 		// while (vi.sweep() > epsilon)
@@ -41,18 +41,34 @@ public class Main
 
 		int iterations = 1000;
 
+		long time1 = 0;
+		long time2 = 0;
+
+		long creationTime = 0;
+		long stepTime = 0;
+
+		PredatorRandomPolicy prPoly = new PredatorRandomPolicy();
+		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 		for (int i = 0; i < iterations; i++)
 		{
+			time1 = System.currentTimeMillis();
 			Environment e = new Environment();
-			p = new Predator(new Point(0, 0), e, new PredatorRandomPolicy());
-			pr = new Prey(new Point(5, 5), e, new PreyRandomPolicy());
+			p = new Predator(new Point(0, 0), e, prPoly);
+			pr = new Prey(new Point(5, 5), e, preyPoly);
 
 			e.addAgent(p);
 			e.addAgent(pr);
 
+			creationTime += System.currentTimeMillis() - time1;
+
+			time1 = System.currentTimeMillis();
 			results.add(stepper(e));
+			stepTime += System.currentTimeMillis() - time1;
 
 		}
+
+		System.out.println(creationTime / 1000.0f);
+		System.out.println(stepTime / 1000.0f);
 		pprintStatistics(results);
 
 		// new VI();
