@@ -1,23 +1,24 @@
 package autonomousagents;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class OldValueIteration
 {
-	private final float[][][][] stateSpace = new float[11][11][11][11];
+	private final double[][][][] stateSpace = new double[11][11][11][11];
 
-	private static final float REWARD = 10.0f;
-	private static final float GAMMA = 0.8f;
+	private static final double REWARD = 10.0d;
+	private static final double GAMMA = 0.8d;
 	private static final int NORTH = 0;
 	private static final int EAST = 1;
 	private static final int SOUTH = 2;
 	private static final int WEST = 3;
 	private static final int STAY = 4;
 
-	public float sweep()
+	public double sweep()
 	{
-		float delta = 0;
+		double delta = 0;
 
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
@@ -27,7 +28,10 @@ public class OldValueIteration
 				{
 					for (int yPrey = 0; yPrey < 11; yPrey++)
 					{
-						float valueForThisState = this.stateSpace[xPred][yPred][xPrey][yPrey];
+						if (xPred == xPrey && yPred == yPrey)
+							continue;
+
+						double valueForThisState = this.stateSpace[xPred][yPred][xPrey][yPrey];
 						this.stateSpace[xPred][yPred][xPrey][yPrey] = maximisation(
 								new Point(xPred, yPred),
 								new Point(xPrey, yPrey));
@@ -44,18 +48,21 @@ public class OldValueIteration
 
 	public void printStates(final Point preyPosition)
 	{
+		DecimalFormat df = new DecimalFormat("#.000000");
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
-			System.out.println();
 			for (int yPred = 0; yPred < 11; yPred++)
 			{
-				System.out.print(this.stateSpace[xPred][yPred][preyPosition
-						.getX()][preyPosition.getY()] + " \t ");
+				System.out.print(df
+						.format(this.stateSpace[xPred][yPred][preyPosition
+								.getX()][preyPosition.getY()])
+						+ " \t ");
 			}
+			System.out.println();
 		}
 	}
 
-	private float maximisation(final Point predPosition,
+	private double maximisation(final Point predPosition,
 			final Point preyPosition)
 	{
 		if (predPosition.equals(preyPosition))
@@ -64,7 +71,7 @@ public class OldValueIteration
 			return REWARD;
 		}
 
-		float vStar = 0;
+		double vStar = 0;
 		Point newPredPosition = null;
 		for (int i = 0; i < 5; ++i)
 		{
@@ -95,9 +102,9 @@ public class OldValueIteration
 				return REWARD;
 			}
 
-			float vSPrimeTotal = 0;
+			double vSPrimeTotal = 0;
 			// first for the STAY policy of the prey
-			vSPrimeTotal += 0.8 * (GAMMA * this.stateSpace[newPredPosition
+			vSPrimeTotal += 0.8d * (GAMMA * this.stateSpace[newPredPosition
 					.getX()][newPredPosition.getY()][preyPosition.getX()][preyPosition
 					.getY()]);
 
@@ -122,10 +129,10 @@ public class OldValueIteration
 
 			for (Point p : possiblesMoves)
 			{
-				vSPrimeTotal += 1.0f
+				vSPrimeTotal += 1.0d
 						/ possiblesMoves.size()
-						* 0.2
-						* (GAMMA * this.stateSpace[predPosition.getX()][predPosition
+						* 0.2d
+						* (GAMMA * this.stateSpace[newPredPosition.getX()][newPredPosition
 								.getY()][p.getX()][p.getY()]);
 			}
 

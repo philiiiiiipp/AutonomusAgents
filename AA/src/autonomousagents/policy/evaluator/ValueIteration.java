@@ -37,19 +37,19 @@ public class ValueIteration
 				double v = stateSpace[predatorX][predatorY][preyX][preyY];
 
 				stateSpace[predatorX][predatorY][preyX][preyY] = maximisation(
-						s, stateSpace, predatorPolicy, preyPolicy);
+						s, stateSpace, preyPolicy);
 
 				delta = Math.max(delta, Math.abs(v
 						- stateSpace[predatorX][predatorY][preyX][preyY]));
 			}
+
 		} while (delta > THETA);
 
 		return stateSpace;
 	}
 
 	private static double maximisation(final State s,
-			final double[][][][] stateSpace, final Policy predatorPolicy,
-			final Policy preyPolicy)
+			final double[][][][] stateSpace, final Policy preyPolicy)
 	{
 
 		double vStar = 0;
@@ -85,7 +85,7 @@ public class ValueIteration
 
 			List<Action> possibleAction = preyPolicy.actionsForState(new State(
 					newPredPosition, s.preyPoint()));
-			// State(points))
+
 			double vSPrimeTotal = 0;
 			Point newPreyPoint = null;
 			for (Action a : possibleAction)

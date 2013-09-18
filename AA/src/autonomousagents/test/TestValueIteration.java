@@ -26,13 +26,13 @@ public class TestValueIteration
 		DecimalFormat df = new DecimalFormat("#.000000");
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
-			System.out.println();
 			for (int yPred = 0; yPred < 11; yPred++)
 			{
 				System.out
 						.print(df.format(stateSpace[xPred][yPred][preyPosition
 								.getX()][preyPosition.getY()]) + " \t ");
 			}
+			System.out.println();
 		}
 	}
 }
