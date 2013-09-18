@@ -3,19 +3,16 @@ package autonomousagents;
 import java.util.ArrayList;
 import java.util.List;
 
+import autonomousagents.util.GameField;
+
 public class Environment
 {
 	List<Agent> agents = new ArrayList<Agent>();
 
 	public State getState()
 	{
-		List<Point> points = new ArrayList<Point>();
-		for (Agent a : this.agents)
-		{
-			points.add(a.getPosition());
-		}
-
-		return new State(points);
+		return new State(this.agents.get(0).currentPosition,
+				this.agents.get(1).currentPosition);
 	}
 
 	public void addAgent(final Agent a)
@@ -58,7 +55,7 @@ public class Environment
 	 */
 	public static Point north(final Point pointToTranslate)
 	{
-		int newY = pointToTranslate.getY() == State.YMIN ? State.YMAX
+		int newY = pointToTranslate.getY() == GameField.YMIN ? GameField.YMAX
 				: pointToTranslate.getY() - 1;
 		Point p = new Point(pointToTranslate.getX(), newY);
 		return p;
@@ -66,7 +63,7 @@ public class Environment
 
 	public static Point south(final Point pointToTranslate)
 	{
-		int newY = pointToTranslate.getY() == State.YMAX ? State.YMIN
+		int newY = pointToTranslate.getY() == GameField.YMAX ? GameField.YMIN
 				: pointToTranslate.getY() + 1;
 		Point p = new Point(pointToTranslate.getX(), newY);
 		return p;
@@ -74,7 +71,7 @@ public class Environment
 
 	public static Point east(final Point pointToTranslate)
 	{
-		int newX = pointToTranslate.getX() == State.XMAX ? State.XMIN
+		int newX = pointToTranslate.getX() == GameField.XMAX ? GameField.XMIN
 				: pointToTranslate.getX() + 1;
 		Point p = new Point(newX, pointToTranslate.getY());
 		return p;
@@ -82,7 +79,7 @@ public class Environment
 
 	public static Point west(final Point pointToTranslate)
 	{
-		int newX = pointToTranslate.getX() == State.XMIN ? State.XMAX
+		int newX = pointToTranslate.getX() == GameField.XMIN ? GameField.XMAX
 				: pointToTranslate.getX() - 1;
 		Point p = new Point(newX, pointToTranslate.getY());
 		return p;

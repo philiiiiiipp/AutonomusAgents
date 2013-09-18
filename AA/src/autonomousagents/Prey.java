@@ -14,7 +14,7 @@ public class Prey extends Agent
 	@Override
 	public boolean step()
 	{
-		this.policy.actionForState(this.environment.getState()).apply(this);
+		this.policy.nextProbabalisticActionForState(this.environment.getState()).apply(this);
 		//
 		// double rand = Agent.RAND.nextDouble();
 		// if (rand > 0.8)

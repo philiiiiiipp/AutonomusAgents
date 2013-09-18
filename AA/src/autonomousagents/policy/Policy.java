@@ -14,7 +14,7 @@ public class Policy
 
 	protected Map<State, List<Action>> currentPolicy = new HashMap<State, List<Action>>();
 
-	public Action actionForState(final State s)
+	public Action nextProbabalisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
 		float probability = RAND.nextFloat();
@@ -28,5 +28,15 @@ public class Policy
 		}
 
 		return actionList.get(actionList.size() - 1);
+	}
+
+	public List<Action> actionsForState(final State s)
+	{
+		return this.currentPolicy.get(s);
+	}
+
+	public Map<State, List<Action>> getPolicy()
+	{
+		return this.currentPolicy;
 	}
 }

@@ -5,13 +5,16 @@ import java.util.List;
 
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
+import autonomousagents.test.TestValueIteration;
 
 public class Main
 {
 
 	public static void main(final String[] args)
 	{
-		oldMain();
+		TestValueIteration.test();
+
+		// oldMain();
 
 		// Looks to me like no matter what, once we cleared out all 0es its
 		// converged
@@ -20,7 +23,7 @@ public class Main
 		// s.addAgent(new Predator(new Point(8, 3), s, new RandomPolicy()));
 		// s.addAgent(new Prey(new Point(1, 5), s));
 
-		// float epsilon = 10;
+		// float epsilon = 0.001f;
 		// ValueIteration vi = new ValueIteration();
 		//
 		// while (vi.sweep() > epsilon)
@@ -33,7 +36,6 @@ public class Main
 
 	public static void oldMain()
 	{
-		State firstState;
 		Predator p;
 		Prey pr;
 
@@ -42,7 +44,6 @@ public class Main
 		int iterations = 1000;
 
 		long time1 = 0;
-		long time2 = 0;
 
 		long creationTime = 0;
 		long stepTime = 0;

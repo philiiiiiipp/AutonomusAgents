@@ -2,6 +2,8 @@ package autonomousagents;
 
 import java.text.DecimalFormat;
 
+import autonomousagents.util.GameField;
+
 public class VI
 {
 
@@ -9,8 +11,8 @@ public class VI
 	{
 		double lambda = 0.5;
 
-		int columns = State.XMAX - State.XMIN + 1;
-		int rows = State.YMAX - State.YMIN + 1;
+		int columns = GameField.XMAX - GameField.XMIN + 1;
+		int rows = GameField.YMAX - GameField.YMIN + 1;
 
 		double[][] values1 = new double[rows][columns];
 		double[][] values2 = new double[rows][columns];

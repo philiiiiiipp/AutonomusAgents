@@ -17,7 +17,7 @@ public class Predator extends Agent
 	@Override
 	public boolean step()
 	{
-		this.policy.actionForState(this.environment.getState()).apply(this);
+		this.policy.nextProbabalisticActionForState(this.environment.getState()).apply(this);
 		return this.environment.isEndState();
 		// switch (rand)
 		// {

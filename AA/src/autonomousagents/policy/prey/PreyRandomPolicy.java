@@ -26,14 +26,10 @@ public class PreyRandomPolicy extends Policy
 				{
 					for (int yPrey = 0; yPrey < 11; yPrey++)
 					{
-						List<Point> points = new ArrayList<Point>();
 						Point predPoint = new Point(xPred, yPred);
-						points.add(predPoint);
-
 						Point preyPoint = new Point(xPrey, yPrey);
-						points.add(preyPoint);
 
-						State s = new State(points);
+						State s = new State(predPoint, preyPoint);
 						List<Action> actions = new ArrayList<Action>();
 
 						if (!Environment.north(preyPoint).equals(predPoint))
