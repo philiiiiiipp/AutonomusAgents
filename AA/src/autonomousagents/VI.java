@@ -28,8 +28,7 @@ public class VI
 			{
 				for (int j = 0; j < columns; j++)
 				{
-					double high = getHighestNeigbor(readingGrid, i, j,
-							readingGrid[i][j]);
+					double high = getHighestNeigbor(readingGrid, i, j);
 
 					if (high != readingGrid[i][j])
 					{
@@ -47,9 +46,9 @@ public class VI
 	}
 
 	public static double getHighestNeigbor(final double[][] values,
-			final int x, final int y, final double highSelf)
+			final int x, final int y)
 	{
-		double highest = highSelf;
+		double highest = values[x][y];
 		int i = (x + 1) % 11;
 		int j = y;
 		highest = Math.max(highest, values[i][j]);
