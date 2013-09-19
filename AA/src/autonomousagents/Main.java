@@ -24,26 +24,6 @@ public class Main
 		TestPolicyEvaluation.test();
 
 		// oldMain();
-
-		// Looks to me like no matter what, once we cleared out all 0es its
-		// converged
-
-		// State s = new State();
-		// s.addAgent(new Predator(new Point(8, 3), s, new RandomPolicy()));
-		// s.addAgent(new Prey(new Point(1, 5), s));
-
-		// double epsilon = 0.00000001f;
-		// OldValueIteration vi = new OldValueIteration();
-		//
-		// int conversionSteps = 0;
-		// while (vi.sweep() > epsilon)
-		// {
-		// conversionSteps++;
-		// // go on
-		// }
-		//
-		// System.out.println(conversionSteps);
-		// vi.printStates(new Point(5, 5));
 	}
 
 	public static void oldMain()
