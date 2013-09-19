@@ -1,13 +1,13 @@
 package autonomousagents.actions;
 
-import autonomousagents.Agent;
-import autonomousagents.Point;
+import autonomousagents.agent.Agent;
 import autonomousagents.util.GameField;
+import autonomousagents.world.Point;
 
 public class EastAction extends Action
 {
 
-	public EastAction(final float probability)
+	public EastAction(final double probability)
 	{
 		super(probability);
 	}

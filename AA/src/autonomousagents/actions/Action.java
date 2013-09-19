@@ -1,13 +1,13 @@
 package autonomousagents.actions;
 
-import autonomousagents.Agent;
-import autonomousagents.Point;
+import autonomousagents.agent.Agent;
+import autonomousagents.world.Point;
 
 public abstract class Action
 {
-	private float probability;
+	private double probability;
 
-	public Action(final float probability)
+	public Action(final double probability)
 	{
 		this.probability = probability;
 	}
@@ -28,12 +28,12 @@ public abstract class Action
 	 */
 	public abstract Point apply(final Point p);
 
-	public float getProbability()
+	public double getProbability()
 	{
 		return this.probability;
 	}
 
-	public void setProbability(final float probability)
+	public void setProbability(final double probability)
 	{
 		this.probability = probability;
 	}

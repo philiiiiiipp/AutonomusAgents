@@ -3,10 +3,15 @@ package autonomousagents;
 import java.util.ArrayList;
 import java.util.List;
 
+import autonomousagents.agent.Agent;
+import autonomousagents.agent.Predator;
+import autonomousagents.agent.Prey;
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.test.TestPolicyEvaluation;
 import autonomousagents.test.TestValueIteration;
+import autonomousagents.world.Environment;
+import autonomousagents.world.Point;
 
 public class Main
 {
@@ -27,14 +32,17 @@ public class Main
 		// s.addAgent(new Predator(new Point(8, 3), s, new RandomPolicy()));
 		// s.addAgent(new Prey(new Point(1, 5), s));
 
-		// float epsilon = 0.001f;
-		// ValueIteration vi = new ValueIteration();
+		// double epsilon = 0.00000001f;
+		// OldValueIteration vi = new OldValueIteration();
 		//
+		// int conversionSteps = 0;
 		// while (vi.sweep() > epsilon)
 		// {
+		// conversionSteps++;
 		// // go on
 		// }
 		//
+		// System.out.println(conversionSteps);
 		// vi.printStates(new Point(5, 5));
 	}
 

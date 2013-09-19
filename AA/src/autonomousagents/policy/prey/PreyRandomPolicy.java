@@ -3,9 +3,6 @@ package autonomousagents.policy.prey;
 import java.util.ArrayList;
 import java.util.List;
 
-import autonomousagents.Environment;
-import autonomousagents.Point;
-import autonomousagents.State;
 import autonomousagents.actions.Action;
 import autonomousagents.actions.EastAction;
 import autonomousagents.actions.NorthAction;
@@ -13,6 +10,9 @@ import autonomousagents.actions.SouthAction;
 import autonomousagents.actions.StayAction;
 import autonomousagents.actions.WestAction;
 import autonomousagents.policy.Policy;
+import autonomousagents.world.Environment;
+import autonomousagents.world.Point;
+import autonomousagents.world.State;
 
 public class PreyRandomPolicy extends Policy
 {
@@ -46,10 +46,10 @@ public class PreyRandomPolicy extends Policy
 
 						for (Action a : actions)
 						{
-							a.setProbability(1.0f / actions.size() * 0.2f);
+							a.setProbability(1.0d / actions.size() * 0.2d);
 						}
 
-						actions.add(new StayAction(0.8f));
+						actions.add(new StayAction(0.8d));
 
 						this.currentPolicy.put(s, actions);
 					}

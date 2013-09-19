@@ -2,16 +2,14 @@ package autonomousagents.policy.evaluator;
 
 import java.util.List;
 
-import autonomousagents.Environment;
-import autonomousagents.Point;
-import autonomousagents.State;
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
-import autonomousagents.util.Direction;
+import autonomousagents.world.Point;
+import autonomousagents.world.State;
 
 public class PolicyEvaluation
 {
-	private static final float REWARD = 0.0f;
+	private static final float REWARD = 10.0f;
 	private static final float GAMMA = 0.8f;
 	private static final float THETA = 0.00001f;
 
@@ -55,32 +53,12 @@ public class PolicyEvaluation
 			// Undefined
 			return 0;
 		}
-
+		List<Action> actionList = predatorPolicy.actionsForState(s);
 		float VPi = 0;
 		Point newPredPosition = null;
-		for (int i = 0; i < 5; ++i)
+		for (Action predatorAction : actionList)
 		{
-			switch (i)
-			{
-			case Direction.NORTH:
-				newPredPosition = Environment.north(s.predatorPoint());
-				break;
-			case Direction.EAST:
-				newPredPosition = Environment.east(s.predatorPoint());
-				break;
-			case Direction.SOUTH:
-				newPredPosition = Environment.south(s.predatorPoint());
-				break;
-			case Direction.WEST:
-				newPredPosition = Environment.west(s.predatorPoint());
-				break;
-			case Direction.STAY:
-				newPredPosition = s.predatorPoint();
-				break;
-			default:
-				break;
-			}
-
+			newPredPosition = predatorAction.apply(s.predatorPoint());
 			if (newPredPosition.equals(s.preyPoint()))
 			{
 				// catched, max reward
@@ -91,16 +69,15 @@ public class PolicyEvaluation
 					newPredPosition, s.preyPoint()));
 			float Value = 0;
 			Point newPreyPoint = null;
-			for (Action a : possibleAction)
+			for (Action preyAction : possibleAction)
 			{
-				newPreyPoint = a.apply(s.preyPoint());
-				Value += a.getProbability()
-						* (-1 + GAMMA
-								* stateSpace[newPredPosition.getX()][newPredPosition
-										.getY()][newPreyPoint.getX()][newPreyPoint
-										.getY()]);
+				newPreyPoint = preyAction.apply(s.preyPoint());
+				Value += preyAction.getProbability()
+						* (GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
+								.getY()][newPreyPoint.getX()][newPreyPoint
+								.getY()]);
 			}
-			VPi += (1.0f / 5.0f) * Value;
+			VPi += predatorAction.getProbability() * Value;
 		}
 		return VPi;
 	}

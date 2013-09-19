@@ -1,12 +1,12 @@
 package autonomousagents.actions;
 
-import autonomousagents.Agent;
-import autonomousagents.Point;
+import autonomousagents.agent.Agent;
 import autonomousagents.util.GameField;
+import autonomousagents.world.Point;
 
 public class SouthAction extends Action
 {
-	public SouthAction(final float probability)
+	public SouthAction(final double probability)
 	{
 		super(probability);
 	}

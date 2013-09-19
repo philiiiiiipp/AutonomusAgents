@@ -1,5 +1,4 @@
-package autonomousagents;
-
+package autonomousagents.world;
 
 public class State
 {
@@ -20,6 +19,11 @@ public class State
 	public Point preyPoint()
 	{
 		return this.preyPoint;
+	}
+
+	public boolean isTerminal()
+	{
+		return this.predatorPoint.equals(this.preyPoint);
 	}
 
 	@Override

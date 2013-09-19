@@ -1,9 +1,9 @@
 package autonomousagents.test;
 
-import autonomousagents.Point;
 import autonomousagents.policy.evaluator.PolicyEvaluation;
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
+import autonomousagents.world.Point;
 
 public class TestPolicyEvaluation
 {
@@ -16,7 +16,10 @@ public class TestPolicyEvaluation
 				preyPolicy);
 
 		printStates(new Point(5, 5), stateSpace);
+		printStates(new Point(0, 0), new Point(5, 5), stateSpace);
 		printStates(new Point(2, 3), new Point(5, 4), stateSpace);
+		printStates(new Point(2, 10), new Point(10, 0), stateSpace);
+		printStates(new Point(10, 10), new Point(0, 0), stateSpace);
 	}
 
 	private static void printStates(final Point preyPosition,

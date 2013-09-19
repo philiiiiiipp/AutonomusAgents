@@ -1,12 +1,12 @@
 package autonomousagents.actions;
 
-import autonomousagents.Agent;
-import autonomousagents.Point;
+import autonomousagents.agent.Agent;
+import autonomousagents.world.Point;
 
 public class StayAction extends Action
 {
 
-	public StayAction(final float probability)
+	public StayAction(final double probability)
 	{
 		super(probability);
 	}
