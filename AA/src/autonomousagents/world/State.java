@@ -5,6 +5,19 @@ public class State
 	private final Point predatorPoint;
 	private final Point preyPoint;
 
+	public State mapToSimplifiedState()
+	{
+		int xdistance = Math.abs(this.predatorPoint.getX()
+				- this.preyPoint.getX());
+		int ydistance = Math.abs(this.predatorPoint.getY()
+				- this.preyPoint.getY());
+
+		xdistance = Math.min(xdistance, 11 - xdistance);
+		ydistance = Math.min(ydistance, 11 - ydistance);
+
+		return new State(new Point(xdistance, ydistance), new Point(0, 0));
+	}
+
 	public State(final Point predatorPoint, final Point preyPoint)
 	{
 		this.predatorPoint = predatorPoint;
