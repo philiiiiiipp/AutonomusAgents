@@ -59,11 +59,10 @@ public class PolicyEvaluation
 		for (Action predatorAction : actionList)
 		{
 			newPredPosition = predatorAction.apply(s.predatorPoint());
-			if (newPredPosition.equals(s.preyPoint()))
-			{
-				// catched, max reward
-				return REWARD;
-			}
+			/*
+			 * if (newPredPosition.equals(s.preyPoint())) { // catched, max
+			 * reward return REWARD; }
+			 */
 
 			List<Action> possibleAction = preyPolicy.actionsForState(new State(
 					newPredPosition, s.preyPoint()));
@@ -72,13 +71,24 @@ public class PolicyEvaluation
 			for (Action preyAction : possibleAction)
 			{
 				newPreyPoint = preyAction.apply(s.preyPoint());
-				Value += preyAction.getProbability()
-						* (GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
-								.getY()][newPreyPoint.getX()][newPreyPoint
-								.getY()]);
+				if (newPredPosition.equals(s.preyPoint()))
+				{
+					Value += preyAction.getProbability()
+							* (REWARD + (GAMMA * stateSpace[newPredPosition
+									.getX()][newPredPosition.getY()][newPreyPoint
+									.getX()][newPreyPoint.getY()]));
+				} else
+				{
+					Value += preyAction.getProbability()
+							* (GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
+									.getY()][newPreyPoint.getX()][newPreyPoint
+									.getY()]);
+				}
+
 			}
 			VPi += predatorAction.getProbability() * Value;
 		}
+
 		return VPi;
 	}
 }
