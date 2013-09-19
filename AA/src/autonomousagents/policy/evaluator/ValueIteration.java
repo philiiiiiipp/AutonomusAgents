@@ -12,7 +12,7 @@ import autonomousagents.world.State;
 public class ValueIteration
 {
 	private static final double REWARD = 10;
-	private static final double GAMMA = 0.8f;
+	private static final double GAMMA = 0.9f;
 	private static final double THETA = 0.00000001f;
 
 	public static double[][][][] evaluate(final Policy predatorPolicy,
