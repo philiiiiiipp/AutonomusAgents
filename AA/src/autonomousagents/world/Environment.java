@@ -1,8 +1,9 @@
-package autonomousagents;
+package autonomousagents.world;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import autonomousagents.agent.Agent;
 import autonomousagents.util.GameField;
 
 public class Environment
@@ -11,8 +12,8 @@ public class Environment
 
 	public State getState()
 	{
-		return new State(this.agents.get(0).currentPosition,
-				this.agents.get(1).currentPosition);
+		return new State(this.agents.get(0).getPosition(), this.agents.get(1)
+				.getPosition());
 	}
 
 	public void addAgent(final Agent a)

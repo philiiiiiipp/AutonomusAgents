@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import autonomousagents.State;
 import autonomousagents.actions.Action;
+import autonomousagents.world.State;
 
 public class Policy
 {

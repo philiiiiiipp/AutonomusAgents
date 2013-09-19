@@ -3,8 +3,6 @@ package autonomousagents.policy.predator;
 import java.util.ArrayList;
 import java.util.List;
 
-import autonomousagents.Point;
-import autonomousagents.State;
 import autonomousagents.actions.Action;
 import autonomousagents.actions.EastAction;
 import autonomousagents.actions.NorthAction;
@@ -12,6 +10,8 @@ import autonomousagents.actions.SouthAction;
 import autonomousagents.actions.StayAction;
 import autonomousagents.actions.WestAction;
 import autonomousagents.policy.Policy;
+import autonomousagents.world.Point;
+import autonomousagents.world.State;
 
 public class PredatorRandomPolicy extends Policy
 {

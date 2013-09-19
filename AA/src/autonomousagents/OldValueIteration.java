@@ -4,6 +4,9 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import autonomousagents.world.Environment;
+import autonomousagents.world.Point;
+
 public class OldValueIteration
 {
 	private final double[][][][] stateSpace = new double[11][11][11][11];

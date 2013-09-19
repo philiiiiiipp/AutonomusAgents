@@ -1,4 +1,4 @@
-package autonomousagents;
+package autonomousagents.world;
 
 public class State
 {

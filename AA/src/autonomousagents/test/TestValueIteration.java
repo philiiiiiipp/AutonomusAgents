@@ -2,10 +2,10 @@ package autonomousagents.test;
 
 import java.text.DecimalFormat;
 
-import autonomousagents.Point;
 import autonomousagents.policy.evaluator.ValueIteration;
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
+import autonomousagents.world.Point;
 
 public class TestValueIteration
 {

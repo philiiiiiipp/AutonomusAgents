@@ -1,7 +1,7 @@
 package autonomousagents.actions;
 
-import autonomousagents.Agent;
-import autonomousagents.Point;
+import autonomousagents.agent.Agent;
+import autonomousagents.world.Point;
 
 public abstract class Action
 {

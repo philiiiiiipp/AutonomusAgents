@@ -2,12 +2,12 @@ package autonomousagents.policy.evaluator;
 
 import java.util.List;
 
-import autonomousagents.Environment;
-import autonomousagents.Point;
-import autonomousagents.State;
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
 import autonomousagents.util.Direction;
+import autonomousagents.world.Environment;
+import autonomousagents.world.Point;
+import autonomousagents.world.State;
 
 public class ValueIteration
 {
