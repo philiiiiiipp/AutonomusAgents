@@ -1,14 +1,14 @@
-package autonomousagents;
+package autonomousagents.agent;
 
 import autonomousagents.policy.Policy;
+import autonomousagents.world.Environment;
+import autonomousagents.world.Point;
 
 public abstract class Agent
 {
 	protected Policy policy;
 	protected Point currentPosition;
 	protected final Environment environment;
-
-	// protected static Random RAND = new Random();
 
 	public Agent(final Point p, final Environment environment,
 			final Policy policy)
@@ -29,8 +29,6 @@ public abstract class Agent
 	}
 
 	public abstract boolean step();
-
-	public abstract boolean canIGoThere(final Point p);
 
 	public void moveTo(final Point point)
 	{

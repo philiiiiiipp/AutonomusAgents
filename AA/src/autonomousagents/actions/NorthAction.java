@@ -1,13 +1,13 @@
 package autonomousagents.actions;
 
-import autonomousagents.Agent;
-import autonomousagents.Point;
-import autonomousagents.State;
+import autonomousagents.agent.Agent;
+import autonomousagents.util.GameField;
+import autonomousagents.world.Point;
 
 public class NorthAction extends Action
 {
 
-	public NorthAction(final float probability)
+	public NorthAction(final double probability)
 	{
 		super(probability);
 	}
@@ -15,9 +15,16 @@ public class NorthAction extends Action
 	@Override
 	public void apply(final Agent a)
 	{
-		int newY = a.getPosition().getY() == State.YMIN ? State.YMAX : a
-				.getPosition().getY() - 1;
+		int newY = a.getPosition().getY() == GameField.YMIN ? GameField.YMAX
+				: a.getPosition().getY() - 1;
 
 		a.moveTo(new Point(a.getPosition().getX(), newY));
+	}
+
+	@Override
+	public Point apply(final Point p)
+	{
+		int newY = p.getY() == GameField.YMIN ? GameField.YMAX : p.getY() - 1;
+		return new Point(p.getX(), newY);
 	}
 }

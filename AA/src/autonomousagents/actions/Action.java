@@ -1,24 +1,39 @@
 package autonomousagents.actions;
 
-import autonomousagents.Agent;
+import autonomousagents.agent.Agent;
+import autonomousagents.world.Point;
 
 public abstract class Action
 {
-	private float probability;
+	private double probability;
 
-	public Action(final float probability)
+	public Action(final double probability)
 	{
 		this.probability = probability;
 	}
 
+	/**
+	 * Applies the given action action to an agent
+	 * 
+	 * @param a
+	 */
 	public abstract void apply(final Agent a);
 
-	public float getProbability()
+	/**
+	 * Applies this action to a point, and returns a new point with the new
+	 * position
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public abstract Point apply(final Point p);
+
+	public double getProbability()
 	{
 		return this.probability;
 	}
 
-	public void setProbability(final float probability)
+	public void setProbability(final double probability)
 	{
 		this.probability = probability;
 	}

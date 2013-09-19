@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import autonomousagents.State;
 import autonomousagents.actions.Action;
+import autonomousagents.world.State;
 
 public class Policy
 {
-	protected static Random RAND = new Random(2);
+	protected static Random RAND = new Random();
 
 	protected Map<State, List<Action>> currentPolicy = new HashMap<State, List<Action>>();
 
-	public Action actionForState(final State s)
+	public Action nextProbabalisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
 		float probability = RAND.nextFloat();
@@ -28,5 +28,15 @@ public class Policy
 		}
 
 		return actionList.get(actionList.size() - 1);
+	}
+
+	public List<Action> actionsForState(final State s)
+	{
+		return this.currentPolicy.get(s);
+	}
+
+	public Map<State, List<Action>> getPolicy()
+	{
+		return this.currentPolicy;
 	}
 }

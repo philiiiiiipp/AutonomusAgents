@@ -3,8 +3,6 @@ package autonomousagents.policy.predator;
 import java.util.ArrayList;
 import java.util.List;
 
-import autonomousagents.Point;
-import autonomousagents.State;
 import autonomousagents.actions.Action;
 import autonomousagents.actions.EastAction;
 import autonomousagents.actions.NorthAction;
@@ -12,6 +10,8 @@ import autonomousagents.actions.SouthAction;
 import autonomousagents.actions.StayAction;
 import autonomousagents.actions.WestAction;
 import autonomousagents.policy.Policy;
+import autonomousagents.world.Point;
+import autonomousagents.world.State;
 
 public class PredatorRandomPolicy extends Policy
 {
@@ -25,21 +25,17 @@ public class PredatorRandomPolicy extends Policy
 				{
 					for (int yPrey = 0; yPrey < 11; yPrey++)
 					{
-						List<Point> points = new ArrayList<Point>();
 						Point predPoint = new Point(xPred, yPred);
-						points.add(predPoint);
-
 						Point preyPoint = new Point(xPrey, yPrey);
-						points.add(preyPoint);
 
-						State s = new State(points);
+						State s = new State(predPoint, preyPoint);
 
 						List<Action> actions = new ArrayList<Action>();
-						actions.add(new NorthAction(1.0f / 5.0f));
-						actions.add(new EastAction(1.0f / 5.0f));
-						actions.add(new SouthAction(1.0f / 5.0f));
-						actions.add(new WestAction(1.0f / 5.0f));
-						actions.add(new StayAction(1.0f / 5.0f));
+						actions.add(new NorthAction(1.0d / 5.0d));
+						actions.add(new EastAction(1.0d / 5.0d));
+						actions.add(new SouthAction(1.0d / 5.0d));
+						actions.add(new WestAction(1.0d / 5.0d));
+						actions.add(new StayAction(1.0d / 5.0d));
 
 						this.currentPolicy.put(s, actions);
 					}
