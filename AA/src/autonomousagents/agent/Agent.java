@@ -30,8 +30,6 @@ public abstract class Agent
 
 	public abstract boolean step();
 
-	public abstract boolean canIGoThere(final Point p);
-
 	public void moveTo(final Point point)
 	{
 		this.currentPosition = point;
