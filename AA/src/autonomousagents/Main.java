@@ -24,6 +24,7 @@ public class Main
 		System.out.println("policy evaluation");
 		TestPolicyEvaluation.test();
 
+		oldMain();
 		System.out.println();
 		System.out.println("Policy Iteration");
 		PredatorRandomPolicy pred = TestPolicyIteration.test();
@@ -55,7 +56,7 @@ public class Main
 
 		ArrayList<Integer> results = new ArrayList<Integer>();
 
-		int iterations = 1000;
+		int iterations = 100;
 
 		long time1 = 0;
 
@@ -81,7 +82,6 @@ public class Main
 			stepTime += System.currentTimeMillis() - time1;
 
 		}
-
 		System.out.println(creationTime / 1000.0f);
 		System.out.println(stepTime / 1000.0f);
 		pprintStatistics(results);
