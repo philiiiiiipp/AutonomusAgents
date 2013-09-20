@@ -3,13 +3,11 @@ package autonomousagents.actions;
 import autonomousagents.agent.Agent;
 import autonomousagents.world.Point;
 
+/**
+ * Abstract action that the agent could take
+ */
 public abstract class Action
 {
-	/*
-	 * Abstract action that the agent could take
-	 */
-
-	// Action probability.
 	private double probability;
 
 	public Action(final double probability)
