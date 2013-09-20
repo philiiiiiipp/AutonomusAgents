@@ -7,23 +7,20 @@ import java.util.Map;
 
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
+import autonomousagents.util.Constants;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
 public class PolicyImprovement
 {
-	private static final float REWARD = 10.0f;
-	private static final float GAMMA = 0.8f;
-	private static final float THETA = 0.00001f;
-
 	/**
-	 * Improving the predator policy
+	 * Improving the predator policy, return true if the policy is stable
 	 * 
 	 * @param predatorPolicy
 	 * @param preyPolicy
 	 */
-	public static void improve(final Policy predatorPolicy,
-			final Policy preyPolicy, final float[][][][] valueMap)
+	public static boolean improve(final Policy predatorPolicy,
+			final Policy preyPolicy, final double[][][][] valueMap)
 	{
 		boolean policyStable = true;
 
@@ -33,8 +30,30 @@ public class PolicyImprovement
 				continue;
 
 			List<Action> actions = predatorPolicy.actionsForState(s);
+			predatorPolicy.getPolicy().put(s,
+					maximisation(s, valueMap, predatorPolicy, preyPolicy));
+
+			if (!isEquals(predatorPolicy.getPolicy().get(s), actions))
+			{
+				policyStable = false;
+			}
 		}
 
+		return policyStable;
+	}
+
+	private static boolean isEquals(final List<Action> l1, final List<Action> l2)
+	{
+		if (l1.size() != l2.size())
+			return false;
+
+		for (Action a : l1)
+		{
+			if (!l2.contains(a))
+				return false;
+		}
+
+		return true;
 	}
 
 	private static List<Action> maximisation(final State s,
@@ -59,7 +78,7 @@ public class PolicyImprovement
 				newPreyPoint = preyAction.apply(s.preyPoint());
 
 				stateSum += preyAction.getProbability()
-						* (reward(newPredPosition, newPreyPoint) + (GAMMA * valueMap[newPredPosition
+						* (reward(newPredPosition, newPreyPoint) + (Constants.GAMMA * valueMap[newPredPosition
 								.getX()][newPredPosition.getY()][newPreyPoint
 								.getX()][newPreyPoint.getY()]));
 			}
@@ -79,13 +98,18 @@ public class PolicyImprovement
 			resultList.add(a);
 		}
 
+		for (Action a : resultList)
+		{
+			a.setProbability(1d / resultList.size());
+		}
+
 		return resultList;
 	}
 
-	private static float reward(final Point predator, final Point prey)
+	private static double reward(final Point predator, final Point prey)
 	{
 		if (predator.equals(prey))
-			return REWARD;
+			return Constants.REWARD;
 
 		return 0;
 	}

@@ -37,6 +37,9 @@ public class PredatorRandomPolicy extends Policy
 						actions.add(new WestAction(1.0d / 5.0d));
 						actions.add(new StayAction(1.0d / 5.0d));
 
+						// this is to simplify the state
+						// s = s.mapToSimplifiedState();
+
 						this.currentPolicy.put(s, actions);
 					}
 				}
