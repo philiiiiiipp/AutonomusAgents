@@ -20,13 +20,9 @@ public class Main
 	public static void main(final String[] args)
 	{
 		TestValueIteration.test();
-		System.out.println();
-		System.out.println("policy evaluation");
 		TestPolicyEvaluation.test();
 
-		oldMain();
-		System.out.println();
-		System.out.println("Policy Iteration");
+		// oldMain();
 		PredatorRandomPolicy pred = TestPolicyIteration.test();
 		// oldMain();
 

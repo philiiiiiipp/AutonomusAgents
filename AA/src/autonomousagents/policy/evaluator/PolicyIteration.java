@@ -11,13 +11,17 @@ public class PolicyIteration
 	{
 		boolean stable = false;
 		ValueMap valueMap = new ValueMap();
+		int counter = 0;
+
 		while (!stable)
 		{
+			counter++;
 			valueMap = PolicyEvaluation.evaluate(predatorPolicy, preyPolicy);
 			stable = PolicyImprovement.improve(predatorPolicy, preyPolicy,
 					valueMap);
 		}
 
+		System.out.println("Policy Iteration: " + counter);
 		return valueMap;
 	}
 }

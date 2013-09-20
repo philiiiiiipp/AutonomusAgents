@@ -16,9 +16,10 @@ public class ValueIteration
 	{
 		ValueMap stateSpace = new ValueMap();
 		double delta = 0;
-
+		int counter = 0;
 		do
 		{
+			counter++;
 			delta = 0;
 			for (State s : predatorPolicy.getPolicy().keySet())
 			{
@@ -39,6 +40,7 @@ public class ValueIteration
 
 		} while (delta > Constants.THETA);
 
+		System.out.println("ValueIteration: " + counter);
 		return stateSpace;
 	}
 
