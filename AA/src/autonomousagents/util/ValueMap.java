@@ -9,7 +9,7 @@ public class ValueMap
 
 	public double getValueForState(final State s)
 	{
-		State simplifiedState = State.translateStrate(s);
+		State simplifiedState = State.translateState(s);
 		return this.simplifiedValueMap[simplifiedState.predatorPoint().getX()][simplifiedState
 				.predatorPoint().getY()];
 	}
@@ -24,7 +24,7 @@ public class ValueMap
 
 	public void setValueForState(final State s, final double value)
 	{
-		State simplifiedState = State.translateStrate(s);
+		State simplifiedState = State.translateState(s);
 		this.simplifiedValueMap[simplifiedState.predatorPoint().getX()][simplifiedState
 				.predatorPoint().getY()] = value;
 

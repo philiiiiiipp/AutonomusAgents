@@ -17,7 +17,6 @@ public class State
 		ydistance = Math.min(ydistance, 11 - ydistance);
 		this.predatorPoint = new Point(xdistance, ydistance);
 		this.preyPoint = new Point(0, 0);
-		// return new State(new Point(xdistance, ydistance), new Point(0, 0));
 	}
 
 	public State(final Point predatorPoint, final Point preyPoint)
@@ -28,7 +27,7 @@ public class State
 		this.mapToSimplifiedState();
 	}
 
-	public static State translateStrate(final State s)
+	public static State translateState(final State s)
 	{
 		int xdistance = Math.abs(s.predatorPoint.getX() - s.preyPoint.getX());
 		int ydistance = Math.abs(s.predatorPoint.getY() - s.preyPoint.getY());
