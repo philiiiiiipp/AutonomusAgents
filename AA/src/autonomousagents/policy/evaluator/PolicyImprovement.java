@@ -43,6 +43,9 @@ public class PolicyImprovement
 		return policyStable;
 	}
 
+	/*
+	 * Returns if two actions lists are equivalent.
+	 */
 	private static boolean isEquals(final List<Action> l1, final List<Action> l2)
 	{
 		if (l1.size() != l2.size())
@@ -53,10 +56,12 @@ public class PolicyImprovement
 			if (!l2.contains(a))
 				return false;
 		}
-
 		return true;
 	}
 
+	/*
+	 * Calculates the argmax of the axions for a specific policy
+	 */
 	private static List<Action> maximisation(final State s,
 			final ValueMap valueMap, final Policy predatorPolicy,
 			final Policy preyPolicy)

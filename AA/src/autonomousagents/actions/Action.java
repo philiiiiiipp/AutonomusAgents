@@ -5,6 +5,11 @@ import autonomousagents.world.Point;
 
 public abstract class Action
 {
+	/*
+	 * Abstract action that the agent could take
+	 */
+
+	// Action probability.
 	private double probability;
 
 	public Action(final double probability)
