@@ -23,7 +23,7 @@ public class Main
 		System.out.println("policy evaluation");
 		TestPolicyEvaluation.test();
 
-		// oldMain();
+		oldMain();
 
 		// Looks to me like no matter what, once we cleared out all 0es its
 		// converged
@@ -53,7 +53,7 @@ public class Main
 
 		ArrayList<Integer> results = new ArrayList<Integer>();
 
-		int iterations = 1000;
+		int iterations = 100;
 
 		long time1 = 0;
 
@@ -79,7 +79,6 @@ public class Main
 			stepTime += System.currentTimeMillis() - time1;
 
 		}
-
 		System.out.println(creationTime / 1000.0f);
 		System.out.println(stepTime / 1000.0f);
 		pprintStatistics(results);
