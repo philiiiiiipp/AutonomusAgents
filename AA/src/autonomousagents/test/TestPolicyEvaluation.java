@@ -1,5 +1,7 @@
 package autonomousagents.test;
 
+import java.text.DecimalFormat;
+
 import autonomousagents.policy.evaluator.PolicyEvaluation;
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
@@ -26,15 +28,16 @@ public class TestPolicyEvaluation
 	private static void printStates(final Point preyPosition,
 			final ValueMap valueMap)
 	{
+		DecimalFormat df = new DecimalFormat("#.000000");
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
-			System.out.println();
 			for (int yPred = 0; yPred < 11; yPred++)
 			{
-				System.out.print(valueMap.getValueForState(new Point(xPred,
-						yPred), preyPosition)
+				System.out.print(df.format(valueMap.getValueForState(new Point(
+						xPred, yPred), preyPosition))
 						+ " \t ");
 			}
+			System.out.println();
 		}
 	}
 
