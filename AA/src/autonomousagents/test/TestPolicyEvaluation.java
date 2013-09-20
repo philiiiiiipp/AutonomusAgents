@@ -8,8 +8,10 @@ import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.ValueMap;
 import autonomousagents.world.Point;
 
+// Class used to test the correctness of the Policy Evaluation algorithm
 public class TestPolicyEvaluation
 {
+	// test method
 	public static void test()
 	{
 		PredatorRandomPolicy predatorPolicy = new PredatorRandomPolicy();
@@ -25,6 +27,7 @@ public class TestPolicyEvaluation
 		printStates(new Point(10, 10), new Point(0, 0), valueMap);
 	}
 
+	// method to print out the values of the states
 	private static void printStates(final Point preyPosition,
 			final ValueMap valueMap)
 	{
@@ -41,6 +44,7 @@ public class TestPolicyEvaluation
 		}
 	}
 
+	// method to print out the values of the states
 	private static void printStates(final Point predatorPosition,
 			final Point preyPosition, final ValueMap stateSpace)
 	{
