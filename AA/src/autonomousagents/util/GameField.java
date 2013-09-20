@@ -1,5 +1,6 @@
 package autonomousagents.util;
 
+// Class used to encode our toroidal environment
 public class GameField
 {
 	public static final int XMAX = 10;

@@ -8,8 +8,10 @@ import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.ValueMap;
 import autonomousagents.world.Point;
 
+//method to print out the values of the states
 public class TestValueIteration
 {
+	// test method
 	public static void test()
 	{
 		PredatorRandomPolicy predatorPolicy = new PredatorRandomPolicy();
@@ -21,6 +23,7 @@ public class TestValueIteration
 		printStates(new Point(5, 5), stateSpace);
 	}
 
+	// method to print out the values of the states
 	private static void printStates(final Point preyPosition,
 			final ValueMap stateSpace)
 	{

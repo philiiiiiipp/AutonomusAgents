@@ -9,6 +9,7 @@ import autonomousagents.util.ValueMap;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
+/* Class that implements the Value Iteration algorithm */
 public class ValueIteration
 {
 	public static ValueMap evaluate(final Policy predatorPolicy,
