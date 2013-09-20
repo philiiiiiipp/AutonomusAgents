@@ -15,8 +15,6 @@ public class State
 
 		xdistance = Math.min(xdistance, 11 - xdistance);
 		ydistance = Math.min(ydistance, 11 - ydistance);
-		// System.out.println(xdistance);
-		// System.out.println(ydistance);
 
 		return new State(new Point(xdistance, ydistance), new Point(0, 0));
 	}

@@ -31,16 +31,15 @@ public class PolicyEvaluation
 				int predatorY = s.predatorPoint().getY();
 				int preyX = s.preyPoint().getX();
 				int preyY = s.preyPoint().getY();
-				System.out.printf("%d, %d, %d, %d\n", predatorX, predatorY,
-						preyX, preyY);
 
 				float v = valueMap[predatorX][predatorY][preyX][preyY];
 
-				valueMap[predatorX][predatorY][preyX][preyY] = maximisation(
-						s, valueMap, predatorPolicy, preyPolicy);
+				valueMap[predatorX][predatorY][preyX][preyY] = maximisation(s,
+						valueMap, predatorPolicy, preyPolicy);
 
-				delta = Math.max(delta, Math.abs(v
-						- valueMap[predatorX][predatorY][preyX][preyY]));
+				delta = Math
+						.max(delta, Math.abs(v
+								- valueMap[predatorX][predatorY][preyX][preyY]));
 			}
 			i = i + 1;
 		} while (delta > THETA);
@@ -67,7 +66,6 @@ public class PolicyEvaluation
 			for (Action preyAction : possibleAction)
 			{
 				newPreyPoint = preyAction.apply(s.preyPoint());
-
 				vPi += predatorAction.getProbability()
 						* preyAction.getProbability()
 						* (reward(newPredPosition, newPreyPoint) + (GAMMA * valueMap[newPredPosition
@@ -82,7 +80,10 @@ public class PolicyEvaluation
 	private static float reward(final Point predator, final Point prey)
 	{
 		if (predator.equals(prey))
+		{
 			return REWARD;
+
+		}
 
 		return 0;
 	}
