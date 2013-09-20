@@ -38,7 +38,8 @@ public class PolicyEvaluation
 			i = i + 1;
 		} while (delta > Constants.THETA);
 
-		System.out.println(i);
+		System.out.println("Policy Evaluation: " + i);
+
 		return valueMap;
 	}
 

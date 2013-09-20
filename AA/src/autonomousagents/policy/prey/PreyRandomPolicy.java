@@ -55,7 +55,6 @@ public class PreyRandomPolicy extends Policy
 						// the prey stays at the same location with a
 						// probability of 0.8
 						actions.add(new StayAction(0.8d));
-
 						this.currentPolicy.put(s, actions);
 					}
 				}

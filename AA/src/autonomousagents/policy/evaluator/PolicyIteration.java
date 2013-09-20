@@ -3,7 +3,12 @@ package autonomousagents.policy.evaluator;
 import autonomousagents.policy.Policy;
 import autonomousagents.util.ValueMap;
 
-/* Class that implements the Policy Iteration algorithm */
+/**
+ * Class that implements the Policy Iteration algorithm
+ * 
+ * @author philipp
+ * 
+ */
 public class PolicyIteration
 {
 
@@ -11,9 +16,13 @@ public class PolicyIteration
 			final Policy preyPolicy)
 	{
 		boolean stable = false;
+
+		int counter = 0;
 		ValueMap valueMap = new ValueMap();
+
 		while (!stable)
 		{
+			counter += 1;
 			// first step - policy evaluation
 			valueMap = PolicyEvaluation.evaluate(predatorPolicy, preyPolicy);
 			// second step - policy improvement
@@ -21,6 +30,7 @@ public class PolicyIteration
 					valueMap);
 		}
 
+		System.out.println("Policy Iteration: " + counter);
 		return valueMap;
 	}
 }
