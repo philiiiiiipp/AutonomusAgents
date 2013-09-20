@@ -8,7 +8,6 @@ import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
-import autonomousagents.test.TestPolicyEvaluation;
 import autonomousagents.test.TestValueIteration;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
@@ -19,9 +18,10 @@ public class Main
 	public static void main(final String[] args)
 	{
 		TestValueIteration.test();
-		System.out.println();
-		System.out.println("policy evaluation");
-		TestPolicyEvaluation.test();
+
+		// System.out.println();
+		// System.out.println("policy evaluation");
+		// TestPolicyEvaluation.test();
 
 		// oldMain();
 	}

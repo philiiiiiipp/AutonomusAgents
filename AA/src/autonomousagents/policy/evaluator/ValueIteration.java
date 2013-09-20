@@ -10,7 +10,7 @@ import autonomousagents.world.State;
 public class ValueIteration
 {
 	private static final double REWARD = 10;
-	private static final double GAMMA = 0.8f;
+	private static final double GAMMA = 0.9f;
 	private static final double THETA = 0.00000001f;
 
 	public static double[][][][] evaluate(final Policy predatorPolicy,
@@ -19,8 +19,10 @@ public class ValueIteration
 		double[][][][] stateSpace = new double[11][11][11][11];
 		double delta = 0;
 
+		int counter = 0;
 		do
 		{
+			counter += 1;
 			delta = 0;
 			for (State s : predatorPolicy.getPolicy().keySet())
 			{
@@ -43,6 +45,7 @@ public class ValueIteration
 
 		} while (delta > THETA);
 
+		System.out.println("Counter is at: " + counter);
 		return stateSpace;
 	}
 
