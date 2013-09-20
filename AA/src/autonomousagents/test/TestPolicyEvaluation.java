@@ -12,18 +12,18 @@ public class TestPolicyEvaluation
 		PredatorRandomPolicy predatorPolicy = new PredatorRandomPolicy();
 		PreyRandomPolicy preyPolicy = new PreyRandomPolicy();
 
-		float stateSpace[][][][] = PolicyEvaluation.evaluate(predatorPolicy,
+		double valueMap[][][][] = PolicyEvaluation.evaluate(predatorPolicy,
 				preyPolicy);
 
-		printStates(new Point(5, 5), stateSpace);
-		printStates(new Point(0, 0), new Point(5, 5), stateSpace);
-		printStates(new Point(2, 3), new Point(5, 4), stateSpace);
-		printStates(new Point(2, 10), new Point(10, 0), stateSpace);
-		printStates(new Point(10, 10), new Point(0, 0), stateSpace);
+		printStates(new Point(5, 5), valueMap);
+		printStates(new Point(0, 0), new Point(5, 5), valueMap);
+		printStates(new Point(2, 3), new Point(5, 4), valueMap);
+		printStates(new Point(2, 10), new Point(10, 0), valueMap);
+		printStates(new Point(10, 10), new Point(0, 0), valueMap);
 	}
 
 	private static void printStates(final Point preyPosition,
-			final float[][][][] stateSpace)
+			final double[][][][] stateSpace)
 	{
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
@@ -38,7 +38,7 @@ public class TestPolicyEvaluation
 	}
 
 	private static void printStates(final Point predatorPosition,
-			final Point preyPosition, final float[][][][] stateSpace)
+			final Point preyPosition, final double[][][][] stateSpace)
 	{
 		System.out.println();
 		System.out

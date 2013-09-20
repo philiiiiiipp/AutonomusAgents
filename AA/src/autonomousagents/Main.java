@@ -9,6 +9,7 @@ import autonomousagents.agent.Prey;
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.test.TestPolicyEvaluation;
+import autonomousagents.test.TestPolicyIteration;
 import autonomousagents.test.TestValueIteration;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
@@ -23,7 +24,28 @@ public class Main
 		System.out.println("policy evaluation");
 		TestPolicyEvaluation.test();
 
+		System.out.println();
+		System.out.println("Policy Iteration");
+		PredatorRandomPolicy pred = TestPolicyIteration.test();
 		// oldMain();
+
+		int iterations = 1000;
+
+		ArrayList<Integer> results = new ArrayList<Integer>();
+		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
+		for (int i = 0; i < iterations; i++)
+		{
+
+			Environment e = new Environment();
+			Predator p = new Predator(new Point(0, 0), e, pred);
+			Prey pr = new Prey(new Point(5, 5), e, preyPoly);
+
+			e.addAgent(p);
+			e.addAgent(pr);
+
+			results.add(stepper(e));
+		}
+		pprintStatistics(results);
 	}
 
 	public static void oldMain()
