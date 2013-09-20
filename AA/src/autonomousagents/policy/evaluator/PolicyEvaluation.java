@@ -5,16 +5,17 @@ import java.util.List;
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
 import autonomousagents.util.Constants;
+import autonomousagents.util.ValueMap;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
 public class PolicyEvaluation
 {
 
-	public static double[][][][] evaluate(final Policy predatorPolicy,
+	public static ValueMap evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
-		double[][][][] valueMap = new double[11][11][11][11];
+		ValueMap valueMap = new ValueMap();
 		double delta = 0;
 		int i = 0;
 		do
@@ -25,19 +26,13 @@ public class PolicyEvaluation
 				if (s.isTerminal())
 					continue;
 
-				int predatorX = s.predatorPoint().getX();
-				int predatorY = s.predatorPoint().getY();
-				int preyX = s.preyPoint().getX();
-				int preyY = s.preyPoint().getY();
+				double v = valueMap.getValueForState(s);
 
-				double v = valueMap[predatorX][predatorY][preyX][preyY];
+				valueMap.setValueForState(s,
+						maximisation(s, valueMap, predatorPolicy, preyPolicy));
 
-				valueMap[predatorX][predatorY][preyX][preyY] = maximisation(s,
-						valueMap, predatorPolicy, preyPolicy);
-
-				delta = Math
-						.max(delta, Math.abs(v
-								- valueMap[predatorX][predatorY][preyX][preyY]));
+				delta = Math.max(delta,
+						Math.abs(v - valueMap.getValueForState(s)));
 			}
 			i = i + 1;
 		} while (delta > Constants.THETA);
@@ -46,9 +41,8 @@ public class PolicyEvaluation
 		return valueMap;
 	}
 
-	private static double maximisation(final State s,
-			final double[][][][] valueMap, final Policy predatorPolicy,
-			final Policy preyPolicy)
+	private static float maximisation(final State s, final ValueMap valueMap,
+			final Policy predatorPolicy, final Policy preyPolicy)
 	{
 		List<Action> actionList = predatorPolicy.actionsForState(s);
 		float vPi = 0;
@@ -66,9 +60,8 @@ public class PolicyEvaluation
 				newPreyPoint = preyAction.apply(s.preyPoint());
 				vPi += predatorAction.getProbability()
 						* preyAction.getProbability()
-						* (reward(newPredPosition, newPreyPoint) + (Constants.GAMMA * valueMap[newPredPosition
-								.getX()][newPredPosition.getY()][newPreyPoint
-								.getX()][newPreyPoint.getY()]));
+						* (reward(newPredPosition, newPreyPoint) + (Constants.GAMMA * valueMap
+								.getValueForState(newPredPosition, newPreyPoint)));
 			}
 		}
 

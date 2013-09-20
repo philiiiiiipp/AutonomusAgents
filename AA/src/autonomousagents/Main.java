@@ -10,6 +10,7 @@ import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.test.TestPolicyEvaluation;
 import autonomousagents.test.TestPolicyIteration;
+import autonomousagents.test.TestValueIteration;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 
@@ -18,11 +19,12 @@ public class Main
 
 	public static void main(final String[] args)
 	{
-		// TestValueIteration.test();
-		// System.out.println();
+		TestValueIteration.test();
+		System.out.println();
 		System.out.println("policy evaluation");
 		TestPolicyEvaluation.test();
 
+		oldMain();
 		System.out.println();
 		System.out.println("Policy Iteration");
 		PredatorRandomPolicy pred = TestPolicyIteration.test();
@@ -54,7 +56,7 @@ public class Main
 
 		ArrayList<Integer> results = new ArrayList<Integer>();
 
-		int iterations = 1000;
+		int iterations = 100;
 
 		long time1 = 0;
 
@@ -80,7 +82,6 @@ public class Main
 			stepTime += System.currentTimeMillis() - time1;
 
 		}
-
 		System.out.println(creationTime / 1000.0f);
 		System.out.println(stepTime / 1000.0f);
 		pprintStatistics(results);

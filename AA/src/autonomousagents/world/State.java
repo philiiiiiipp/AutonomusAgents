@@ -2,11 +2,11 @@ package autonomousagents.world;
 
 public class State
 {
-	private final Point predatorPoint;
-	private final Point preyPoint;
+	private Point predatorPoint;
+	private Point preyPoint;
 	private double value;
 
-	public State mapToSimplifiedState()
+	private void mapToSimplifiedState()
 	{
 		int xdistance = Math.abs(this.predatorPoint.getX()
 				- this.preyPoint.getX());
@@ -15,8 +15,8 @@ public class State
 
 		xdistance = Math.min(xdistance, 11 - xdistance);
 		ydistance = Math.min(ydistance, 11 - ydistance);
-
-		return new State(new Point(xdistance, ydistance), new Point(0, 0));
+		this.predatorPoint = new Point(xdistance, ydistance);
+		this.preyPoint = new Point(0, 0);
 	}
 
 	public State(final Point predatorPoint, final Point preyPoint)
@@ -24,6 +24,19 @@ public class State
 		this.predatorPoint = predatorPoint;
 		this.preyPoint = preyPoint;
 		this.value = 0;
+		this.mapToSimplifiedState();
+	}
+
+	public static State translateState(final State s)
+	{
+		int xdistance = Math.abs(s.predatorPoint.getX() - s.preyPoint.getX());
+		int ydistance = Math.abs(s.predatorPoint.getY() - s.preyPoint.getY());
+
+		xdistance = Math.min(xdistance, 11 - xdistance);
+		ydistance = Math.min(ydistance, 11 - ydistance);
+
+		return new State(new Point(xdistance, ydistance), new Point(0, 0));
+
 	}
 
 	public Point predatorPoint()
