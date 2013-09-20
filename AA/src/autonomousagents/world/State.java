@@ -13,10 +13,8 @@ public class State
 	// method that reduces the size of the state space
 	private void mapToSimplifiedState()
 	{
-		int xdistance = Math.abs(this.predatorPoint.getX()
-				- this.preyPoint.getX());
-		int ydistance = Math.abs(this.predatorPoint.getY()
-				- this.preyPoint.getY());
+		int xdistance = Math.abs(this.predatorPoint.getX() - this.preyPoint.getX());
+		int ydistance = Math.abs(this.predatorPoint.getY() - this.preyPoint.getY());
 
 		xdistance = Math.min(xdistance, 11 - xdistance);
 		ydistance = Math.min(ydistance, 11 - ydistance);
@@ -108,5 +106,12 @@ public class State
 		result ^= this.preyPoint.getY();
 
 		return result;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Predator(" + this.predatorPoint.getX() + "," + this.predatorPoint.getY() + ") : Prey("
+				+ this.preyPoint.getX() + "," + this.preyPoint.getY() + ")";
 	}
 }
