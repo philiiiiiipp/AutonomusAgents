@@ -4,6 +4,7 @@ public class State
 {
 	private final Point predatorPoint;
 	private final Point preyPoint;
+	private double value;
 
 	public State mapToSimplifiedState()
 	{
@@ -22,6 +23,7 @@ public class State
 	{
 		this.predatorPoint = predatorPoint;
 		this.preyPoint = preyPoint;
+		this.value = 0;
 	}
 
 	public Point predatorPoint()
@@ -37,6 +39,16 @@ public class State
 	public boolean isTerminal()
 	{
 		return this.predatorPoint.equals(this.preyPoint);
+	}
+
+	public double getValue()
+	{
+		return this.value;
+	}
+
+	public void setValue(final double value)
+	{
+		this.value = value;
 	}
 
 	@Override

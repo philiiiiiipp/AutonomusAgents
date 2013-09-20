@@ -16,7 +16,7 @@ public class PolicyEvaluation
 	public static float[][][][] evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
-		float[][][][] stateSpace = new float[11][11][11][11];
+		float[][][][] valueMap = new float[11][11][11][11];
 		float delta = 0;
 		int i = 0;
 		do
@@ -24,71 +24,64 @@ public class PolicyEvaluation
 			delta = 0;
 			for (State s : predatorPolicy.getPolicy().keySet())
 			{
+				if (s.isTerminal())
+					continue;
+
 				int predatorX = s.predatorPoint().getX();
 				int predatorY = s.predatorPoint().getY();
 				int preyX = s.preyPoint().getX();
 				int preyY = s.preyPoint().getY();
 
-				float v = stateSpace[predatorX][predatorY][preyX][preyY];
+				float v = valueMap[predatorX][predatorY][preyX][preyY];
 
-				stateSpace[predatorX][predatorY][preyX][preyY] = maximisation(
-						s, stateSpace, predatorPolicy, preyPolicy);
+				valueMap[predatorX][predatorY][preyX][preyY] = maximisation(
+						s, valueMap, predatorPolicy, preyPolicy);
 
 				delta = Math.max(delta, Math.abs(v
-						- stateSpace[predatorX][predatorY][preyX][preyY]));
+						- valueMap[predatorX][predatorY][preyX][preyY]));
 			}
 			i = i + 1;
 		} while (delta > THETA);
 
 		System.out.println(i);
-		return stateSpace;
+		return valueMap;
 	}
 
 	private static float maximisation(final State s,
-			final float[][][][] stateSpace, final Policy predatorPolicy,
+			final float[][][][] valueMap, final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
-		if (s.predatorPoint().equals(s.preyPoint()))
-		{
-			// Undefined
-			return 0;
-		}
 		List<Action> actionList = predatorPolicy.actionsForState(s);
-		float VPi = 0;
+		float vPi = 0;
 		Point newPredPosition = null;
 		for (Action predatorAction : actionList)
 		{
 			newPredPosition = predatorAction.apply(s.predatorPoint());
-			/*
-			 * if (newPredPosition.equals(s.preyPoint())) { // catched, max
-			 * reward return REWARD; }
-			 */
 
 			List<Action> possibleAction = preyPolicy.actionsForState(new State(
 					newPredPosition, s.preyPoint()));
-			float Value = 0;
+
 			Point newPreyPoint = null;
 			for (Action preyAction : possibleAction)
 			{
 				newPreyPoint = preyAction.apply(s.preyPoint());
-				if (newPredPosition.equals(s.preyPoint()))
-				{
-					Value += preyAction.getProbability()
-							* (REWARD + (GAMMA * stateSpace[newPredPosition
-									.getX()][newPredPosition.getY()][newPreyPoint
-									.getX()][newPreyPoint.getY()]));
-				} else
-				{
-					Value += preyAction.getProbability()
-							* (GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
-									.getY()][newPreyPoint.getX()][newPreyPoint
-									.getY()]);
-				}
 
+				vPi += predatorAction.getProbability()
+						* preyAction.getProbability()
+						* (reward(newPredPosition, newPreyPoint) + (GAMMA * valueMap[newPredPosition
+								.getX()][newPredPosition.getY()][newPreyPoint
+								.getX()][newPreyPoint.getY()]));
 			}
-			VPi += predatorAction.getProbability() * Value;
 		}
 
-		return VPi;
+		return vPi;
+	}
+
+	private static float reward(final Point predator, final Point prey)
+	{
+		if (predator.equals(prey))
+			return REWARD;
+
+		return 0;
 	}
 }
