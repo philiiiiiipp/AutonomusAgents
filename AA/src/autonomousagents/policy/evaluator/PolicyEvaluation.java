@@ -28,6 +28,8 @@ public class PolicyEvaluation
 				int predatorY = s.predatorPoint().getY();
 				int preyX = s.preyPoint().getX();
 				int preyY = s.preyPoint().getY();
+				System.out.printf("%d, %d, %d, %d\n", predatorX, predatorY,
+						preyX, preyY);
 
 				float v = stateSpace[predatorX][predatorY][preyX][preyY];
 
@@ -59,10 +61,6 @@ public class PolicyEvaluation
 		for (Action predatorAction : actionList)
 		{
 			newPredPosition = predatorAction.apply(s.predatorPoint());
-			/*
-			 * if (newPredPosition.equals(s.preyPoint())) { // catched, max
-			 * reward return REWARD; }
-			 */
 
 			List<Action> possibleAction = preyPolicy.actionsForState(new State(
 					newPredPosition, s.preyPoint()));
