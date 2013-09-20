@@ -4,20 +4,18 @@ import java.util.List;
 
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
+import autonomousagents.util.Constants;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
 public class PolicyEvaluation
 {
-	private static final float REWARD = 10.0f;
-	private static final float GAMMA = 0.8f;
-	private static final float THETA = 0.00001f;
 
-	public static float[][][][] evaluate(final Policy predatorPolicy,
+	public static double[][][][] evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
-		float[][][][] valueMap = new float[11][11][11][11];
-		float delta = 0;
+		double[][][][] valueMap = new double[11][11][11][11];
+		double delta = 0;
 		int i = 0;
 		do
 		{
@@ -32,7 +30,7 @@ public class PolicyEvaluation
 				int preyX = s.preyPoint().getX();
 				int preyY = s.preyPoint().getY();
 
-				float v = valueMap[predatorX][predatorY][preyX][preyY];
+				double v = valueMap[predatorX][predatorY][preyX][preyY];
 
 				valueMap[predatorX][predatorY][preyX][preyY] = maximisation(s,
 						valueMap, predatorPolicy, preyPolicy);
@@ -42,14 +40,14 @@ public class PolicyEvaluation
 								- valueMap[predatorX][predatorY][preyX][preyY]));
 			}
 			i = i + 1;
-		} while (delta > THETA);
+		} while (delta > Constants.THETA);
 
 		System.out.println(i);
 		return valueMap;
 	}
 
-	private static float maximisation(final State s,
-			final float[][][][] valueMap, final Policy predatorPolicy,
+	private static double maximisation(final State s,
+			final double[][][][] valueMap, final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
 		List<Action> actionList = predatorPolicy.actionsForState(s);
@@ -68,7 +66,7 @@ public class PolicyEvaluation
 				newPreyPoint = preyAction.apply(s.preyPoint());
 				vPi += predatorAction.getProbability()
 						* preyAction.getProbability()
-						* (reward(newPredPosition, newPreyPoint) + (GAMMA * valueMap[newPredPosition
+						* (reward(newPredPosition, newPreyPoint) + (Constants.GAMMA * valueMap[newPredPosition
 								.getX()][newPredPosition.getY()][newPreyPoint
 								.getX()][newPreyPoint.getY()]));
 			}
@@ -77,13 +75,10 @@ public class PolicyEvaluation
 		return vPi;
 	}
 
-	private static float reward(final Point predator, final Point prey)
+	private static double reward(final Point predator, final Point prey)
 	{
 		if (predator.equals(prey))
-		{
-			return REWARD;
-
-		}
+			return Constants.REWARD;
 
 		return 0;
 	}

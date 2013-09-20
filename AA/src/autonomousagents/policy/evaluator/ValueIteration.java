@@ -4,15 +4,12 @@ import java.util.List;
 
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
+import autonomousagents.util.Constants;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
 public class ValueIteration
 {
-	private static final double REWARD = 10;
-	private static final double GAMMA = 0.8f;
-	private static final double THETA = 0.00000001f;
-
 	public static double[][][][] evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
@@ -41,7 +38,7 @@ public class ValueIteration
 						- stateSpace[predatorX][predatorY][preyX][preyY]));
 			}
 
-		} while (delta > THETA);
+		} while (delta > Constants.THETA);
 
 		return stateSpace;
 	}
@@ -60,7 +57,7 @@ public class ValueIteration
 			if (newPredPosition.equals(s.preyPoint()))
 			{
 				// catched, max reward
-				return REWARD;
+				return Constants.REWARD;
 			}
 
 			List<Action> possibleAction = preyPolicy.actionsForState(new State(
@@ -72,7 +69,7 @@ public class ValueIteration
 			{
 				newPreyPoint = a.apply(s.preyPoint());
 				vSPrimeTotal += a.getProbability()
-						* (GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
+						* (Constants.GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
 								.getY()][newPreyPoint.getX()][newPreyPoint
 								.getY()]);
 			}
