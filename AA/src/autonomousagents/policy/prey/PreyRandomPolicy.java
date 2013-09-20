@@ -51,6 +51,7 @@ public class PreyRandomPolicy extends Policy
 
 						actions.add(new StayAction(0.8d));
 
+						s = s.mapToSimplifiedState();
 						this.currentPolicy.put(s, actions);
 					}
 				}

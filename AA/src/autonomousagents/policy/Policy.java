@@ -32,7 +32,7 @@ public class Policy
 
 	public List<Action> actionsForState(final State s)
 	{
-		return this.currentPolicy.get(s);
+		return this.currentPolicy.get(s.mapToSimplifiedState());
 	}
 
 	public Map<State, List<Action>> getPolicy()
