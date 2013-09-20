@@ -17,7 +17,6 @@ public class State
 		ydistance = Math.min(ydistance, 11 - ydistance);
 		this.predatorPoint = new Point(xdistance, ydistance);
 		this.preyPoint = new Point(0, 0);
-		// return new State(new Point(xdistance, ydistance), new Point(0, 0));
 	}
 
 	public State(final Point predatorPoint, final Point preyPoint)
