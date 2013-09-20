@@ -16,11 +16,8 @@ public class PolicyIteration
 		ValueMap valueMap = new ValueMap();
 		while (!stable)
 		{
-<<<<<<< HEAD
 			counter += 1;
-=======
 			// first step - policy evaluation
->>>>>>> c9483f04bd851331fe086980da28670e4c333906
 			valueMap = PolicyEvaluation.evaluate(predatorPolicy, preyPolicy);
 			// second step - policy improvement
 			stable = PolicyImprovement.improve(predatorPolicy, preyPolicy,
