@@ -6,14 +6,21 @@ import java.util.List;
 import autonomousagents.agent.Agent;
 import autonomousagents.util.GameField;
 
-/* The Environment class presents a list of agents and encapsulates methods
- * that allow these agents to change their position inside the environment:
- * move north, south, east, west */
+/**
+ * The Environment class presents a list of agents and encapsulates methods that
+ * allow these agents to change their position inside the environment: move
+ * north, south, east, west
+ */
 public class Environment
 {
 	List<Agent> agents = new ArrayList<Agent>();
 
-	// the State is made up of the positions of both Predator and Prey inside
+	/**
+	 * the State is made up of the positions of both Predator and Prey inside
+	 * the grid
+	 * 
+	 * @return
+	 */
 	// the grid
 	public State getState()
 	{
@@ -21,20 +28,33 @@ public class Environment
 				.getPosition());
 	}
 
-	// method that adds a new agent to the list of agents
+	/**
+	 * method that adds a new agent to the list of agents
+	 * 
+	 * @param a
+	 *            : the agent we want to add
+	 */
 	public void addAgent(final Agent a)
 	{
 		this.agents.add(a);
 	}
 
-	// method that returns the list of agents found on the grid
+	/**
+	 * method that returns the list of agents found on the grid
+	 * 
+	 * @return List<Agent>
+	 */
 	public List<Agent> getAgents()
 	{
 		return this.agents;
 	}
 
-	// method that checks whether a state is a terminal state, i.e. the
-	// positions of the Predator and Prey are the same
+	/**
+	 * method that checks whether a state is a terminal state, i.e. the
+	 * positions of the Predator and Prey are the same
+	 * 
+	 * @return boolean
+	 */
 	public boolean isEndState()
 	{
 		boolean endState = false;
@@ -59,13 +79,13 @@ public class Environment
 	// (XMAX : YMAX) South East
 
 	/**
+	 * method that adds (-1, 0) to the coordinates of the current point and
+	 * which returns a new point moved one position upwards (we consider the
+	 * grid to be toroidal)
 	 * 
 	 * @param pointToTranslate
-	 * @return
+	 * @return Point
 	 */
-	// method that adds (-1, 0) to the coordinates of the
-	// current point and which returns a new point moved one position
-	// upwards (we consider the grid to be toroidal)
 	public static Point north(final Point pointToTranslate)
 	{
 		int newY = pointToTranslate.getY() == GameField.YMIN ? GameField.YMAX
