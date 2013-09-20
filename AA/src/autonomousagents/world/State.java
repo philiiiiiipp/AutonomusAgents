@@ -140,4 +140,11 @@ public class State
 
 		return result;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Predator(" + this.predatorPoint.getX() + "," + this.predatorPoint.getY() + ") : Prey("
+				+ this.preyPoint.getX() + "," + this.preyPoint.getY() + ")";
+	}
 }

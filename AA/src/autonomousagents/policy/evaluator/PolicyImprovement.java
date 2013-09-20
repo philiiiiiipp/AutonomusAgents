@@ -20,8 +20,7 @@ public class PolicyImprovement
 	 * @param predatorPolicy
 	 * @param preyPolicy
 	 */
-	public static boolean improve(final Policy predatorPolicy,
-			final Policy preyPolicy, final ValueMap valueMap)
+	public static boolean improve(final Policy predatorPolicy, final Policy preyPolicy, final ValueMap valueMap)
 	{
 		boolean policyStable = true;
 
@@ -31,8 +30,7 @@ public class PolicyImprovement
 				continue;
 
 			List<Action> actions = predatorPolicy.actionsForState(s);
-			predatorPolicy.getPolicy().put(s,
-					maximisation(s, valueMap, predatorPolicy, preyPolicy));
+			predatorPolicy.getPolicy().put(s, maximisation(s, valueMap, predatorPolicy, preyPolicy));
 
 			if (!isEquals(predatorPolicy.getPolicy().get(s), actions))
 			{
@@ -43,8 +41,12 @@ public class PolicyImprovement
 		return policyStable;
 	}
 
-	/*
+	/**
 	 * Returns if two actions lists are equivalent.
+	 * 
+	 * @param l1
+	 * @param l2
+	 * @return
 	 */
 	private static boolean isEquals(final List<Action> l1, final List<Action> l2)
 	{
@@ -59,11 +61,16 @@ public class PolicyImprovement
 		return true;
 	}
 
-	/*
+	/**
 	 * Calculates the argmax of the axions for a specific policy
+	 * 
+	 * @param s
+	 * @param valueMap
+	 * @param predatorPolicy
+	 * @param preyPolicy
+	 * @return
 	 */
-	private static List<Action> maximisation(final State s,
-			final ValueMap valueMap, final Policy predatorPolicy,
+	private static List<Action> maximisation(final State s, final ValueMap valueMap, final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
 		double maxV = 0;
@@ -75,8 +82,7 @@ public class PolicyImprovement
 			double stateSum = 0;
 			newPredPosition = predatorAction.apply(s.predatorPoint());
 
-			List<Action> possibleAction = preyPolicy.actionsForState(new State(
-					newPredPosition, s.preyPoint()));
+			List<Action> possibleAction = preyPolicy.actionsForState(new State(newPredPosition, s.preyPoint()));
 
 			Point newPreyPoint = null;
 			for (Action preyAction : possibleAction)
@@ -84,8 +90,8 @@ public class PolicyImprovement
 				newPreyPoint = preyAction.apply(s.preyPoint());
 
 				stateSum += preyAction.getProbability()
-						* (reward(newPredPosition, newPreyPoint) + (Constants.GAMMA * valueMap
-								.getValueForState(newPredPosition, newPreyPoint)));
+						* (reward(newPredPosition, newPreyPoint) + (Constants.GAMMA * valueMap.getValueForState(
+								newPredPosition, newPreyPoint)));
 			}
 
 			if (maxV < stateSum)
@@ -97,8 +103,12 @@ public class PolicyImprovement
 		List<Action> resultList = new ArrayList<Action>();
 		for (Action a : resultMap.keySet())
 		{
-			if (resultMap.get(a) < maxV)
+			// Compare the values for the actions and take care of the floating
+			// point / rounding error
+			if (Math.abs(resultMap.get(a) - maxV) > Constants.EPSILON)
+			{
 				continue;
+			}
 
 			resultList.add(a);
 		}
