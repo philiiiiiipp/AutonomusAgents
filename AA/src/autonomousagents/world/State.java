@@ -4,11 +4,26 @@ public class State
 {
 	private final Point predatorPoint;
 	private final Point preyPoint;
+	private double value;
+
+	public State mapToSimplifiedState()
+	{
+		int xdistance = Math.abs(this.predatorPoint.getX()
+				- this.preyPoint.getX());
+		int ydistance = Math.abs(this.predatorPoint.getY()
+				- this.preyPoint.getY());
+
+		xdistance = Math.min(xdistance, 11 - xdistance);
+		ydistance = Math.min(ydistance, 11 - ydistance);
+
+		return new State(new Point(xdistance, ydistance), new Point(0, 0));
+	}
 
 	public State(final Point predatorPoint, final Point preyPoint)
 	{
 		this.predatorPoint = predatorPoint;
 		this.preyPoint = preyPoint;
+		this.value = 0;
 	}
 
 	public Point predatorPoint()
@@ -24,6 +39,16 @@ public class State
 	public boolean isTerminal()
 	{
 		return this.predatorPoint.equals(this.preyPoint);
+	}
+
+	public double getValue()
+	{
+		return this.value;
+	}
+
+	public void setValue(final double value)
+	{
+		this.value = value;
 	}
 
 	@Override

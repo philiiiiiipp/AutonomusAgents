@@ -4,17 +4,12 @@ import java.util.List;
 
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
-import autonomousagents.util.Direction;
-import autonomousagents.world.Environment;
+import autonomousagents.util.Constants;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
 public class ValueIteration
 {
-	private static final double REWARD = 10;
-	private static final double GAMMA = 0.8f;
-	private static final double THETA = 0.00000001f;
-
 	public static double[][][][] evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
@@ -37,50 +32,32 @@ public class ValueIteration
 				double v = stateSpace[predatorX][predatorY][preyX][preyY];
 
 				stateSpace[predatorX][predatorY][preyX][preyY] = maximisation(
-						s, stateSpace, preyPolicy);
+						s, stateSpace, predatorPolicy, preyPolicy);
 
 				delta = Math.max(delta, Math.abs(v
 						- stateSpace[predatorX][predatorY][preyX][preyY]));
 			}
 
-		} while (delta > THETA);
+		} while (delta > Constants.THETA);
 
 		return stateSpace;
 	}
 
 	private static double maximisation(final State s,
-			final double[][][][] stateSpace, final Policy preyPolicy)
+			final double[][][][] stateSpace, final Policy predatorPolicy,
+			final Policy preyPolicy)
 	{
 
 		double vStar = 0;
 		Point newPredPosition = null;
-		for (int i = 0; i < 5; ++i)
+		for (Action predatorAction : predatorPolicy.actionsForState(s))
 		{
-			switch (i)
-			{
-			case Direction.NORTH:
-				newPredPosition = Environment.north(s.predatorPoint());
-				break;
-			case Direction.EAST:
-				newPredPosition = Environment.east(s.predatorPoint());
-				break;
-			case Direction.SOUTH:
-				newPredPosition = Environment.south(s.predatorPoint());
-				break;
-			case Direction.WEST:
-				newPredPosition = Environment.west(s.predatorPoint());
-				break;
-			case Direction.STAY:
-				newPredPosition = s.predatorPoint();
-				break;
-			default:
-				break;
-			}
+			newPredPosition = predatorAction.apply(s.predatorPoint());
 
 			if (newPredPosition.equals(s.preyPoint()))
 			{
 				// catched, max reward
-				return REWARD;
+				return Constants.REWARD;
 			}
 
 			List<Action> possibleAction = preyPolicy.actionsForState(new State(
@@ -92,7 +69,7 @@ public class ValueIteration
 			{
 				newPreyPoint = a.apply(s.preyPoint());
 				vSPrimeTotal += a.getProbability()
-						* (GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
+						* (Constants.GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
 								.getY()][newPreyPoint.getX()][newPreyPoint
 								.getY()]);
 			}

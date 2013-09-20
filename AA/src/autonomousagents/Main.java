@@ -9,7 +9,7 @@ import autonomousagents.agent.Prey;
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.test.TestPolicyEvaluation;
-import autonomousagents.test.TestValueIteration;
+import autonomousagents.test.TestPolicyIteration;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 
@@ -18,32 +18,34 @@ public class Main
 
 	public static void main(final String[] args)
 	{
-		TestValueIteration.test();
-		System.out.println();
+		// TestValueIteration.test();
+		// System.out.println();
 		System.out.println("policy evaluation");
 		TestPolicyEvaluation.test();
 
 		oldMain();
+		System.out.println();
+		System.out.println("Policy Iteration");
+		PredatorRandomPolicy pred = TestPolicyIteration.test();
+		// oldMain();
 
-		// Looks to me like no matter what, once we cleared out all 0es its
-		// converged
+		int iterations = 1000;
 
-		// State s = new State();
-		// s.addAgent(new Predator(new Point(8, 3), s, new RandomPolicy()));
-		// s.addAgent(new Prey(new Point(1, 5), s));
+		ArrayList<Integer> results = new ArrayList<Integer>();
+		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
+		for (int i = 0; i < iterations; i++)
+		{
 
-		// double epsilon = 0.00000001f;
-		// OldValueIteration vi = new OldValueIteration();
-		//
-		// int conversionSteps = 0;
-		// while (vi.sweep() > epsilon)
-		// {
-		// conversionSteps++;
-		// // go on
-		// }
-		//
-		// System.out.println(conversionSteps);
-		// vi.printStates(new Point(5, 5));
+			Environment e = new Environment();
+			Predator p = new Predator(new Point(0, 0), e, pred);
+			Prey pr = new Prey(new Point(5, 5), e, preyPoly);
+
+			e.addAgent(p);
+			e.addAgent(pr);
+
+			results.add(stepper(e));
+		}
+		pprintStatistics(results);
 	}
 
 	public static void oldMain()
