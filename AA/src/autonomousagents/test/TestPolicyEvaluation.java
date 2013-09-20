@@ -1,8 +1,11 @@
 package autonomousagents.test;
 
+import java.text.DecimalFormat;
+
 import autonomousagents.policy.evaluator.PolicyEvaluation;
 import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
+import autonomousagents.util.ValueMap;
 import autonomousagents.world.Point;
 
 public class TestPolicyEvaluation
@@ -12,7 +15,7 @@ public class TestPolicyEvaluation
 		PredatorRandomPolicy predatorPolicy = new PredatorRandomPolicy();
 		PreyRandomPolicy preyPolicy = new PreyRandomPolicy();
 
-		double valueMap[][][][] = PolicyEvaluation.evaluate(predatorPolicy,
+		ValueMap valueMap = PolicyEvaluation.evaluate(predatorPolicy,
 				preyPolicy);
 
 		printStates(new Point(5, 5), valueMap);
@@ -23,37 +26,28 @@ public class TestPolicyEvaluation
 	}
 
 	private static void printStates(final Point preyPosition,
-			final double[][][][] stateSpace)
+			final ValueMap valueMap)
 	{
+		DecimalFormat df = new DecimalFormat("#.000000");
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
-			System.out.println();
 			for (int yPred = 0; yPred < 11; yPred++)
 			{
-				System.out
-						.print(stateSpace[xPred][yPred][preyPosition.getX()][preyPosition
-								.getY()] + " \t ");
+				System.out.print(df.format(valueMap.getValueForState(new Point(
+						xPred, yPred), preyPosition))
+						+ " \t ");
 			}
+			System.out.println();
 		}
 	}
 
 	private static void printStates(final Point predatorPosition,
-			final Point preyPosition, final double[][][][] stateSpace)
+			final Point preyPosition, final ValueMap stateSpace)
 	{
 		System.out.println();
-		System.out
-				.println("Predator("
-						+ predatorPosition.getX()
-						+ ", "
-						+ predatorPosition.getY()
-						+ "),"
-						+ "Prey("
-						+ preyPosition.getX()
-						+ ", "
-						+ preyPosition.getY()
-						+ ") is "
-						+ stateSpace[predatorPosition.getX()][predatorPosition
-								.getY()][preyPosition.getX()][preyPosition
-								.getY()]);
+		System.out.println("Predator(" + predatorPosition.getX() + ", "
+				+ predatorPosition.getY() + ")," + "Prey("
+				+ preyPosition.getX() + ", " + preyPosition.getY() + ") is "
+				+ stateSpace.getValueForState(predatorPosition, preyPosition));
 	}
 }

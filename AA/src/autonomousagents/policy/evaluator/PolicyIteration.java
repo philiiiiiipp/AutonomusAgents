@@ -1,16 +1,18 @@
 package autonomousagents.policy.evaluator;
 
 import autonomousagents.policy.Policy;
+import autonomousagents.util.ValueMap;
 
 public class PolicyIteration
 {
 
-	public static double[][][][] evaluate(final Policy predatorPolicy,
+	public static ValueMap evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
 		boolean stable = false;
-		double[][][][] valueMap = null;
+
 		int counter = 0;
+		ValueMap valueMap = new ValueMap();
 		while (!stable)
 		{
 			counter += 1;

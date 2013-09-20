@@ -8,6 +8,7 @@ import java.util.Map;
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
 import autonomousagents.util.Constants;
+import autonomousagents.util.ValueMap;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
@@ -20,7 +21,7 @@ public class PolicyImprovement
 	 * @param preyPolicy
 	 */
 	public static boolean improve(final Policy predatorPolicy,
-			final Policy preyPolicy, final double[][][][] valueMap)
+			final Policy preyPolicy, final ValueMap valueMap)
 	{
 		boolean policyStable = true;
 
@@ -57,7 +58,7 @@ public class PolicyImprovement
 	}
 
 	private static List<Action> maximisation(final State s,
-			final double[][][][] valueMap, final Policy predatorPolicy,
+			final ValueMap valueMap, final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
 		double maxV = 0;
@@ -78,9 +79,8 @@ public class PolicyImprovement
 				newPreyPoint = preyAction.apply(s.preyPoint());
 
 				stateSum += preyAction.getProbability()
-						* (reward(newPredPosition, newPreyPoint) + (Constants.GAMMA * valueMap[newPredPosition
-								.getX()][newPredPosition.getY()][newPreyPoint
-								.getX()][newPreyPoint.getY()]));
+						* (reward(newPredPosition, newPreyPoint) + (Constants.GAMMA * valueMap
+								.getValueForState(newPredPosition, newPreyPoint)));
 			}
 
 			if (maxV < stateSum)
