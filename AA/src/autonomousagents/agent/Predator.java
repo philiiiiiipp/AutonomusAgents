@@ -6,6 +6,7 @@ import autonomousagents.world.Point;
 
 public class Predator extends Agent
 {
+
 	public Predator(final Point p, final Environment environment,
 			final Policy policy)
 	{

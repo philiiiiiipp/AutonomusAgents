@@ -8,14 +8,23 @@ import java.util.Random;
 import autonomousagents.actions.Action;
 import autonomousagents.world.State;
 
-/* Class that encodes the policy for an agent */
+/**
+ * Class that encodes the policy for an agent
+ * 
+ */
 public class Policy
 {
 	protected static Random RAND = new Random();
 
 	protected Map<State, List<Action>> currentPolicy = new HashMap<State, List<Action>>();
 
-	// method that returns the most likely action to be taken in the given state
+	/**
+	 * method that returns the most likely action to be taken in the given state
+	 * s
+	 * 
+	 * @param s
+	 * @return
+	 */
 	public Action nextProbabalisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
@@ -32,14 +41,23 @@ public class Policy
 		return actionList.get(actionList.size() - 1);
 	}
 
-	// returns the list of actions that can be taken by the agent
-	// in a given State s
+	/**
+	 * returns the list of actions that can be taken by the agent in a given
+	 * State s
+	 * 
+	 * @param s
+	 * @return
+	 */
 	public List<Action> actionsForState(final State s)
 	{
 		return this.currentPolicy.get(s);
 	}
 
-	// returns the current policy as a mapping of states to actions
+	/**
+	 * returns the current policy as a mapping of states to actions
+	 * 
+	 * @return
+	 */
 	public Map<State, List<Action>> getPolicy()
 	{
 		return this.currentPolicy;

@@ -13,6 +13,9 @@ import autonomousagents.world.State;
 public class PolicyEvaluation
 {
 
+	/*
+	 * Does policy evaluation by maximizing over the actions
+	 */
 	public static ValueMap evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
@@ -43,6 +46,9 @@ public class PolicyEvaluation
 		return valueMap;
 	}
 
+	/*
+	 * Performs the actual maximization over a given state.
+	 */
 	private static float maximisation(final State s, final ValueMap valueMap,
 			final Policy predatorPolicy, final Policy preyPolicy)
 	{

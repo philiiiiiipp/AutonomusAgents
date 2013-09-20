@@ -9,11 +9,13 @@ import autonomousagents.util.ValueMap;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-/* Class that implements the Value Iteration algorithm */
+/**
+ * Class that implements the Value Iteration algorithm
+ * 
+ */
 public class ValueIteration
 {
-	public static ValueMap evaluate(final Policy predatorPolicy,
-			final Policy preyPolicy)
+	public static ValueMap evaluate(final Policy predatorPolicy, final Policy preyPolicy)
 	{
 		ValueMap stateSpace = new ValueMap();
 		double delta = 0;
@@ -29,14 +31,9 @@ public class ValueIteration
 
 				double v = stateSpace.getValueForState(s);
 
-				stateSpace
-						.setValueForState(
-								s,
-								maximisation(s, stateSpace, predatorPolicy,
-										preyPolicy));
+				stateSpace.setValueForState(s, maximisation(s, stateSpace, predatorPolicy, preyPolicy));
 
-				delta = Math.max(delta,
-						Math.abs(v - stateSpace.getValueForState(s)));
+				delta = Math.max(delta, Math.abs(v - stateSpace.getValueForState(s)));
 			}
 
 		} while (delta > Constants.THETA);
@@ -45,8 +42,16 @@ public class ValueIteration
 		return stateSpace;
 	}
 
-	private static double maximisation(final State s,
-			final ValueMap stateSpace, final Policy predatorPolicy,
+	/**
+	 * Returns the maximum over all actions
+	 * 
+	 * @param s
+	 * @param stateSpace
+	 * @param predatorPolicy
+	 * @param preyPolicy
+	 * @return
+	 */
+	private static double maximisation(final State s, final ValueMap stateSpace, final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
 
@@ -62,8 +67,7 @@ public class ValueIteration
 				return Constants.REWARD;
 			}
 
-			List<Action> possibleAction = preyPolicy.actionsForState(new State(
-					newPredPosition, s.preyPoint()));
+			List<Action> possibleAction = preyPolicy.actionsForState(new State(newPredPosition, s.preyPoint()));
 
 			double vSPrimeTotal = 0;
 			Point newPreyPoint = null;
@@ -71,8 +75,7 @@ public class ValueIteration
 			{
 				newPreyPoint = a.apply(s.preyPoint());
 				vSPrimeTotal += a.getProbability()
-						* (Constants.GAMMA * stateSpace.getValueForState(
-								newPredPosition, newPreyPoint));
+						* (Constants.GAMMA * stateSpace.getValueForState(newPredPosition, newPreyPoint));
 			}
 
 			if (vStar < vSPrimeTotal)

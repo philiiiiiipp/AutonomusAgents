@@ -1,8 +1,8 @@
 package autonomousagents.world;
 
-/* The State class encodes the positions of the 
- * Predator and Prey inside the grid and presents methods to reduce 
- * the state space as much as possible
+/**
+ * The State class encodes the positions of the Predator and Prey inside the
+ * grid and presents methods to reduce the state space as much as possible
  */
 public class State
 {
@@ -10,7 +10,9 @@ public class State
 	private Point preyPoint;
 	private double value;
 
-	// method that reduces the size of the state space
+	/**
+	 * method that reduces the size of the state space
+	 */
 	private void mapToSimplifiedState()
 	{
 		int xdistance = Math.abs(this.predatorPoint.getX() - this.preyPoint.getX());
@@ -22,8 +24,15 @@ public class State
 		this.preyPoint = new Point(0, 0);
 	}
 
-	// constructor where we initialize the state with the position of the
-	// Predator and the Prey
+	/**
+	 * constructor where we initialize the state with the position of the
+	 * Predator and the Prey
+	 * 
+	 * @param predatorPoint
+	 *            - position of the Predator
+	 * @param preyPoint
+	 *            - position of the Prey
+	 */
 	public State(final Point predatorPoint, final Point preyPoint)
 	{
 		this.predatorPoint = predatorPoint;
@@ -32,8 +41,14 @@ public class State
 		this.mapToSimplifiedState();
 	}
 
-	// Method that associates the value of a state with the value of another
-	// state in order to reduce the state space
+	/**
+	 * Method that associates the value of a state with the value of another
+	 * state in order to reduce the state space
+	 * 
+	 * @param s
+	 *            State to be reduced with its symmetrical state
+	 * @return
+	 */
 	public static State translateState(final State s)
 	{
 		int xdistance = Math.abs(s.predatorPoint.getX() - s.preyPoint.getX());
@@ -46,39 +61,59 @@ public class State
 
 	}
 
-	// returns the Predator location on the grid
+	/**
+	 * returns the Predator location on the grid
+	 * 
+	 * @return Point
+	 */
 	public Point predatorPoint()
 	{
 		return this.predatorPoint;
 	}
 
-	// returns the Prey location on the grid
+	/**
+	 * returns the Prey location on the grid
+	 * 
+	 * @return Point
+	 */
 	public Point preyPoint()
 	{
 		return this.preyPoint;
 	}
 
-	// check if a state is a terminal state, which occurs when the
-	// Predator is located in the same position as the Prey
+	/**
+	 * check if a state is a terminal state, which occurs when the Predator is
+	 * located in the same position as the Prey
+	 * 
+	 * @return boolean
+	 */
 	public boolean isTerminal()
 	{
 		return this.predatorPoint.equals(this.preyPoint);
 	}
 
-	// method that returns the value of a state
+	/**
+	 * method that returns the value of a state
+	 * 
+	 * @return double
+	 */
 	public double getValue()
 	{
 		return this.value;
 	}
 
-	// method that sets the value of a state
+	/**
+	 * method that sets the value of a state
+	 * 
+	 * @param value
+	 *            - the value to set for the current state
+	 */
 	public void setValue(final double value)
 	{
 		this.value = value;
 	}
 
 	@Override
-	// method that checks if two States are equal
 	public boolean equals(final Object object)
 	{
 		if (object instanceof State)
@@ -90,8 +125,6 @@ public class State
 	}
 
 	@Override
-	// Method that computes the hash code of a State so that both positions
-	// of Prey and Predator are encoded
 	public int hashCode()
 	{
 		int result = 0;

@@ -6,6 +6,9 @@ import autonomousagents.world.Point;
 
 public abstract class Agent
 {
+	/*
+	 * Defines an abstract agent
+	 */
 	protected Policy policy;
 	protected Point currentPosition;
 	protected final Environment environment;
@@ -28,6 +31,9 @@ public abstract class Agent
 		return this.currentPosition.equals(p);
 	}
 
+	/*
+	 * Abstract method that asks the agent to make a step.
+	 */
 	public abstract boolean step();
 
 	public void moveTo(final Point point)
