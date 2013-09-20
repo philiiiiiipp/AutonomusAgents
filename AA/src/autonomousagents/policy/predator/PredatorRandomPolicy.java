@@ -13,10 +13,12 @@ import autonomousagents.policy.Policy;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-/* Class that implements the Random policy of the Predator */
+/**
+ * Class that implements the Random policy of the Predator
+ * 
+ */
 public class PredatorRandomPolicy extends Policy
 {
-	// constructor of the class
 	public PredatorRandomPolicy()
 	{
 		for (int xPred = 0; xPred < 11; xPred++)
