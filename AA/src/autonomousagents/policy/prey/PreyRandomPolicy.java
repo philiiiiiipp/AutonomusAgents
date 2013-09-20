@@ -14,10 +14,12 @@ import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-/* Class that implements the Random policy of the Prey */
+/**
+ * Class that implements the Random policy of the Prey
+ * 
+ */
 public class PreyRandomPolicy extends Policy
 {
-	// constructor of the class
 	public PreyRandomPolicy()
 	{
 		for (int xPred = 0; xPred < 11; xPred++)

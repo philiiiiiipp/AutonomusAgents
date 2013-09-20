@@ -24,8 +24,7 @@ public class Environment
 	// the grid
 	public State getState()
 	{
-		return new State(this.agents.get(0).getPosition(), this.agents.get(1)
-				.getPosition());
+		return new State(this.agents.get(0).getPosition(), this.agents.get(1).getPosition());
 	}
 
 	/**
@@ -80,46 +79,61 @@ public class Environment
 
 	/**
 	 * method that adds (-1, 0) to the coordinates of the current point and
-	 * which returns a new point moved one position upwards (we consider the
-	 * grid to be toroidal)
+	 * returns a new point moved one position upwards (we consider the grid to
+	 * be toroidal)
 	 * 
 	 * @param pointToTranslate
+	 *            the point we want to translate upwards
 	 * @return Point
 	 */
 	public static Point north(final Point pointToTranslate)
 	{
-		int newY = pointToTranslate.getY() == GameField.YMIN ? GameField.YMAX
-				: pointToTranslate.getY() - 1;
+		int newY = pointToTranslate.getY() == GameField.YMIN ? GameField.YMAX : pointToTranslate.getY() - 1;
 		return new Point(pointToTranslate.getX(), newY);
 	}
 
-	// method that adds (+1, 0) to the coordinates of the
-	// current point and which returns a new point moved one position
-	// downwards (we consider the grid to be toroidal)
+	/**
+	 * method that adds (+1, 0) to the coordinates of the current point and
+	 * which returns a new point moved one position downwards (we consider the
+	 * grid to be toroidal)
+	 * 
+	 * @param pointToTranslate
+	 *            the point we want to translate downwards
+	 * @return
+	 */
 	public static Point south(final Point pointToTranslate)
 	{
-		int newY = pointToTranslate.getY() == GameField.YMAX ? GameField.YMIN
-				: pointToTranslate.getY() + 1;
+		int newY = pointToTranslate.getY() == GameField.YMAX ? GameField.YMIN : pointToTranslate.getY() + 1;
 		return new Point(pointToTranslate.getX(), newY);
 	}
 
-	// method that adds (0, +1) to the coordinates of the
-	// current point and which returns a new point moved one position
-	// to the right (we consider the grid to be toroidal)
+	/**
+	 * method that adds (0, +1) to the coordinates of the current point and
+	 * which returns a new point moved one position to the right (we consider
+	 * the grid to be toroidal)
+	 * 
+	 * @param pointToTranslate
+	 *            the point we want to translate to the east
+	 * @return
+	 */
 	public static Point east(final Point pointToTranslate)
 	{
-		int newX = pointToTranslate.getX() == GameField.XMAX ? GameField.XMIN
-				: pointToTranslate.getX() + 1;
+		int newX = pointToTranslate.getX() == GameField.XMAX ? GameField.XMIN : pointToTranslate.getX() + 1;
 		return new Point(newX, pointToTranslate.getY());
 	}
 
-	// method that adds (0, -1) to the coordinates of the
-	// current point and which returns a new point moved one position
-	// to the right (we consider the grid to be toroidal)
+	/**
+	 * method that adds (0, -1) to the coordinates of the current point and
+	 * which returns a new point moved one position to the right (we consider
+	 * the grid to be toroidal)
+	 * 
+	 * @param pointToTranslate
+	 *            the point we want to translate to the west
+	 * @return
+	 */
 	public static Point west(final Point pointToTranslate)
 	{
-		int newX = pointToTranslate.getX() == GameField.XMIN ? GameField.XMAX
-				: pointToTranslate.getX() - 1;
+		int newX = pointToTranslate.getX() == GameField.XMIN ? GameField.XMAX : pointToTranslate.getX() - 1;
 		return new Point(newX, pointToTranslate.getY());
 	}
 }

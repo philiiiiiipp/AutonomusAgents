@@ -1,6 +1,10 @@
 package autonomousagents.util;
 
-// Class which presents constants that are used in different places of the application
+/**
+ * Class which presents constants that are used in different places of the
+ * application
+ * 
+ */
 public class Constants
 {
 	public static final double REWARD = 10.0d;

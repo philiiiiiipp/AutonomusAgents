@@ -1,6 +1,9 @@
 package autonomousagents.util;
 
-// Class which presents variables that encode the possible directions of the movement
+/**
+ * Class which presents variables that encode the possible directions of the
+ * movement inside the grid
+ */
 public class Direction
 {
 	public static final int NORTH = 0;
