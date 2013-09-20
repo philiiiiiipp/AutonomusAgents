@@ -5,15 +5,16 @@ import java.util.List;
 import autonomousagents.actions.Action;
 import autonomousagents.policy.Policy;
 import autonomousagents.util.Constants;
+import autonomousagents.util.ValueMap;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
 public class ValueIteration
 {
-	public static double[][][][] evaluate(final Policy predatorPolicy,
+	public static ValueMap evaluate(final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
-		double[][][][] stateSpace = new double[11][11][11][11];
+		ValueMap stateSpace = new ValueMap();
 		double delta = 0;
 
 		do
@@ -24,18 +25,16 @@ public class ValueIteration
 				if (s.isTerminal())
 					continue;
 
-				int predatorX = s.predatorPoint().getX();
-				int predatorY = s.predatorPoint().getY();
-				int preyX = s.preyPoint().getX();
-				int preyY = s.preyPoint().getY();
+				double v = stateSpace.getValueForState(s);
 
-				double v = stateSpace[predatorX][predatorY][preyX][preyY];
+				stateSpace
+						.setValueForState(
+								s,
+								maximisation(s, stateSpace, predatorPolicy,
+										preyPolicy));
 
-				stateSpace[predatorX][predatorY][preyX][preyY] = maximisation(
-						s, stateSpace, predatorPolicy, preyPolicy);
-
-				delta = Math.max(delta, Math.abs(v
-						- stateSpace[predatorX][predatorY][preyX][preyY]));
+				delta = Math.max(delta,
+						Math.abs(v - stateSpace.getValueForState(s)));
 			}
 
 		} while (delta > Constants.THETA);
@@ -44,7 +43,7 @@ public class ValueIteration
 	}
 
 	private static double maximisation(final State s,
-			final double[][][][] stateSpace, final Policy predatorPolicy,
+			final ValueMap stateSpace, final Policy predatorPolicy,
 			final Policy preyPolicy)
 	{
 
@@ -69,9 +68,8 @@ public class ValueIteration
 			{
 				newPreyPoint = a.apply(s.preyPoint());
 				vSPrimeTotal += a.getProbability()
-						* (Constants.GAMMA * stateSpace[newPredPosition.getX()][newPredPosition
-								.getY()][newPreyPoint.getX()][newPreyPoint
-								.getY()]);
+						* (Constants.GAMMA * stateSpace.getValueForState(
+								newPredPosition, newPreyPoint));
 			}
 
 			if (vStar < vSPrimeTotal)
