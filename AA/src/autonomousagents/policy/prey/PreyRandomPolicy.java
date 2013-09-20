@@ -14,8 +14,10 @@ import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
+/* Class that implements the Random policy of the Prey */
 public class PreyRandomPolicy extends Policy
 {
+	// constructor of the class
 	public PreyRandomPolicy()
 	{
 		for (int xPred = 0; xPred < 11; xPred++)
@@ -31,7 +33,7 @@ public class PreyRandomPolicy extends Policy
 
 						State s = new State(predPoint, preyPoint);
 						List<Action> actions = new ArrayList<Action>();
-
+						// the prey should never move into the predator
 						if (!Environment.north(preyPoint).equals(predPoint))
 							actions.add(new NorthAction(0));
 
@@ -46,9 +48,12 @@ public class PreyRandomPolicy extends Policy
 
 						for (Action a : actions)
 						{
+							// we compute the probability of each action,
+							// except for the Stay action
 							a.setProbability(1.0d / actions.size() * 0.2d);
 						}
-
+						// the prey stays at the same location with a
+						// probability of 0.8
 						actions.add(new StayAction(0.8d));
 
 						this.currentPolicy.put(s, actions);

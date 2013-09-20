@@ -13,8 +13,10 @@ import autonomousagents.policy.Policy;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
+/* Class that implements the Random policy of the Predator */
 public class PredatorRandomPolicy extends Policy
 {
+	// constructor of the class
 	public PredatorRandomPolicy()
 	{
 		for (int xPred = 0; xPred < 11; xPred++)
@@ -31,14 +33,13 @@ public class PredatorRandomPolicy extends Policy
 						State s = new State(predPoint, preyPoint);
 
 						List<Action> actions = new ArrayList<Action>();
+						// the Predator can move to each of the 5 directions
+						// with equal probability
 						actions.add(new NorthAction(1.0d / 5.0d));
 						actions.add(new EastAction(1.0d / 5.0d));
 						actions.add(new SouthAction(1.0d / 5.0d));
 						actions.add(new WestAction(1.0d / 5.0d));
 						actions.add(new StayAction(1.0d / 5.0d));
-
-						// this is to simplify the state
-						// s = s.mapToSimplifiedState();
 
 						this.currentPolicy.put(s, actions);
 					}
