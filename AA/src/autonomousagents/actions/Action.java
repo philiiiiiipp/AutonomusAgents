@@ -9,7 +9,7 @@ import autonomousagents.world.Point;
 public abstract class Action
 {
 	private double probability;
-	private double actionValue;
+	private double actionValue = 15;
 
 	public Action(final double probability)
 	{
