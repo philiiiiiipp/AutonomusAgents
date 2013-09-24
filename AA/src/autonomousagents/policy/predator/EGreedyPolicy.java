@@ -10,16 +10,13 @@ import autonomousagents.actions.SouthAction;
 import autonomousagents.actions.StayAction;
 import autonomousagents.actions.WestAction;
 import autonomousagents.policy.Policy;
+import autonomousagents.util.Constants;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-/**
- * Class that implements the Random policy of the Predator
- * 
- */
-public class PredatorRandomPolicy extends Policy
+public class EGreedyPolicy extends Policy
 {
-	public PredatorRandomPolicy()
+	public EGreedyPolicy()
 	{
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
@@ -47,6 +44,37 @@ public class PredatorRandomPolicy extends Policy
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Returns the next action considering e-greedy
+	 */
+	@Override
+	public Action nextProbabalisticActionForState(final State s)
+	{
+		List<Action> actionList = this.currentPolicy.get(s);
+		double probability = RAND.nextDouble();
+		int bestAction = 0;
+		double highestActionValue = -1;
+
+		for (int i = 0; i < actionList.size(); ++i)
+		{
+			Action a = actionList.get(i);
+			if (a.getActionValue() > highestActionValue)
+			{
+				bestAction = i;
+				highestActionValue = a.getActionValue();
+			}
+		}
+
+		if (Constants.EPSILON > probability)
+		{
+			// find a random action
+			return actionList.get(RAND.nextInt(actionList.size()));
+		} else
+		{
+			return actionList.get(bestAction);
 		}
 	}
 }
