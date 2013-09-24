@@ -20,6 +20,14 @@ public class State
 
 		xdistance = Math.min(xdistance, 11 - xdistance);
 		ydistance = Math.min(ydistance, 11 - ydistance);
+
+		if (xdistance < ydistance)
+		{
+			int tmp = xdistance;
+			xdistance = ydistance;
+			ydistance = tmp;
+		}
+
 		this.predatorPoint = new Point(xdistance, ydistance);
 		this.preyPoint = new Point(0, 0);
 	}

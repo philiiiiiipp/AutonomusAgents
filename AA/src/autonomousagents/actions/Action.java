@@ -9,6 +9,7 @@ import autonomousagents.world.Point;
 public abstract class Action
 {
 	private double probability;
+	private double actionValue;
 
 	public Action(final double probability)
 	{
@@ -39,5 +40,15 @@ public abstract class Action
 	public void setProbability(final double probability)
 	{
 		this.probability = probability;
+	}
+
+	public double getActionValue()
+	{
+		return this.actionValue;
+	}
+
+	public void setActionValue(final double actionValue)
+	{
+		this.actionValue = actionValue;
 	}
 }

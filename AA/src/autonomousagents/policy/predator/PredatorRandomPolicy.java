@@ -48,5 +48,6 @@ public class PredatorRandomPolicy extends Policy
 				}
 			}
 		}
+		System.out.println("Space: " + this.currentPolicy.keySet().size());
 	}
 }
