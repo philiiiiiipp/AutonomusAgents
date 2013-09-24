@@ -1,18 +1,16 @@
 package autonomousagents;
 
-import autonomousagents.test.TestPolicyEvaluation;
-import autonomousagents.test.TestPolicyIteration;
-import autonomousagents.test.TestSimulator;
-import autonomousagents.test.TestValueIteration;
+import autonomousagents.test.TestQLearning;
 
 public class Main
 {
 
 	public static void main(final String[] args)
 	{
-		TestValueIteration.test();
-		TestPolicyEvaluation.test();
-		TestPolicyIteration.test();
-		TestSimulator.test();
+		TestQLearning.test();
+		// TestValueIteration.test();
+		// TestPolicyEvaluation.test();
+		// TestPolicyIteration.test();
+		// TestSimulator.test();
 	}
 }

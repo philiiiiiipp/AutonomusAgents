@@ -105,7 +105,7 @@ public class PolicyImprovement
 		{
 			// Compare the values for the actions and take care of the floating
 			// point / rounding error
-			if (Math.abs(resultMap.get(a) - maxV) > Constants.EPSILON)
+			if (Math.abs(resultMap.get(a) - maxV) > Constants.FLOATING_EPSILON)
 			{
 				continue;
 			}
