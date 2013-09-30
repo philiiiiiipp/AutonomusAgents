@@ -22,4 +22,9 @@ public class StayAction extends Action
 		return p;
 	}
 
+	@Override
+	public String toString()
+	{
+		return "x";
+	}
 }

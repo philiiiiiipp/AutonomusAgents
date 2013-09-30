@@ -68,7 +68,7 @@ public class EGreedyPolicy extends Policy
 			}
 		}
 
-		if (Constants.EPSILON > probability)
+		if (Constants.EPSILON < probability)
 		{
 			// find a random action
 			return actionList.get(RAND.nextInt(actionList.size()));

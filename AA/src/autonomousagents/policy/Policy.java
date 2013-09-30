@@ -19,8 +19,7 @@ public class Policy
 	protected Map<State, List<Action>> currentPolicy = new HashMap<State, List<Action>>();
 
 	/**
-	 * method that returns the most likely action to be taken in the given state
-	 * s
+	 * returns a random action, given their possibilities in state s
 	 * 
 	 * @param s
 	 * @return

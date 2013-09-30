@@ -15,8 +15,7 @@ public class NorthAction extends Action
 	@Override
 	public void apply(final Agent a)
 	{
-		int newY = a.getPosition().getY() == GameField.YMIN ? GameField.YMAX
-				: a.getPosition().getY() - 1;
+		int newY = a.getPosition().getY() == GameField.YMIN ? GameField.YMAX : a.getPosition().getY() - 1;
 
 		a.moveTo(new Point(a.getPosition().getX(), newY));
 	}
@@ -26,5 +25,11 @@ public class NorthAction extends Action
 	{
 		int newY = p.getY() == GameField.YMIN ? GameField.YMAX : p.getY() - 1;
 		return new Point(p.getX(), newY);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "^";
 	}
 }

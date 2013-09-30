@@ -15,8 +15,7 @@ public class WestAction extends Action
 	@Override
 	public void apply(final Agent a)
 	{
-		int newX = a.getPosition().getX() == GameField.XMIN ? GameField.XMAX
-				: a.getPosition().getX() - 1;
+		int newX = a.getPosition().getX() == GameField.XMIN ? GameField.XMAX : a.getPosition().getX() - 1;
 		a.moveTo(new Point(newX, a.getPosition().getY()));
 	}
 
@@ -25,5 +24,11 @@ public class WestAction extends Action
 	{
 		int newX = p.getX() == GameField.XMIN ? GameField.XMAX : p.getX() - 1;
 		return new Point(newX, p.getY());
+	}
+
+	@Override
+	public String toString()
+	{
+		return "<";
 	}
 }

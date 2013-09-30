@@ -15,8 +15,8 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 1000000;
-	private static final double alpha = 0.01d;
+	private static final int NUMBER_OF_EPISODES = 1000;
+	private static final double alpha = 0.1d;
 
 	public static void test()
 	{
@@ -56,13 +56,10 @@ public class TestQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			if (i > NUMBER_OF_EPISODES - 100)
-			{
-				System.out.println(counter);
-				average += counter;
-				System.out.println(average / 100);
-			}
+			printTable(pred);
+			average += counter;
 		}
+		System.out.println(average / NUMBER_OF_EPISODES);
 	}
 
 	private static double maximisation(final List<Action> actionList)
@@ -75,5 +72,22 @@ public class TestQLearning
 		}
 
 		return highestActionValue;
+	}
+
+	private static void printTable(final Policy predatorPolicy)
+	{
+		for (int xPred = 0; xPred < 11; xPred++)
+		{
+			System.out.print(" | ");
+			for (int yPred = 0; yPred < 11; yPred++)
+			{
+				Action a = predatorPolicy.nextProbabalisticActionForState(new State(new Point(xPred, yPred), new Point(
+						5, 5)));
+
+				System.out.print(a + " ");
+			}
+			System.out.println(" | ");
+		}
+		System.out.println("---------------------------");
 	}
 }
