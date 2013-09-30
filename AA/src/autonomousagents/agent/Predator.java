@@ -7,8 +7,7 @@ import autonomousagents.world.Point;
 public class Predator extends Agent
 {
 
-	public Predator(final Point p, final Environment environment,
-			final Policy policy)
+	public Predator(final Point p, final Environment environment, final Policy policy)
 	{
 		super(p, environment, policy);
 	}
@@ -16,9 +15,7 @@ public class Predator extends Agent
 	@Override
 	public boolean step()
 	{
-		this.policy
-				.nextProbabalisticActionForState(this.environment.getState())
-				.apply(this);
+		this.policy.nextProbabilisticActionForState(this.environment.getState()).apply(this);
 		return this.environment.isEndState();
 	}
 }
