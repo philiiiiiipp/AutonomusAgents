@@ -16,7 +16,7 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 100000;
+	private static final int NUMBER_OF_EPISODES = 1000000;
 	private static final double alpha = 0.1d;
 
 	public static void test()
@@ -25,6 +25,9 @@ public class TestQLearning
 		double average = 0;
 		Policy predatorPolicy = new EGreedyPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
+
+		System.out.println(predatorPolicy.getPolicy().keySet().size());
+
 		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
 		{
 			// Initialise s
@@ -64,11 +67,14 @@ public class TestQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
+			// System.out.println(counter);
 			// printTable(predatorPolicy);
-			average += counter;
+			if (i >= NUMBER_OF_EPISODES - 1000)
+				average += counter;
 		}
-		System.out.println(average / NUMBER_OF_EPISODES);
+		System.out.println(average / 1000);
 		printAction(predatorPolicy);
+		printTable(predatorPolicy);
 	}
 
 	private static double maximisation(final List<Action> actionList)
@@ -88,16 +94,17 @@ public class TestQLearning
 
 		DecimalFormat df = new DecimalFormat("#.000000");
 
-		State s = new State(new Point(4, 5), new Point(5, 5));
+		State s = new State(new Point(5, 4), new Point(5, 5));
+
 		for (Action a : predatorPolicy.actionsForState(s))
 		{
-
+			System.out.println(a.getActionValue() + " " + a);
 		}
 
-		for (int xPred = 0; xPred < 11; xPred++)
+		for (int yPred = 0; yPred < 11; yPred++)
 		{
 			System.out.print(" | ");
-			for (int yPred = 0; yPred < 11; yPred++)
+			for (int xPred = 0; xPred < 11; xPred++)
 			{
 				s = new State(new Point(xPred, yPred), new Point(5, 5));
 
@@ -107,7 +114,7 @@ public class TestQLearning
 				// continue;
 				// }
 				Action a = predatorPolicy.actionWithHighestValue(s);
-				System.out.print(df.format(a.getActionValue()) + a + "\t");
+				System.out.print(+xPred + ":" + yPred + " " + df.format(a.getActionValue()) + a + "\t");
 			}
 			System.out.println(" | ");
 		}
@@ -116,10 +123,10 @@ public class TestQLearning
 
 	private static void printTable(final Policy predatorPolicy)
 	{
-		for (int xPred = 0; xPred < 11; xPred++)
+		for (int yPred = 0; yPred < 11; yPred++)
 		{
 			System.out.print(" | ");
-			for (int yPred = 0; yPred < 11; yPred++)
+			for (int xPred = 0; xPred < 11; xPred++)
 			{
 				State s = new State(new Point(xPred, yPred), new Point(5, 5));
 

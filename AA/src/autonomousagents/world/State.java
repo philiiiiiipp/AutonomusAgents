@@ -1,13 +1,15 @@
 package autonomousagents.world;
 
+import autonomousagents.util.GameField;
+
 /**
  * The State class encodes the positions of the Predator and Prey inside the
  * grid and presents methods to reduce the state space as much as possible
  */
 public class State
 {
-	private final Point predatorPoint;
-	private final Point preyPoint;
+	private Point predatorPoint;
+	private Point preyPoint;
 	private double value;
 
 	/**
@@ -15,23 +17,29 @@ public class State
 	 */
 	private void mapToSimplifiedState()
 	{
-		// int xdistance = Math.abs(this.predatorPoint.getX() -
-		// this.preyPoint.getX());
-		// int ydistance = Math.abs(this.predatorPoint.getY() -
-		// this.preyPoint.getY());
-		//
-		// xdistance = Math.min(xdistance, 11 - xdistance);
-		// ydistance = Math.min(ydistance, 11 - ydistance);
+		int xdistance = this.predatorPoint.getX() - this.preyPoint.getX();
+		int ydistance = this.predatorPoint.getY() - this.preyPoint.getY();
 
-		// if (xdistance < ydistance)
-		// {
-		// int tmp = xdistance;
-		// xdistance = ydistance;
-		// ydistance = tmp;
-		// }
-		//
-		// this.predatorPoint = new Point(xdistance, ydistance);
-		// this.preyPoint = new Point(0, 0);
+		xdistance = (xdistance < 0 ? GameField.XMAX + xdistance : xdistance);
+		ydistance = (ydistance < 0 ? GameField.YMAX + ydistance : ydistance);
+
+		this.predatorPoint = new Point(xdistance, ydistance);
+		this.preyPoint = new Point(0, 0);
+
+		/*
+		 * int xdistance = Math.abs(this.predatorPoint.getX() -
+		 * this.preyPoint.getX()); int ydistance =
+		 * Math.abs(this.predatorPoint.getY() - this.preyPoint.getY());
+		 * 
+		 * xdistance = Math.min(xdistance, 11 - xdistance); ydistance =
+		 * Math.min(ydistance, 11 - ydistance);
+		 * 
+		 * if (xdistance < ydistance) { int tmp = xdistance; xdistance =
+		 * ydistance; ydistance = tmp; }
+		 * 
+		 * this.predatorPoint = new Point(xdistance, ydistance); this.preyPoint
+		 * = new Point(0, 0);
+		 */
 	}
 
 	/**
@@ -55,10 +63,13 @@ public class State
 	 * Method that associates the value of a state with the value of another
 	 * state in order to reduce the state space
 	 * 
+	 * @deprecated because of old way of calculating the minimised statespace
+	 * 
 	 * @param s
 	 *            State to be reduced with its symmetrical state
 	 * @return
 	 */
+	@Deprecated
 	public static State translateState(final State s)
 	{
 		int xdistance = Math.abs(s.predatorPoint.getX() - s.preyPoint.getX());
@@ -68,7 +79,6 @@ public class State
 		ydistance = Math.min(ydistance, 11 - ydistance);
 
 		return new State(new Point(xdistance, ydistance), new Point(0, 0));
-
 	}
 
 	/**
