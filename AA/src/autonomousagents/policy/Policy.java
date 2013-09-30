@@ -40,6 +40,26 @@ public class Policy
 		return actionList.get(actionList.size() - 1);
 	}
 
+	public Action actionWithHighestValue(final State s)
+	{
+		List<Action> actionList = this.currentPolicy.get(s);
+
+		int bestAction = 0;
+		double highestActionValue = -1;
+
+		for (int i = 0; i < actionList.size(); ++i)
+		{
+			Action a = actionList.get(i);
+			if (a.getActionValue() > highestActionValue)
+			{
+				bestAction = i;
+				highestActionValue = a.getActionValue();
+			}
+		}
+
+		return actionList.get(bestAction);
+	}
+
 	/**
 	 * returns the list of actions that can be taken by the agent in a given
 	 * State s
