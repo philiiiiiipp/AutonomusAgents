@@ -24,7 +24,7 @@ public class Policy
 	 * @param s
 	 * @return
 	 */
-	public Action nextProbabalisticActionForState(final State s)
+	public Action nextProbabilisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
 		float probability = RAND.nextFloat();

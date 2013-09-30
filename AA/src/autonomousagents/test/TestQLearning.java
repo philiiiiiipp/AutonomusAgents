@@ -57,7 +57,7 @@ public class TestQLearning
 			do
 			{
 				counter++;
-				Action a = predatorPolicy.nextProbabalisticActionForState(s);
+				Action a = predatorPolicy.nextProbabilisticActionForState(s);
 				a.apply(predator);
 
 				// Reward from this action
@@ -65,7 +65,7 @@ public class TestQLearning
 
 				if (!e.getState().isTerminal())
 				{
-					preyPoly.nextProbabalisticActionForState(e.getState()).apply(prey);
+					preyPoly.nextProbabilisticActionForState(e.getState()).apply(prey);
 				}
 
 				State sPrime = e.getState();

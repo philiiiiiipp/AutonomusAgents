@@ -51,7 +51,7 @@ public class EGreedyPolicy extends Policy
 	 * Returns the next action considering e-greedy
 	 */
 	@Override
-	public Action nextProbabalisticActionForState(final State s)
+	public Action nextProbabilisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
 		double probability = RAND.nextDouble();
