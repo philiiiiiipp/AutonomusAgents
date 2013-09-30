@@ -3,6 +3,15 @@ package autonomousagents.test;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.ApplicationFrame;
+
 import autonomousagents.actions.Action;
 import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
@@ -16,18 +25,20 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 1000000;
+	private static final int NUMBER_OF_EPISODES = 10000;
 	private static final double alpha = 0.1d;
 
 	public static void test()
 	{
 
 		double average = 0;
+		double averageLastProcent = 0;
 		Policy predatorPolicy = new EGreedyPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
-		System.out.println(predatorPolicy.getPolicy().keySet().size());
-
+		XYSeries steps = new XYSeries("steps");
+		XYSeries averageSteps = new XYSeries("Avg. all steps");
+		XYSeries averageLastSteps = new XYSeries("Avg. over last 100 steps");
 		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
 		{
 			// Initialise s
@@ -67,14 +78,40 @@ public class TestQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			// System.out.println(counter);
-			// printTable(predatorPolicy);
-			if (i >= NUMBER_OF_EPISODES - 1000)
-				average += counter;
+			average += counter;
+			averageLastProcent += counter;
+			if (i % 100 == 0 || i + 1 == NUMBER_OF_EPISODES)
+			{
+				averageLastSteps.add(i, averageLastProcent / 100);
+				averageLastProcent = 0;
+
+				averageSteps.add(i, average / (i + 1));
+			}
+
+			steps.add(i, counter);
+
 		}
-		System.out.println(average / 1000);
-		printAction(predatorPolicy);
-		printTable(predatorPolicy);
+		XYSeriesCollection dataset = new XYSeriesCollection();
+
+		dataset.addSeries(averageSteps);
+		dataset.addSeries(averageLastSteps);
+		dataset.addSeries(steps);
+
+		ApplicationFrame frame = new ApplicationFrame("Q-Learning: epsilon=" + Constants.EPSILON + " alpha=" + alpha
+				+ " gamma=" + Constants.GAMMA);
+
+		NumberAxis xax = new NumberAxis("Steps");
+		NumberAxis yax = new NumberAxis("Episodes");
+		XYSplineRenderer a = new XYSplineRenderer();
+		a.setBaseShapesVisible(false);
+		XYPlot xyplot = new XYPlot(dataset, xax, yax, a);
+
+		JFreeChart chart = new JFreeChart(xyplot);
+
+		ChartPanel chartPanel = new ChartPanel(chart);
+		frame.setContentPane(chartPanel);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	private static double maximisation(final List<Action> actionList)
