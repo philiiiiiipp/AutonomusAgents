@@ -50,7 +50,6 @@ public class TestQLearning
 			e.addAgent(prey);
 
 			State s = e.getState();
-			//
 
 			// Repeat for each step of the episode
 			int counter = 0;
