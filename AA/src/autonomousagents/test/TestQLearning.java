@@ -16,7 +16,7 @@ import autonomousagents.world.State;
 public class TestQLearning
 {
 	private static final int NUMBER_OF_EPISODES = 1000000;
-	private static final double alpha = 0.01d;
+	private static final double alpha = 0.1d;
 
 	public static void test()
 	{
