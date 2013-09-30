@@ -15,8 +15,8 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 1000000;
-	private static final double alpha = 0.1d;
+	private static final int NUMBER_OF_EPISODES = 100000;
+	private static final double alpha = 0.05d;
 
 	public static void test()
 	{
@@ -56,13 +56,14 @@ public class TestQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			if (i > NUMBER_OF_EPISODES - 100)
+			if (i > NUMBER_OF_EPISODES - 1000)
 			{
-				System.out.println(counter);
 				average += counter;
-				System.out.println(average / 100);
+				System.out.println(counter);
 			}
 		}
+
+		System.out.println(average / 1000);
 	}
 
 	private static double maximisation(final List<Action> actionList)
