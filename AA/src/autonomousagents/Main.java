@@ -1,13 +1,15 @@
 package autonomousagents;
 
-import autonomousagents.test.TestQLearning;
+import autonomousagents.test.TestVariousQLearning;
 
 public class Main
 {
 
 	public static void main(final String[] args)
 	{
-		TestQLearning.test();
+		TestVariousQLearning.test();
+
+		// TestQLearning.test();
 		// TestValueIteration.test();
 		// TestPolicyEvaluation.test();
 		// TestPolicyIteration.test();
