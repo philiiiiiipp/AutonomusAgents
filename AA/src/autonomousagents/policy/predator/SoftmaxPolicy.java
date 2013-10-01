@@ -14,9 +14,11 @@ import autonomousagents.util.Constants;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-public class EGreedyPolicy extends Policy
+public class SoftmaxPolicy extends Policy
 {
-	public EGreedyPolicy()
+	// private static final double temperature = 0.1d;
+
+	public SoftmaxPolicy()
 	{
 		for (int xPred = 0; xPred < 11; xPred++)
 		{
@@ -56,15 +58,25 @@ public class EGreedyPolicy extends Policy
 		List<Action> actionList = this.currentPolicy.get(s);
 		double probability = RAND.nextDouble();
 
+		int bestAction = 0;
+		double highestActionValue = -1;
 		if (Constants.EPSILON > probability)
 		{
-			// find a random action
-			return actionList.get(RAND.nextInt(actionList.size()));
+			// return the action with the highest estimated value
+			double rand = RAND.nextDouble();
+			for (int i = 0; i < actionList.size(); ++i)
+			{
+				Action a = actionList.get(i);
+				if (rand + a.getActionValue() > highestActionValue)
+				{
+					bestAction = i;
+					highestActionValue = a.getActionValue();
+				}
+			}
+			return actionList.get(bestAction);
 		} else
 		{
-			int bestAction = 0;
-			double highestActionValue = -1;
-
+			// return the greedy action
 			for (int i = 0; i < actionList.size(); ++i)
 			{
 				Action a = actionList.get(i);

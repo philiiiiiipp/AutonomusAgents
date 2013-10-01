@@ -50,14 +50,13 @@ public class TestQLearning
 			e.addAgent(prey);
 
 			State s = e.getState();
-			//
 
 			// Repeat for each step of the episode
 			int counter = 0;
 			do
 			{
 				counter++;
-				Action a = predatorPolicy.nextProbabalisticActionForState(s);
+				Action a = predatorPolicy.nextProbabilisticActionForState(s);
 				a.apply(predator);
 
 				// Reward from this action
@@ -65,7 +64,7 @@ public class TestQLearning
 
 				if (!e.getState().isTerminal())
 				{
-					preyPoly.nextProbabalisticActionForState(e.getState()).apply(prey);
+					preyPoly.nextProbabilisticActionForState(e.getState()).apply(prey);
 				}
 
 				State sPrime = e.getState();
