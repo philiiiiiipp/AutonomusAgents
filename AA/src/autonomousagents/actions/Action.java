@@ -1,6 +1,7 @@
 package autonomousagents.actions;
 
 import autonomousagents.agent.Agent;
+import autonomousagents.util.Constants;
 import autonomousagents.world.Point;
 
 /**
@@ -9,7 +10,7 @@ import autonomousagents.world.Point;
 public abstract class Action
 {
 	private double probability;
-	private double actionValue = 15;
+	private double actionValue = Constants.QValue;
 
 	public Action(final double probability)
 	{

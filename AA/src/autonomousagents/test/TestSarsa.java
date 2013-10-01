@@ -17,14 +17,13 @@ import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
 import autonomousagents.policy.predator.EGreedyPolicy;
-import autonomousagents.policy.predator.SoftmaxPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-public class TestQLearning
+public class TestSarsa
 {
 	private static final int NUMBER_OF_EPISODES = 1000;
 	private static final double alpha = 0.1d;
@@ -35,7 +34,6 @@ public class TestQLearning
 		double average = 0;
 		double averageLastProcent = 0;
 		Policy predatorPolicy = new EGreedyPolicy();
-		// Policy predatorPolicy = new SoftmaxPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
 		XYSeries steps = new XYSeries("steps");
@@ -52,13 +50,13 @@ public class TestQLearning
 			e.addAgent(prey);
 
 			State s = e.getState();
+			Action a = predatorPolicy.nextProbabilisticActionForState(s);
 
 			// Repeat for each step of the episode
 			int counter = 0;
 			do
 			{
 				counter++;
-				Action a = predatorPolicy.nextProbabilisticActionForState(s);
 				a.apply(predator);
 
 				// Reward from this action
@@ -71,12 +69,13 @@ public class TestQLearning
 
 				State sPrime = e.getState();
 
-				a.setActionValue(a.getActionValue()
-						+ alpha
-						* (reward + Constants.GAMMA * maximisation(predatorPolicy.actionsForState(sPrime)) - a
-								.getActionValue()));
+				Action aPrime = predatorPolicy.nextProbabilisticActionForState(sPrime);
+
+				a.setActionValue(a.getActionValue() + alpha
+						* (reward + Constants.GAMMA * aPrime.getActionValue() - a.getActionValue()));
 
 				s = sPrime;
+				a = aPrime;
 			} while (!s.isTerminal());
 
 			average += counter;
@@ -98,9 +97,8 @@ public class TestQLearning
 		dataset.addSeries(averageLastSteps);
 		dataset.addSeries(steps);
 
-		ApplicationFrame frame = new ApplicationFrame("Q-Learning with " + predatorPolicy + ", epsilon="
-				+ Constants.EPSILON + " alpha=" + alpha + " gamma=" + Constants.GAMMA + " Temp:"
-				+ SoftmaxPolicy.TEMPERATURE);
+		ApplicationFrame frame = new ApplicationFrame("Sarsa: epsilon=" + Constants.EPSILON + " alpha=" + alpha
+				+ " gamma=" + Constants.GAMMA);
 
 		NumberAxis xax = new NumberAxis("Steps");
 		NumberAxis yax = new NumberAxis("Episodes");
