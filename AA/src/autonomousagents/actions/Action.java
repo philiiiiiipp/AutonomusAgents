@@ -10,6 +10,8 @@ public abstract class Action
 {
 	private double probability;
 	private double actionValue = 15;
+	private double numerator = 0;
+	private final double denominator = 0;
 
 	public Action(final double probability)
 	{
@@ -50,5 +52,20 @@ public abstract class Action
 	public void setActionValue(final double actionValue)
 	{
 		this.actionValue = actionValue;
+	}
+
+	public double getNumerator()
+	{
+		return this.numerator;
+	}
+
+	public void setNumerator(final double numerator)
+	{
+		this.numerator = numerator;
+	}
+
+	public double getDenominator()
+	{
+		return denominator;
 	}
 }
