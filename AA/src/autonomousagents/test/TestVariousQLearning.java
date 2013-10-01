@@ -1,5 +1,7 @@
 package autonomousagents.test;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import autonomousagents.actions.Action;
@@ -15,15 +17,30 @@ import autonomousagents.world.State;
 
 public class TestVariousQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 10000;
+	private static final int NUMBER_OF_EPISODES = 800;
 	private static final double alpha = 0.1d;
 
 	public static void test()
 	{
+		ArrayList<ArrayList<Double>> values = new ArrayList<ArrayList<Double>>();
+		for (int i = 0; i < 60; i += 5)
+		{
+			values.add(new ArrayList<Double>());
+			for (double j = 0; j < 0.9; j += 0.03)
+			{
+				Constants.QValue = i;
+				Constants.EPSILON = j;
 
+				double thisConfigurationsValue = testWithSpecificValues();
+
+				values.get(values.size() - 1).add(thisConfigurationsValue);
+			}
+		}
+
+		pprint(values);
 	}
 
-	public static double testWithValues(final double QValue, final double epsilon)
+	public static double testWithSpecificValues()
 	{
 		Policy predatorPolicy = new EGreedyPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
@@ -47,7 +64,7 @@ public class TestVariousQLearning
 			do
 			{
 				counter++;
-				Action a = predatorPolicy.nextProbabalisticActionForState(s);
+				Action a = predatorPolicy.nextProbabilisticActionForState(s);
 				a.apply(predator);
 
 				// Reward from this action
@@ -55,7 +72,7 @@ public class TestVariousQLearning
 
 				if (!e.getState().isTerminal())
 				{
-					preyPoly.nextProbabalisticActionForState(e.getState()).apply(prey);
+					preyPoly.nextProbabilisticActionForState(e.getState()).apply(prey);
 				}
 
 				State sPrime = e.getState();
@@ -89,4 +106,16 @@ public class TestVariousQLearning
 		return highestActionValue;
 	}
 
+	private static void pprint(final ArrayList<ArrayList<Double>> values)
+	{
+		DecimalFormat df = new DecimalFormat("#.00");
+		for (ArrayList<Double> row : values)
+		{
+			for (double v : row)
+			{
+				System.out.print(df.format(v) + "\t");
+			}
+			System.out.println();
+		}
+	}
 }
