@@ -11,12 +11,13 @@ import autonomousagents.actions.StayAction;
 import autonomousagents.actions.WestAction;
 import autonomousagents.policy.Policy;
 import autonomousagents.util.Constants;
+import autonomousagents.util.Probability;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
 public class SoftmaxPolicy extends Policy
 {
-	// private static final double temperature = 0.1d;
+	public static final double TEMPERATURE = 5;
 
 	public SoftmaxPolicy()
 	{
@@ -58,25 +59,28 @@ public class SoftmaxPolicy extends Policy
 		List<Action> actionList = this.currentPolicy.get(s);
 		double probability = RAND.nextDouble();
 
-		int bestAction = 0;
-		double highestActionValue = -1;
 		if (Constants.EPSILON > probability)
 		{
-			// return the action with the highest estimated value
-			double rand = RAND.nextDouble();
-			for (int i = 0; i < actionList.size(); ++i)
+			List<Probability<Action>> probabilityList = generateProbabilities(actionList);
+			probability = RAND.nextDouble();
+
+			for (Probability<Action> pA : probabilityList)
 			{
-				Action a = actionList.get(i);
-				if (rand + a.getActionValue() > highestActionValue)
+				probability -= pA.getProbability();
+				if (probability <= 0)
 				{
-					bestAction = i;
-					highestActionValue = a.getActionValue();
+					return pA.getObject();
+
 				}
 			}
-			return actionList.get(bestAction);
+
+			return probabilityList.get(probabilityList.size() - 1).getObject();
+
 		} else
 		{
-			// return the greedy action
+			int bestAction = 0;
+			double highestActionValue = -1;
+
 			for (int i = 0; i < actionList.size(); ++i)
 			{
 				Action a = actionList.get(i);
@@ -89,5 +93,34 @@ public class SoftmaxPolicy extends Policy
 
 			return actionList.get(bestAction);
 		}
+	}
+
+	private static List<Probability<Action>> generateProbabilities(final List<Action> actionList)
+	{
+		List<Probability<Action>> probabilityList = new ArrayList<Probability<Action>>();
+
+		double normalisingConstant = 0;
+		for (Action a : actionList)
+		{
+			normalisingConstant += generateGibbs(a.getActionValue());
+		}
+
+		for (Action a : actionList)
+		{
+			probabilityList.add(new Probability<Action>(a, generateGibbs(a.getActionValue()) / normalisingConstant));
+		}
+
+		return probabilityList;
+	}
+
+	private static double generateGibbs(final double actionValue)
+	{
+		return Math.exp(actionValue / TEMPERATURE);
+	}
+
+	@Override
+	public String toString()
+	{
+		return "SoftMax";
 	}
 }

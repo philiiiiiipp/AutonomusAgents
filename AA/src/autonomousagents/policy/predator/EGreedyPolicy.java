@@ -77,4 +77,10 @@ public class EGreedyPolicy extends Policy
 			return actionList.get(bestAction);
 		}
 	}
+
+	@Override
+	public String toString()
+	{
+		return "EGreedy";
+	}
 }
