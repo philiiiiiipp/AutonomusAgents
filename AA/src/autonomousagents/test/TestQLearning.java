@@ -3,6 +3,15 @@ package autonomousagents.test;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYSplineRenderer;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.ApplicationFrame;
+
 import autonomousagents.actions.Action;
 import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
