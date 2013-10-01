@@ -23,7 +23,7 @@ import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-public class TestQLearning
+public class TestSarsa
 {
 	private static final int NUMBER_OF_EPISODES = 1000;
 	private static final double alpha = 0.1d;
@@ -50,13 +50,13 @@ public class TestQLearning
 			e.addAgent(prey);
 
 			State s = e.getState();
+			Action a = predatorPolicy.nextProbabilisticActionForState(s);
 
 			// Repeat for each step of the episode
 			int counter = 0;
 			do
 			{
 				counter++;
-				Action a = predatorPolicy.nextProbabilisticActionForState(s);
 				a.apply(predator);
 
 				// Reward from this action
@@ -69,12 +69,13 @@ public class TestQLearning
 
 				State sPrime = e.getState();
 
-				a.setActionValue(a.getActionValue()
-						+ alpha
-						* (reward + Constants.GAMMA * maximisation(predatorPolicy.actionsForState(sPrime)) - a
-								.getActionValue()));
+				Action aPrime = predatorPolicy.nextProbabilisticActionForState(sPrime);
+
+				a.setActionValue(a.getActionValue() + alpha
+						* (reward + Constants.GAMMA * aPrime.getActionValue() - a.getActionValue()));
 
 				s = sPrime;
+				a = aPrime;
 			} while (!s.isTerminal());
 
 			average += counter;
@@ -96,7 +97,7 @@ public class TestQLearning
 		dataset.addSeries(averageLastSteps);
 		dataset.addSeries(steps);
 
-		ApplicationFrame frame = new ApplicationFrame("Q-Learning: epsilon=" + Constants.EPSILON + " alpha=" + alpha
+		ApplicationFrame frame = new ApplicationFrame("Sarsa: epsilon=" + Constants.EPSILON + " alpha=" + alpha
 				+ " gamma=" + Constants.GAMMA);
 
 		NumberAxis xax = new NumberAxis("Steps");
