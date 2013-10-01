@@ -17,7 +17,7 @@ import autonomousagents.world.State;
 
 public class SoftmaxPolicy extends Policy
 {
-	public static final double TEMPERATURE = 5;
+	public static final double TEMPERATURE = 0.01;
 
 	public SoftmaxPolicy()
 	{

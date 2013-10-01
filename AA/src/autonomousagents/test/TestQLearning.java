@@ -16,7 +16,6 @@ import autonomousagents.actions.Action;
 import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
-import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.predator.SoftmaxPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
@@ -26,7 +25,7 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 1000;
+	private static final int NUMBER_OF_EPISODES = 10000;
 	private static final double alpha = 0.1d;
 
 	public static void test()
@@ -34,8 +33,8 @@ public class TestQLearning
 
 		double average = 0;
 		double averageLastProcent = 0;
-		Policy predatorPolicy = new EGreedyPolicy();
-		// Policy predatorPolicy = new SoftmaxPolicy();
+		// Policy predatorPolicy = new EGreedyPolicy();
+		Policy predatorPolicy = new SoftmaxPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
 		XYSeries steps = new XYSeries("steps");
