@@ -16,7 +16,7 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 100000;
+	private static final int NUMBER_OF_EPISODES = 1000;
 	private static final double alpha = 0.1d;
 
 	public static void test()
@@ -27,6 +27,7 @@ public class TestQLearning
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
 		{
+			// System.out.println("NEW EPISODE NEW EPISODE NEW EPISODE NEW EPISODE NEW EPISODE NEW EPISODE ");
 			// Initialise s
 			Environment e = new Environment();
 			Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
@@ -55,13 +56,17 @@ public class TestQLearning
 				}
 
 				State sPrime = e.getState();
-
+				// System.out.printf("current action value: %f\n",
+				// a.getActionValue());
 				a.setActionValue(a.getActionValue()
 						+ alpha
 						* (reward + Constants.GAMMA * maximisation(predatorPolicy.actionsForState(sPrime)) - a
 								.getActionValue()));
 
 				s = sPrime;
+				// System.out.printf("updated action value: %f\n",
+				// a.getActionValue());
+
 			} while (!s.isTerminal());
 
 			// printTable(predatorPolicy);
