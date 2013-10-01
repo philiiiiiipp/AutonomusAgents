@@ -16,18 +16,22 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 1000;
+	private static final int NUMBER_OF_EPISODES = 10000;
 	private static final double alpha = 0.1d;
 
 	public static void test()
 	{
 
 		double average = 0;
+		double averageLastProcent = 0;
 		Policy predatorPolicy = new EGreedyPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
+
+		XYSeries steps = new XYSeries("steps");
+		XYSeries averageSteps = new XYSeries("Avg. all steps");
+		XYSeries averageLastSteps = new XYSeries("Avg. over last 100 steps");
 		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
 		{
-			// System.out.println("NEW EPISODE NEW EPISODE NEW EPISODE NEW EPISODE NEW EPISODE NEW EPISODE ");
 			// Initialise s
 			Environment e = new Environment();
 			Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
@@ -56,24 +60,49 @@ public class TestQLearning
 				}
 
 				State sPrime = e.getState();
-				// System.out.printf("current action value: %f\n",
-				// a.getActionValue());
+
 				a.setActionValue(a.getActionValue()
 						+ alpha
 						* (reward + Constants.GAMMA * maximisation(predatorPolicy.actionsForState(sPrime)) - a
 								.getActionValue()));
 
 				s = sPrime;
-				// System.out.printf("updated action value: %f\n",
-				// a.getActionValue());
-
 			} while (!s.isTerminal());
 
-			// printTable(predatorPolicy);
 			average += counter;
+			averageLastProcent += counter;
+			if (i % 100 == 0 || i + 1 == NUMBER_OF_EPISODES)
+			{
+				averageLastSteps.add(i, averageLastProcent / 100);
+				averageLastProcent = 0;
+
+				averageSteps.add(i, average / (i + 1));
+			}
+
+			steps.add(i, counter);
+
 		}
-		System.out.println(average / NUMBER_OF_EPISODES);
-		printAction(predatorPolicy);
+		XYSeriesCollection dataset = new XYSeriesCollection();
+
+		dataset.addSeries(averageSteps);
+		dataset.addSeries(averageLastSteps);
+		dataset.addSeries(steps);
+
+		ApplicationFrame frame = new ApplicationFrame("Q-Learning: epsilon=" + Constants.EPSILON + " alpha=" + alpha
+				+ " gamma=" + Constants.GAMMA);
+
+		NumberAxis xax = new NumberAxis("Steps");
+		NumberAxis yax = new NumberAxis("Episodes");
+		XYSplineRenderer a = new XYSplineRenderer();
+		a.setBaseShapesVisible(false);
+		XYPlot xyplot = new XYPlot(dataset, xax, yax, a);
+
+		JFreeChart chart = new JFreeChart(xyplot);
+
+		ChartPanel chartPanel = new ChartPanel(chart);
+		frame.setContentPane(chartPanel);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	private static double maximisation(final List<Action> actionList)
@@ -93,16 +122,17 @@ public class TestQLearning
 
 		DecimalFormat df = new DecimalFormat("#.000000");
 
-		State s = new State(new Point(4, 5), new Point(5, 5));
+		State s = new State(new Point(5, 4), new Point(5, 5));
+
 		for (Action a : predatorPolicy.actionsForState(s))
 		{
-
+			System.out.println(a.getActionValue() + " " + a);
 		}
 
-		for (int xPred = 0; xPred < 11; xPred++)
+		for (int yPred = 0; yPred < 11; yPred++)
 		{
 			System.out.print(" | ");
-			for (int yPred = 0; yPred < 11; yPred++)
+			for (int xPred = 0; xPred < 11; xPred++)
 			{
 				s = new State(new Point(xPred, yPred), new Point(5, 5));
 
@@ -112,7 +142,7 @@ public class TestQLearning
 				// continue;
 				// }
 				Action a = predatorPolicy.actionWithHighestValue(s);
-				System.out.print(df.format(a.getActionValue()) + a + "\t");
+				System.out.print(+xPred + ":" + yPred + " " + df.format(a.getActionValue()) + a + "\t");
 			}
 			System.out.println(" | ");
 		}
@@ -121,10 +151,10 @@ public class TestQLearning
 
 	private static void printTable(final Policy predatorPolicy)
 	{
-		for (int xPred = 0; xPred < 11; xPred++)
+		for (int yPred = 0; yPred < 11; yPred++)
 		{
 			System.out.print(" | ");
-			for (int yPred = 0; yPred < 11; yPred++)
+			for (int xPred = 0; xPred < 11; xPred++)
 			{
 				State s = new State(new Point(xPred, yPred), new Point(5, 5));
 
