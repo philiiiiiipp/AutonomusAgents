@@ -12,12 +12,13 @@ import autonomousagents.actions.WestAction;
 import autonomousagents.policy.Policy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Probability;
+import autonomousagents.util.Random;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
 public class SoftmaxPolicy extends Policy
 {
-	public static final double TEMPERATURE = 0.01;
+	public static final double TEMPERATURE = 1000;
 
 	public SoftmaxPolicy()
 	{
@@ -57,12 +58,12 @@ public class SoftmaxPolicy extends Policy
 	public Action nextProbabilisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
-		double probability = RAND.nextDouble();
+		double probability = Random.RAND.nextDouble();
 
 		if (Constants.EPSILON > probability)
 		{
 			List<Probability<Action>> probabilityList = generateProbabilities(actionList);
-			probability = RAND.nextDouble();
+			probability = Random.RAND.nextDouble();
 
 			for (Probability<Action> pA : probabilityList)
 			{
@@ -121,6 +122,6 @@ public class SoftmaxPolicy extends Policy
 	@Override
 	public String toString()
 	{
-		return "SoftMax";
+		return "SoftMax Temp: " + TEMPERATURE;
 	}
 }

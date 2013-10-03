@@ -3,9 +3,9 @@ package autonomousagents.policy;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import autonomousagents.actions.Action;
+import autonomousagents.util.Random;
 import autonomousagents.world.State;
 
 /**
@@ -14,8 +14,6 @@ import autonomousagents.world.State;
  */
 public class Policy
 {
-	protected static Random RAND = new Random();
-
 	protected Map<State, List<Action>> currentPolicy = new HashMap<State, List<Action>>();
 
 	/**
@@ -27,7 +25,7 @@ public class Policy
 	public Action nextProbabilisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
-		float probability = RAND.nextFloat();
+		float probability = Random.RAND.nextFloat();
 
 		for (int i = 0; i < actionList.size(); ++i)
 		{
