@@ -11,6 +11,7 @@ import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Pair;
+import autonomousagents.util.Probability;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
@@ -68,6 +69,7 @@ public class TestOnPolicyMonteCarlo
 
 				State state = sa.getLeft();
 				double bestActionValue = maximisation(predatorPolicy.actionsForState(state));
+				List<Probability<Action>> probabilityList = new ArrayList<Probability<Action>>();
 				for (int j = 0; j < predatorPolicy.actionsForState(state).size(); ++j)
 				{
 					Action a = predatorPolicy.actionsForState(state).get(j);
@@ -81,6 +83,7 @@ public class TestOnPolicyMonteCarlo
 						probability = 1 - Constants.EPSILON + Constants.EPSILON
 								/ predatorPolicy.actionsForState(state).size();
 					}
+					probabilityList.add(new Probability<Action>(a, probability));
 					// predatorPolicy
 				}
 			}
