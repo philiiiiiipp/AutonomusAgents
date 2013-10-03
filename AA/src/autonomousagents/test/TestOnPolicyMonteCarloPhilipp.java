@@ -19,7 +19,7 @@ import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-public class TestOnPolicyMonteCarlo
+public class TestOnPolicyMonteCarloPhilipp
 {
 	public static void test()
 	{

@@ -17,27 +17,29 @@ import autonomousagents.world.State;
 
 public class TestVariousQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 800;
+	private static final int NUMBER_OF_EPISODES = 10000;
 	private static final double alpha = 0.1d;
 
 	public static void test()
 	{
-		ArrayList<ArrayList<Double>> values = new ArrayList<ArrayList<Double>>();
-		for (int i = 0; i < 60; i += 5)
+		DecimalFormat df = new DecimalFormat("#.0000");
+		String pythonicList = "[";
+		for (int i = 0; i < 60; i += 3)
 		{
-			values.add(new ArrayList<Double>());
-			for (double j = 0; j < 0.9; j += 0.03)
+			pythonicList += "[";
+			for (double j = 0; j < 0.9; j += 0.015)
 			{
 				Constants.QValue = i;
 				Constants.EPSILON = j;
 
 				double thisConfigurationsValue = testWithSpecificValues();
 
-				values.get(values.size() - 1).add(thisConfigurationsValue);
+				pythonicList += df.format(thisConfigurationsValue) + ",";
 			}
+			pythonicList += "],";
 		}
-
-		pprint(values);
+		pythonicList += "]";
+		System.out.println(pythonicList);
 	}
 
 	public static double testWithSpecificValues()
