@@ -6,7 +6,7 @@ public class Random
 {
 	private static int SEED = 1;
 
-	public static java.util.Random RAND = new java.util.Random(SEED);
+	public static java.util.Random RAND = new java.util.Random();
 
 	public static void resetRandom()
 	{

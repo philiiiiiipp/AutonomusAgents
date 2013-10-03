@@ -29,7 +29,7 @@ public class TestOnPolicyMonteCarloPhilipp
 		int counter = 0;
 
 		Map<Pair<State, Action>, Pair<Double, Integer>> returns = new HashMap<Pair<State, Action>, Pair<Double, Integer>>();
-		while (counter < 100000)
+		while (counter < 1000)
 		{
 			counter++;
 
@@ -91,7 +91,7 @@ public class TestOnPolicyMonteCarloPhilipp
 			}
 
 		}
-		System.out.println(stepCounter / 1000);
+		System.out.println(stepCounter / 1000.0d);
 		PrettyPrint.printTable(predatorPolicy);
 		System.out.println();
 
