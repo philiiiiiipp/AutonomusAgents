@@ -1,6 +1,6 @@
 package autonomousagents.test;
 
-import java.text.DecimalFormat;
+import java.awt.Color;
 import java.util.List;
 
 import org.jfree.chart.ChartPanel;
@@ -16,7 +16,7 @@ import autonomousagents.actions.Action;
 import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
-import autonomousagents.policy.predator.SoftmaxPolicy;
+import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.world.Environment;
@@ -25,21 +25,56 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 10000;
-	private static final double alpha = 0.1d;
+	private static final int NUMBER_OF_EPISODES = 2000;
+
+	// private static final double alpha = 0.1d;
 
 	public static void test()
 	{
 
-		double average = 0;
-		double averageLastProcent = 0;
-		// Policy predatorPolicy = new EGreedyPolicy();
-		Policy predatorPolicy = new SoftmaxPolicy();
+		double alpha = 0.1;
+
+		XYSeriesCollection dataset = new XYSeriesCollection();
+
+		// dataset.addSeries(averageSteps);
+		// dataset.addSeries(averageLastSteps);
+		dataset.addSeries(generateSeries(0.1, 0.1));
+		dataset.addSeries(generateSeries(0.2, 0.1));
+		dataset.addSeries(generateSeries(0.3, 0.1));
+		dataset.addSeries(generateSeries(0.4, 0.1));
+		dataset.addSeries(generateSeries(0.5, 0.1));
+
+		ApplicationFrame frame = new ApplicationFrame("Q-Learning with e-Greedy" + ", epsilon=" + Constants.EPSILON
+				+ " alpha=" + alpha + " gamma=" + Constants.GAMMA);
+
+		NumberAxis xax = new NumberAxis("Steps");
+		NumberAxis yax = new NumberAxis(" Episodes");
+		XYSplineRenderer a = new XYSplineRenderer();
+		a.setBaseShapesVisible(false);
+		a.setSeriesPaint(2, Color.ORANGE);
+		a.setSeriesPaint(3, Color.BLACK);
+		XYPlot xyplot = new XYPlot(dataset, xax, yax, a);
+
+		JFreeChart chart = new JFreeChart(xyplot);
+
+		ChartPanel chartPanel = new ChartPanel(chart);
+		frame.setContentPane(chartPanel);
+		frame.pack();
+		frame.setVisible(true);
+	}
+
+	private static XYSeries generateSeries(final double alpha, final double gamma)
+	{
+		Policy predatorPolicy = new EGreedyPolicy();
+		// Policy predatorPolicy = new SoftmaxPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
-		XYSeries steps = new XYSeries("steps");
-		XYSeries averageSteps = new XYSeries("Avg. all steps");
-		XYSeries averageLastSteps = new XYSeries("Avg. over last 100 steps");
+		double average = 0;
+		double averageLastProcent = 0;
+
+		XYSeries steps = new XYSeries("Steps with Alpha:" + alpha + " Gamma:" + gamma);
+		// XYSeries averageSteps = new XYSeries("Avg. all steps");
+		// XYSeries averageLastSteps = new XYSeries("Avg. over last 100 steps");
 		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
 		{
 			// Initialise s
@@ -70,49 +105,29 @@ public class TestQLearning
 
 				State sPrime = e.getState();
 
-				a.setActionValue(a.getActionValue()
-						+ alpha
-						* (reward + Constants.GAMMA * maximisation(predatorPolicy.actionsForState(sPrime)) - a
-								.getActionValue()));
+				a.setActionValue(a.getActionValue() + alpha
+						* (reward + gamma * maximisation(predatorPolicy.actionsForState(sPrime)) - a.getActionValue()));
 
 				s = sPrime;
 			} while (!s.isTerminal());
 
 			average += counter;
 			averageLastProcent += counter;
-			if (i % 100 == 0 || i + 1 == NUMBER_OF_EPISODES)
+			int episodeStep = 10;
+			if (i % episodeStep == 0 || i + 1 == NUMBER_OF_EPISODES)
 			{
-				averageLastSteps.add(i, averageLastProcent / 100);
+				steps.add(i, averageLastProcent / episodeStep);
 				averageLastProcent = 0;
 
-				averageSteps.add(i, average / (i + 1));
+				// averageSteps.add(i, average / (i + 1));
 			}
 
-			steps.add(i, counter);
+			// steps.add(i, counter);
+			// steps.add(i, counter);
 
 		}
-		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		dataset.addSeries(averageSteps);
-		dataset.addSeries(averageLastSteps);
-		dataset.addSeries(steps);
-
-		ApplicationFrame frame = new ApplicationFrame("Q-Learning with " + predatorPolicy + ", epsilon="
-				+ Constants.EPSILON + " alpha=" + alpha + " gamma=" + Constants.GAMMA + " Temp:"
-				+ SoftmaxPolicy.TEMPERATURE);
-
-		NumberAxis xax = new NumberAxis("Steps");
-		NumberAxis yax = new NumberAxis("Episodes");
-		XYSplineRenderer a = new XYSplineRenderer();
-		a.setBaseShapesVisible(false);
-		XYPlot xyplot = new XYPlot(dataset, xax, yax, a);
-
-		JFreeChart chart = new JFreeChart(xyplot);
-
-		ChartPanel chartPanel = new ChartPanel(chart);
-		frame.setContentPane(chartPanel);
-		frame.pack();
-		frame.setVisible(true);
+		return steps;
 	}
 
 	private static double maximisation(final List<Action> actionList)
@@ -125,60 +140,5 @@ public class TestQLearning
 		}
 
 		return highestActionValue;
-	}
-
-	private static void printAction(final Policy predatorPolicy)
-	{
-
-		DecimalFormat df = new DecimalFormat("#.000000");
-
-		State s = new State(new Point(5, 4), new Point(5, 5));
-
-		for (Action a : predatorPolicy.actionsForState(s))
-		{
-			System.out.println(a.getActionValue() + " " + a);
-		}
-
-		for (int yPred = 0; yPred < 11; yPred++)
-		{
-			System.out.print(" | ");
-			for (int xPred = 0; xPred < 11; xPred++)
-			{
-				s = new State(new Point(xPred, yPred), new Point(5, 5));
-
-				// if (s.isTerminal())
-				// {
-				// System.out.print(df.format(0.0) + ".\t");
-				// continue;
-				// }
-				Action a = predatorPolicy.actionWithHighestValue(s);
-				System.out.print(+xPred + ":" + yPred + " " + df.format(a.getActionValue()) + a + "\t");
-			}
-			System.out.println(" | ");
-		}
-		System.out.println("---------------------------");
-	}
-
-	private static void printTable(final Policy predatorPolicy)
-	{
-		for (int yPred = 0; yPred < 11; yPred++)
-		{
-			System.out.print(" | ");
-			for (int xPred = 0; xPred < 11; xPred++)
-			{
-				State s = new State(new Point(xPred, yPred), new Point(5, 5));
-
-				if (s.isTerminal())
-				{
-					System.out.print("# ");
-					continue;
-				}
-
-				Action a = predatorPolicy.actionWithHighestValue(s);
-				System.out.print(a + " ");
-			}
-			System.out.println(" | ");
-		}
-		System.out.println("---------------------------");
 	}
 }
