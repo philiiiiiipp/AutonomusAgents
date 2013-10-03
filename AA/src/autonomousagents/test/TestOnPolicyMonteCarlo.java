@@ -26,6 +26,7 @@ public class TestOnPolicyMonteCarlo
 
 		while (true)
 		{
+
 			List<Pair<State, Action>> stateActionList = new ArrayList<Pair<State, Action>>();
 			// generate an episode using the current policy
 			Environment e = new Environment();
@@ -36,24 +37,73 @@ public class TestOnPolicyMonteCarlo
 			e.addAgent(prey);
 
 			State s = e.getState();
-
-			Action a = predatorPolicy.nextProbabilisticActionForState(s);
-			a.apply(predator);
-
-			// Reward from this action
-			double reward = (e.getState().isTerminal() ? Constants.REWARD : 0);
-
-			if (!e.getState().isTerminal())
+			do
 			{
-				preyPolicy.nextProbabilisticActionForState(e.getState()).apply(prey);
-			}
-			stateActionList.add(new Pair<State, Action>(s, a));
+				Action a = predatorPolicy.nextProbabilisticActionForState(s);
+				a.apply(predator);
 
-			// append R to the list of returns
-			// returnList.add(reward);
-			// the action value of action a will be te average over all the
-			// returns
-			// a.setActionValue(actionValue);
+				// Reward from this action
+				double reward = (e.getState().isTerminal() ? Constants.REWARD : 0);
+
+				if (!e.getState().isTerminal())
+				{
+					preyPolicy.nextProbabilisticActionForState(e.getState()).apply(prey);
+				}
+				stateActionList.add(new Pair<State, Action>(s, a));
+				s = e.getState();
+			} while (!s.isTerminal());
+
+			for (int i = 0; i < stateActionList.size(); ++i)
+			{
+				Pair<State, Action> sa = stateActionList.get(i);
+				double r = 0;
+				if (i == stateActionList.size() - 1)
+				{
+					r = Constants.REWARD;
+				}
+				double returnValue = Math.pow(Constants.GAMMA, i) * r;
+
+				Action action = sa.getRight();
+				action.setActionValue(returnValue);
+
+				State state = sa.getLeft();
+				double bestActionValue = maximisation(predatorPolicy.actionsForState(state));
+				for (int j = 0; j < predatorPolicy.actionsForState(state).size(); ++j)
+				{
+					Action a = predatorPolicy.actionsForState(state).get(j);
+					double ActionValue = a.getActionValue();
+					double probability;
+					if (bestActionValue != ActionValue)
+					{
+						probability = Constants.EPSILON / predatorPolicy.actionsForState(state).size();
+					} else
+					{
+						probability = 1 - Constants.EPSILON + Constants.EPSILON
+								/ predatorPolicy.actionsForState(state).size();
+					}
+					// predatorPolicy
+				}
+			}
 		}
+	}
+
+	private double maximisation(final List<Action> actionList)
+	{
+		double highestActionValue = 0;
+		for (Action a : actionList)
+		{
+			if (a.getActionValue() > highestActionValue)
+				highestActionValue = a.getActionValue();
+		}
+
+		return highestActionValue;
+	}
+
+	private static double reward(final Point predator, final Point prey)
+	{
+		if (predator.equals(prey))
+			return Constants.REWARD;
+
+		return 0;
 	}
 }
