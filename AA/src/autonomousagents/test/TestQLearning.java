@@ -25,7 +25,7 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 10000;
+	private static final int NUMBER_OF_EPISODES = 2000;
 
 	// private static final double alpha = 0.1d;
 
@@ -38,11 +38,11 @@ public class TestQLearning
 
 		// dataset.addSeries(averageSteps);
 		// dataset.addSeries(averageLastSteps);
-		dataset.addSeries(generateSeries(0.1, 0.1));
-		dataset.addSeries(generateSeries(0.2, 0.1));
-		dataset.addSeries(generateSeries(0.3, 0.1));
-		dataset.addSeries(generateSeries(0.4, 0.1));
 		dataset.addSeries(generateSeries(0.5, 0.1));
+		dataset.addSeries(generateSeries(0.5, 0.5));
+		dataset.addSeries(generateSeries(0.5, 0.7));
+		dataset.addSeries(generateSeries(0.5, 0.9));
+		// dataset.addSeries(generateSeries(0.5, 0.1));
 
 		ApplicationFrame frame = new ApplicationFrame("Q-Learning with e-Greedy" + ", epsilon=" + Constants.EPSILON
 				+ " alpha=" + alpha + " gamma=" + Constants.GAMMA);

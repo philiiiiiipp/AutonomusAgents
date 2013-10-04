@@ -27,12 +27,6 @@ public class State
 		this.preyPoint = new Point(0, 0);
 
 		/*
-		 * int xdistance = Math.abs(this.predatorPoint.getX() -
-		 * this.preyPoint.getX()); int ydistance =
-		 * Math.abs(this.predatorPoint.getY() - this.preyPoint.getY());
-		 * 
-		 * xdistance = Math.min(xdistance, 11 - xdistance); ydistance =
-		 * Math.min(ydistance, 11 - ydistance);
 		 * 
 		 * if (xdistance < ydistance) { int tmp = xdistance; xdistance =
 		 * ydistance; ydistance = tmp; }

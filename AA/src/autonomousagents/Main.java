@@ -1,7 +1,6 @@
 package autonomousagents;
 
-import autonomousagents.test.TestOnPolicyMonteCarloPhilipp;
-import autonomousagents.test.TestQLearning;
+import autonomousagents.test.TestCompareSoftMaxEGreedy;
 
 public class Main
 {
@@ -9,8 +8,8 @@ public class Main
 	public static void main(final String[] args)
 	{
 		// TestOnPolicyMonteCarlo.test();
-
-		TestQLearning.test();
+		TestCompareSoftMaxEGreedy.test();
+		// TestQLearning.test();
 		// TestSarsa.test();
 		// TestVariousQLearning.test();
 		// TestVariousQLearning.test();
@@ -20,8 +19,6 @@ public class Main
 		// TestPolicyEvaluation.test();
 		// TestPolicyIteration.test();
 		// TestSimulator.test();
-		TestOnPolicyMonteCarloPhilipp.test();
-		// TestQLearning.test();
-		// TestSarsa.test();
+		// TestOnPolicyMonteCarloPhilipp.test();
 	}
 }
