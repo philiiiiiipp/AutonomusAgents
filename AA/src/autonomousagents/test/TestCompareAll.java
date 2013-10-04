@@ -13,7 +13,10 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 
 import autonomousagents.policy.predator.EGreedyPolicy;
+import autonomousagents.policy.predator.GreedyPolicy;
+import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
+import autonomousagents.util.Constants;
 import autonomousagents.util.Random;
 
 public class TestCompareAll
@@ -27,7 +30,14 @@ public class TestCompareAll
 		Random.resetRandom();
 		List<Integer> stepList = TestOnPolicyMonteCarlo.runOnPolicyMonteCarlo(new EGreedyPolicy(),
 				new PreyRandomPolicy(), episodeCount);
-		dataset.addSeries(createDataseries(stepList, "MonteCarlo"));
+		dataset.addSeries(createDataseries(stepList, "MonteCarlo OnPolicy"));
+
+		Constants.QValue = 0;
+		Random.resetRandom();
+		stepList = TestOffPolicyMC.runOffPolicyMonteCarlo(new PredatorRandomPolicy(), new GreedyPolicy(),
+				new PreyRandomPolicy(), episodeCount);
+		dataset.addSeries(createDataseries(stepList, "MonteCarlo OffPolicy"));
+		Constants.QValue = 15;
 
 		Random.resetRandom();
 		stepList = TestQLearning.runQLearning(new EGreedyPolicy(), new PreyRandomPolicy(), 0.1, 0.9, episodeCount);
@@ -40,6 +50,7 @@ public class TestCompareAll
 		ApplicationFrame frame = new ApplicationFrame("");
 		NumberAxis xax = new NumberAxis("Episodes");
 		NumberAxis yax = new NumberAxis("Steps");
+
 		XYSplineRenderer a = new XYSplineRenderer();
 		a.setBaseShapesVisible(false);
 		a.setSeriesPaint(2, Color.ORANGE);

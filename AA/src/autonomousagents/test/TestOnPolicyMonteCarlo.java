@@ -116,6 +116,7 @@ public class TestOnPolicyMonteCarlo
 			}
 
 			resultList.add(episode.size());
+
 			counter++;
 		}
 

@@ -11,7 +11,7 @@ public abstract class Action
 {
 	private double probability;
 	private double numerator = 0;
-	private final double denominator = 0;
+	private double denominator = 0;
 	private double actionValue = Constants.QValue;
 
 	public Action(final double probability)
@@ -68,5 +68,24 @@ public abstract class Action
 	public double getDenominator()
 	{
 		return this.denominator;
+	}
+
+	public void setDenominator(final double denominator)
+	{
+		this.denominator = denominator;
+	}
+
+	/**
+	 * Are those two actions the same
+	 * 
+	 * @param other
+	 * @return
+	 */
+	public boolean isEqual(final Action other)
+	{
+		if (other.getClass() == this.getClass())
+			return true;
+
+		return false;
 	}
 }
