@@ -10,6 +10,7 @@ import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
 import autonomousagents.policy.predator.EGreedyPolicy;
+import autonomousagents.policy.predator.GreedyPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Pair;
 import autonomousagents.world.Environment;
@@ -27,11 +28,25 @@ public class TestOffPolicyMC
 
 		PreyRandomPolicy preyPolicy = new PreyRandomPolicy();
 		Policy behaviorPolicyPred = new EGreedyPolicy();
+		Policy deterministicPolicyPred = new GreedyPolicy();
 
 		int counter = 0;
 		while (counter < 1000)
 		{
-			List<Pair<State, Action>> episode = generateEpisode(behaviorPolicyPred, preyPolicy);
+			List<Pair<State, Action>> episodesOnPolicy = generateEpisode(behaviorPolicyPred, preyPolicy);
+			List<Pair<State, Action>> episodesOffPolicy = generateEpisode(deterministicPolicyPred, preyPolicy);
+			int latestTime = -99;
+			for (int i = episodesOnPolicy.size(); i >= 0; i--)
+			{
+				Action on = episodesOnPolicy.get(i).getRight();
+				Action off = episodesOffPolicy.get(i).getRight();
+				if (!(on == off))
+				{
+					latestTimen = i;
+					break;
+				}
+
+			}
 			counter++;
 		}
 
