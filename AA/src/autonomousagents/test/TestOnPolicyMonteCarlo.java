@@ -11,8 +11,6 @@ import autonomousagents.actions.Action;
 import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
-import autonomousagents.policy.predator.EGreedyPolicy;
-import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Pair;
 import autonomousagents.world.Environment;
@@ -21,58 +19,13 @@ import autonomousagents.world.State;
 
 public class TestOnPolicyMonteCarlo
 {
-	public static void test()
-	{
-		Policy predatorPolicy = new EGreedyPolicy();
-		PreyRandomPolicy preyPolicy = new PreyRandomPolicy();
-
-		Map<Pair<State, Action>, Pair<Double, Integer>> returns = new HashMap<Pair<State, Action>, Pair<Double, Integer>>();
-		Set<Pair<State, Action>> observedStateActions = new HashSet<Pair<State, Action>>();
-
-		int counter = 0;
-		while (counter < Constants.NUMBER_OF_EPISODES)
-		{
-			counter++;
-
-			observedStateActions.clear();
-
-			// (a)
-			List<Pair<State, Action>> episode = generateEpisode(predatorPolicy, preyPolicy);
-
-			// (b)
-			for (int i = 0; i < episode.size(); ++i)
-			{
-				if (!returns.containsKey(episode.get(i)))
-				{
-					returns.put(episode.get(i), new Pair<Double, Integer>(0.0d, 0));
-				}
-
-				if (!observedStateActions.contains(episode.get(i)))
-				{
-					observedStateActions.add(episode.get(i));
-
-					double r = Math.pow(Constants.GAMMA, episode.size() - (i + 1)) * Constants.REWARD;
-
-					returns.get(episode.get(i)).setLeft(returns.get(episode.get(i)).getLeft() + r);
-					returns.get(episode.get(i)).setRight(returns.get(episode.get(i)).getRight() + 1);
-				}
-			}
-
-			// (c)
-			for (Pair<State, Action> pair : returns.keySet())
-			{
-				pair.getRight().setActionValue(returns.get(pair).getLeft() / returns.get(pair).getRight());
-			}
-		}
-	}
-
 	/**
 	 * Running a fixed amount of episodes with onpolicy monte carlo.
 	 * 
 	 * @param predatorPolicy
 	 * @param preyPolicy
-	 * @return a list, containing the steps it took for each episode to catch
-	 *         the prey
+	 * @return a list, containing the number of steps used for catching the prey
+	 *         after each episode
 	 */
 	public static List<Integer> runOnPolicyMonteCarlo(final Policy predatorPolicy, final Policy preyPolicy,
 			final int episodeCount)
