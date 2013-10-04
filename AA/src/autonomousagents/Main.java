@@ -1,6 +1,6 @@
 package autonomousagents;
 
-import autonomousagents.test.TestQLearning;
+import autonomousagents.test.TestCompareSarsaQLearning;
 
 public class Main
 {
@@ -9,7 +9,8 @@ public class Main
 	{
 
 		// TestOnPolicyMonteCarloPhilipp.test();
-		TestQLearning.test();
+		// TestQLearning.test();
+		TestCompareSarsaQLearning.test();
 	}
 
 }

@@ -13,7 +13,7 @@ import autonomousagents.actions.Action;
 import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
-import autonomousagents.policy.predator.SoftmaxPolicy;
+import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.world.Environment;
@@ -22,7 +22,7 @@ import autonomousagents.world.State;
 
 public class TestSarsa
 {
-	private static final int NUMBER_OF_EPISODES = 10000;
+	private static final int NUMBER_OF_EPISODES = 2000;
 
 	public static void test()
 	{
@@ -56,8 +56,8 @@ public class TestSarsa
 	{
 		double average = 0;
 		double averageLastProcent = 0;
-		// Policy predatorPolicy = new EGreedyPolicy();
-		Policy predatorPolicy = new SoftmaxPolicy();
+		Policy predatorPolicy = new EGreedyPolicy();
+		// Policy predatorPolicy = new SoftmaxPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
 		XYSeries steps = new XYSeries("Sarsa with Alpha:" + alpha + " Gamma:" + gamma);
@@ -103,7 +103,7 @@ public class TestSarsa
 			average += counter;
 			averageLastProcent += counter;
 			int averageStep = 100;
-			if (i % averageStep == 0 || i + 1 == NUMBER_OF_EPISODES)
+			if (i != 0 && i % averageStep == 0 || i + 1 == NUMBER_OF_EPISODES)
 			{
 				steps.add(i, averageLastProcent / averageStep);
 				averageLastProcent = 0;
