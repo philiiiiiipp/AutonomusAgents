@@ -14,7 +14,6 @@ import org.jfree.ui.ApplicationFrame;
 
 import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.predator.GreedyPolicy;
-import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Random;
@@ -34,7 +33,7 @@ public class TestCompareAll
 
 		Constants.QValue = 0;
 		Random.resetRandom();
-		stepList = TestOffPolicyMC.runOffPolicyMonteCarlo(new PredatorRandomPolicy(), new GreedyPolicy(),
+		stepList = TestOffPolicyMC.runOffPolicyMonteCarlo(new EGreedyPolicy(), new GreedyPolicy(),
 				new PreyRandomPolicy(), episodeCount);
 		dataset.addSeries(createDataseries(stepList, "MonteCarlo OffPolicy"));
 		Constants.QValue = 15;
