@@ -14,12 +14,17 @@ import org.jfree.ui.ApplicationFrame;
 
 import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.predator.GreedyPolicy;
+import autonomousagents.policy.predator.PredatorRandomPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Random;
 
 public class TestCompareAll
 {
+	/**
+	 * Plot the difference between SARSA, Q-Learning and On-/Off-Policy Monte
+	 * Carlo
+	 */
 	public static void test()
 	{
 
@@ -33,9 +38,14 @@ public class TestCompareAll
 
 		Constants.QValue = 0;
 		Random.resetRandom();
-		stepList = TestOffPolicyMC.runOffPolicyMonteCarlo(new EGreedyPolicy(), new GreedyPolicy(),
+		stepList = TestOffPolicyMonteCarlo.runOffPolicyMonteCarlo(new PredatorRandomPolicy(), new GreedyPolicy(),
 				new PreyRandomPolicy(), episodeCount);
-		dataset.addSeries(createDataseries(stepList, "MonteCarlo OffPolicy"));
+		dataset.addSeries(createDataseries(stepList, "MonteCarlo OffPolicy with Random"));
+
+		Random.resetRandom();
+		stepList = TestOffPolicyMonteCarlo.runOffPolicyMonteCarlo(new EGreedyPolicy(), new GreedyPolicy(),
+				new PreyRandomPolicy(), episodeCount);
+		dataset.addSeries(createDataseries(stepList, "MonteCarlo OffPolicy with e-Greedy"));
 		Constants.QValue = 15;
 
 		Random.resetRandom();
