@@ -11,6 +11,7 @@ import autonomousagents.actions.StayAction;
 import autonomousagents.actions.WestAction;
 import autonomousagents.policy.Policy;
 import autonomousagents.util.Constants;
+import autonomousagents.util.Random;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
@@ -54,12 +55,12 @@ public class EGreedyPolicy extends Policy
 	public Action nextProbabilisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
-		double probability = RAND.nextDouble();
+		double probability = Random.RAND.nextDouble();
 
 		if (Constants.EPSILON > probability)
 		{
 			// find a random action
-			return actionList.get(RAND.nextInt(actionList.size()));
+			return actionList.get(Random.RAND.nextInt(actionList.size()));
 		} else
 		{
 			int bestAction = 0;

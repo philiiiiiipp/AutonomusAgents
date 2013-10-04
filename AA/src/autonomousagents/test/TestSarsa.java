@@ -1,8 +1,5 @@
 package autonomousagents.test;
 
-import java.text.DecimalFormat;
-import java.util.List;
-
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.NumberAxis;
@@ -26,20 +23,44 @@ import autonomousagents.world.State;
 public class TestSarsa
 {
 	private static final int NUMBER_OF_EPISODES = 10000;
-	private static final double alpha = 0.1d;
 
 	public static void test()
 	{
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		XYSeries s = generateDataSeries(0.1, 0.1);
+		dataset.addSeries(s);
 
+		s = generateDataSeries(0.1, 0.2);
+		dataset.addSeries(s);
+
+		s = generateDataSeries(0.1, 0.4);
+		dataset.addSeries(s);
+
+		ApplicationFrame frame = new ApplicationFrame("Sarsa");
+
+		NumberAxis xax = new NumberAxis("Steps");
+		NumberAxis yax = new NumberAxis("Episodes");
+		XYSplineRenderer a = new XYSplineRenderer();
+		a.setBaseShapesVisible(false);
+		XYPlot xyplot = new XYPlot(dataset, xax, yax, a);
+
+		JFreeChart chart = new JFreeChart(xyplot);
+
+		ChartPanel chartPanel = new ChartPanel(chart);
+		frame.setContentPane(chartPanel);
+		frame.pack();
+		frame.setVisible(true);
+	}
+
+	public static XYSeries generateDataSeries(final double alpha, final double gamma)
+	{
 		double average = 0;
 		double averageLastProcent = 0;
 		// Policy predatorPolicy = new EGreedyPolicy();
 		Policy predatorPolicy = new SoftmaxPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
-		XYSeries steps = new XYSeries("steps");
-		XYSeries averageSteps = new XYSeries("Avg. all steps");
-		XYSeries averageLastSteps = new XYSeries("Avg. over last 100 steps");
+		XYSeries steps = new XYSeries("Sarsa with Alpha:" + alpha + " Gamma:" + gamma);
 		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
 		{
 			// Initialise s
@@ -73,7 +94,7 @@ public class TestSarsa
 				Action aPrime = predatorPolicy.nextProbabilisticActionForState(sPrime);
 
 				a.setActionValue(a.getActionValue() + alpha
-						* (reward + Constants.GAMMA * aPrime.getActionValue() - a.getActionValue()));
+						* (reward + gamma * aPrime.getActionValue() - a.getActionValue()));
 
 				s = sPrime;
 				a = aPrime;
@@ -81,104 +102,17 @@ public class TestSarsa
 
 			average += counter;
 			averageLastProcent += counter;
-			if (i % 100 == 0 || i + 1 == NUMBER_OF_EPISODES)
+			int averageStep = 100;
+			if (i % averageStep == 0 || i + 1 == NUMBER_OF_EPISODES)
 			{
-				averageLastSteps.add(i, averageLastProcent / 100);
+				steps.add(i, averageLastProcent / averageStep);
 				averageLastProcent = 0;
-
-				averageSteps.add(i, average / (i + 1));
 			}
 
-			steps.add(i, counter);
-
-		}
-		XYSeriesCollection dataset = new XYSeriesCollection();
-
-		dataset.addSeries(averageSteps);
-		dataset.addSeries(averageLastSteps);
-		dataset.addSeries(steps);
-
-		ApplicationFrame frame = new ApplicationFrame("Sarsa: epsilon=" + Constants.EPSILON + " alpha=" + alpha
-				+ " gamma=" + Constants.GAMMA);
-
-		NumberAxis xax = new NumberAxis("Steps");
-		NumberAxis yax = new NumberAxis("Episodes");
-		XYSplineRenderer a = new XYSplineRenderer();
-		a.setBaseShapesVisible(false);
-		XYPlot xyplot = new XYPlot(dataset, xax, yax, a);
-
-		JFreeChart chart = new JFreeChart(xyplot);
-
-		ChartPanel chartPanel = new ChartPanel(chart);
-		frame.setContentPane(chartPanel);
-		frame.pack();
-		frame.setVisible(true);
-	}
-
-	private static double maximisation(final List<Action> actionList)
-	{
-		double highestActionValue = 0;
-		for (Action a : actionList)
-		{
-			if (a.getActionValue() > highestActionValue)
-				highestActionValue = a.getActionValue();
+			// steps.add(i, average / (i + 1));
+			// steps.add(i, counter);
 		}
 
-		return highestActionValue;
-	}
-
-	private static void printAction(final Policy predatorPolicy)
-	{
-
-		DecimalFormat df = new DecimalFormat("#.000000");
-
-		State s = new State(new Point(5, 4), new Point(5, 5));
-
-		for (Action a : predatorPolicy.actionsForState(s))
-		{
-			System.out.println(a.getActionValue() + " " + a);
-		}
-
-		for (int yPred = 0; yPred < 11; yPred++)
-		{
-			System.out.print(" | ");
-			for (int xPred = 0; xPred < 11; xPred++)
-			{
-				s = new State(new Point(xPred, yPred), new Point(5, 5));
-
-				// if (s.isTerminal())
-				// {
-				// System.out.print(df.format(0.0) + ".\t");
-				// continue;
-				// }
-				Action a = predatorPolicy.actionWithHighestValue(s);
-				System.out.print(+xPred + ":" + yPred + " " + df.format(a.getActionValue()) + a + "\t");
-			}
-			System.out.println(" | ");
-		}
-		System.out.println("---------------------------");
-	}
-
-	private static void printTable(final Policy predatorPolicy)
-	{
-		for (int yPred = 0; yPred < 11; yPred++)
-		{
-			System.out.print(" | ");
-			for (int xPred = 0; xPred < 11; xPred++)
-			{
-				State s = new State(new Point(xPred, yPred), new Point(5, 5));
-
-				if (s.isTerminal())
-				{
-					System.out.print("# ");
-					continue;
-				}
-
-				Action a = predatorPolicy.actionWithHighestValue(s);
-				System.out.print(a + " ");
-			}
-			System.out.println(" | ");
-		}
-		System.out.println("---------------------------");
+		return steps;
 	}
 }

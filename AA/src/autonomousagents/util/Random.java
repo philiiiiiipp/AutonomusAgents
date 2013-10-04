@@ -4,7 +4,14 @@ import autonomousagents.world.Point;
 
 public class Random
 {
-	public static final java.util.Random RAND = new java.util.Random();
+	private static int SEED = 1;
+
+	public static java.util.Random RAND = new java.util.Random();
+
+	public static void resetRandom()
+	{
+		RAND = new java.util.Random(SEED);
+	}
 
 	/**
 	 * Generate a random point, which is inside the boundaries of the GameField
@@ -24,9 +31,14 @@ public class Random
 			y = (notAvailable.getY() == y ? y + 1 : y);
 		} else
 		{
-			y = RAND.nextInt(GameField.XMAX);
+			y = RAND.nextInt(GameField.YMAX);
 		}
 
 		return new Point(x, y);
+	}
+
+	public static Point randomPoint()
+	{
+		return new Point(RAND.nextInt(GameField.XMAX), RAND.nextInt(GameField.YMAX));
 	}
 }

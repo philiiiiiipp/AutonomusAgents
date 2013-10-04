@@ -1,12 +1,14 @@
 package autonomousagents;
 
-import autonomousagents.test.TestQLearning;
+import autonomousagents.test.TestOnPolicyMonteCarloPhilipp;
 
 public class Main
 {
 
 	public static void main(final String[] args)
 	{
-		TestQLearning.test();
+
+		TestOnPolicyMonteCarloPhilipp.test();
 	}
+
 }
