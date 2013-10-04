@@ -25,7 +25,7 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 10000;
+	private static final int NUMBER_OF_EPISODES = 1750;
 
 	// private static final double alpha = 0.1d;
 
@@ -47,8 +47,8 @@ public class TestQLearning
 		ApplicationFrame frame = new ApplicationFrame("Q-Learning with e-Greedy" + ", epsilon=" + Constants.EPSILON
 				+ " alpha=" + alpha + " gamma=" + Constants.GAMMA);
 
-		NumberAxis xax = new NumberAxis("Steps");
-		NumberAxis yax = new NumberAxis(" Episodes");
+		NumberAxis xax = new NumberAxis("Episodes");
+		NumberAxis yax = new NumberAxis("Steps");
 		XYSplineRenderer a = new XYSplineRenderer();
 		a.setBaseShapesVisible(false);
 		a.setSeriesPaint(2, Color.ORANGE);
@@ -116,7 +116,7 @@ public class TestQLearning
 
 			average += counter;
 			averageLastProcent += counter;
-			int episodeStep = 100;
+			int episodeStep = 10;
 			if (i % episodeStep == 0 || i + 1 == NUMBER_OF_EPISODES)
 			{
 				steps.add(i, averageLastProcent / episodeStep);

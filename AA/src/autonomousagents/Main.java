@@ -1,6 +1,6 @@
 package autonomousagents;
 
-import autonomousagents.test.TestOnPolicyMonteCarloPhilipp;
+import autonomousagents.test.TestQLearning;
 
 public class Main
 {
@@ -8,7 +8,8 @@ public class Main
 	public static void main(final String[] args)
 	{
 
-		TestOnPolicyMonteCarloPhilipp.test();
+		// TestOnPolicyMonteCarloPhilipp.test();
+		TestQLearning.test();
 	}
 
 }
