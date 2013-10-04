@@ -31,7 +31,7 @@ public class TestOnPolicyMonteCarloPhilipp
 		Set<Pair<State, Action>> observedStateActions = new HashSet<Pair<State, Action>>();
 
 		int counter = 0;
-		while (counter < 10000)
+		while (counter < 3000)
 		{
 			if (counter % 1000 == 0)
 				System.out.println(counter);

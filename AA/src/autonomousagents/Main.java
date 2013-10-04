@@ -1,7 +1,6 @@
 package autonomousagents;
 
 import autonomousagents.test.TestCompareSoftMaxEGreedy;
-import autonomousagents.test.TestQLearning;
 
 public class Main
 {
@@ -16,6 +15,10 @@ public class Main
 		// TestVariousQLearning.test();
 		// TestSarsa.test();
 
-		TestQLearning.test();
+		// TestQLearning.test();
+
+		// TestOnPolicyMonteCarloPhilipp.test();
+		// TestQLearning.test();
+		// TestCompareSarsaQLearning.test();
 	}
 }

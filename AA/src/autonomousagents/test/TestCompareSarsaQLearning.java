@@ -23,9 +23,9 @@ public class TestCompareSarsaQLearning
 
 		// dataset.addSeries(averageSteps);
 		// dataset.addSeries(averageLastSteps);
-		dataset.addSeries(TestSarsa.generateDataSeries(0.1, 0.9));
+		dataset.addSeries(TestSarsa.generateDataSeries(0.1, 0.1));
 		Random.resetRandom();
-		dataset.addSeries(TestQLearning.generateSeries(0.1, 0.9));
+		dataset.addSeries(TestQLearning.generateSeries(0.1, 0.1));
 
 		ApplicationFrame frame = new ApplicationFrame("Q-Learning with e-Greedy" + ", epsilon=" + Constants.EPSILON
 				+ " alpha=" + alpha + " gamma=" + Constants.GAMMA);
@@ -33,7 +33,7 @@ public class TestCompareSarsaQLearning
 		NumberAxis xax = new NumberAxis("Episodes");
 		NumberAxis yax = new NumberAxis("Steps");
 		XYSplineRenderer a = new XYSplineRenderer();
-		// a.setBaseShapesVisible(false);
+		a.setBaseShapesVisible(false);
 		a.setSeriesPaint(2, Color.ORANGE);
 		a.setSeriesPaint(3, Color.BLACK);
 		XYPlot xyplot = new XYPlot(dataset, xax, yax, a);

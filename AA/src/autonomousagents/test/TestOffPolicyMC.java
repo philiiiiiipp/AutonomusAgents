@@ -40,14 +40,12 @@ public class TestOffPolicyMC
 			{
 				Action on = episodesOnPolicy.get(i).getRight();
 				Action off = episodesOffPolicy.get(i).getRight();
-				if (!(on == off))
+				if (on != off)
 				{
 					latestTime = i;
 					break;
 				}
-
 			}
-			counter++;
 		}
 
 	}
