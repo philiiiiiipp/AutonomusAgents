@@ -29,13 +29,15 @@ public class TestOnPolicyMonteCarloPhilipp
 		int counter = 0;
 
 		Map<Pair<State, Action>, Pair<Double, Integer>> returns = new HashMap<Pair<State, Action>, Pair<Double, Integer>>();
-		while (counter < 1000)
+		while (counter < 10000)
 		{
+			if (counter % 1000 == 0)
+				System.out.println(counter);
+
 			counter++;
 
 			// (a)
 			List<Pair<State, Action>> episode = generateEpisode(predatorPolicy, preyPolicy);
-			// PrettyPrint.printEpisode(episode);
 
 			// (b)
 
@@ -62,7 +64,7 @@ public class TestOnPolicyMonteCarloPhilipp
 		// Test
 
 		int stepCounter = 0;
-		for (int i = 0; i < 1000; i++)
+		for (int i = 0; i < 10000; i++)
 		{
 			Environment e = new Environment();
 
@@ -91,11 +93,11 @@ public class TestOnPolicyMonteCarloPhilipp
 			}
 
 		}
-		System.out.println(stepCounter / 1000.0d);
+		System.out.println(stepCounter / 10000.0d);
 		PrettyPrint.printTable(predatorPolicy);
 		System.out.println();
 
-		State sTest = new State(new Point(5, 5), new Point(0, 0));
+		State sTest = new State(new Point(0, 0), new Point(5, 5));
 		PrettyPrint.printAction(predatorPolicy, sTest);
 	}
 
