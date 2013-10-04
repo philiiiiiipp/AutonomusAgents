@@ -1,6 +1,7 @@
 package autonomousagents.test;
 
 import java.awt.Color;
+import java.util.List;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -12,10 +13,14 @@ import org.jfree.ui.ApplicationFrame;
 
 import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.predator.SoftmaxPolicy;
+import autonomousagents.policy.prey.PreyRandomPolicy;
+import autonomousagents.util.JFreeChartHelper;
 import autonomousagents.util.Random;
 
 public class TestCompareSoftMaxEGreedy
 {
+	private static final int EPISODE_COUNT = 1750;
+
 	/**
 	 * Plots the difference between SoftMax and e-Greedy
 	 */
@@ -23,9 +28,19 @@ public class TestCompareSoftMaxEGreedy
 	{
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		dataset.addSeries(TestQLearning.generateSeries(0.2, 0.5, new EGreedyPolicy()));
+		double alpha = 0.2;
+		double gamma = 0.5;
+
 		Random.resetRandom();
-		dataset.addSeries(TestQLearning.generateSeries(0.2, 0.5, new SoftmaxPolicy()));
+		List<Integer> stepList = TestSarsa.runSarsa(new EGreedyPolicy(), new PreyRandomPolicy(), alpha, gamma,
+				EPISODE_COUNT);
+		dataset.addSeries(JFreeChartHelper.createAverageDataseries(stepList, "Sarsa with e-Greedy, Alpha:" + alpha
+				+ " Gamma:" + gamma, 100));
+
+		Random.resetRandom();
+		stepList = TestSarsa.runSarsa(new SoftmaxPolicy(), new PreyRandomPolicy(), alpha, gamma, EPISODE_COUNT);
+		dataset.addSeries(JFreeChartHelper.createAverageDataseries(stepList, "Sarsa with SoftMax, Alpha:" + alpha
+				+ " Gamma:" + gamma, 100));
 
 		ApplicationFrame frame = new ApplicationFrame("");
 

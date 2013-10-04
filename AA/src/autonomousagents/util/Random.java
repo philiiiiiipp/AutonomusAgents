@@ -8,6 +8,9 @@ public class Random
 
 	public static java.util.Random RAND = new java.util.Random();
 
+	/**
+	 * Reset our random values with a fixed seed.
+	 */
 	public static void resetRandom()
 	{
 		RAND = new java.util.Random(SEED);
