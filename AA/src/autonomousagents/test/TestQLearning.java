@@ -28,20 +28,20 @@ public class TestQLearning
 {
 	private static final int NUMBER_OF_EPISODES = 2000;
 
+	/**
+	 * @deprecated due to our class TestCompareAll
+	 */
+	@Deprecated
 	public static void test()
 	{
-
 		double alpha = 0.1;
 
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		// dataset.addSeries(averageSteps);
-		// dataset.addSeries(averageLastSteps);
 		dataset.addSeries(generateSeries(0.5, 0.1));
 		dataset.addSeries(generateSeries(0.5, 0.5));
 		dataset.addSeries(generateSeries(0.5, 0.7));
 		dataset.addSeries(generateSeries(0.5, 0.9));
-		// dataset.addSeries(generateSeries(0.5, 0.1));
 
 		ApplicationFrame frame = new ApplicationFrame("Q-Learning with e-Greedy" + ", epsilon=" + Constants.EPSILON
 				+ " alpha=" + alpha + " gamma=" + Constants.GAMMA);
@@ -71,12 +71,9 @@ public class TestQLearning
 	{
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
-		double average = 0;
 		double averageLastProcent = 0;
 
 		XYSeries steps = new XYSeries("Q-learning with " + predatorPolicy + " Alpha:" + alpha + " Gamma:" + gamma);
-		// XYSeries averageSteps = new XYSeries("Avg. all steps");
-		// XYSeries averageLastSteps = new XYSeries("Avg. over last 100 steps");
 		for (int i = 0; i < Constants.NUMBER_OF_EPISODES; ++i)
 		{
 			// Initialise s
@@ -113,7 +110,6 @@ public class TestQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			average += counter;
 			averageLastProcent += counter;
 
 			int episodeStep = 100;
@@ -121,14 +117,7 @@ public class TestQLearning
 			{
 				steps.add(i, averageLastProcent / episodeStep);
 				averageLastProcent = 0;
-
-				// averageSteps.add(i, average / (i + 1));
 			}
-
-			// steps.add(i, average / (i + 1));
-			// steps.add(i, counter);
-			// steps.add(i, counter);
-
 		}
 
 		return steps;

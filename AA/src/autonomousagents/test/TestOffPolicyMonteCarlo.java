@@ -16,7 +16,7 @@ import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-public class TestOffPolicyMC
+public class TestOffPolicyMonteCarlo
 {
 
 	public static List<Integer> runOffPolicyMonteCarlo(final Policy behaviorPolicyPredator,

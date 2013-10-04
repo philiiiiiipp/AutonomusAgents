@@ -27,6 +27,10 @@ public class TestSarsa
 {
 	private static final int NUMBER_OF_EPISODES = 2000;
 
+	/**
+	 * @deprecated Due to our class TestCompareAll
+	 */
+	@Deprecated
 	public static void test()
 	{
 		XYSeriesCollection dataset = new XYSeriesCollection();
@@ -57,10 +61,8 @@ public class TestSarsa
 
 	public static XYSeries generateDataSeries(final double alpha, final double gamma)
 	{
-		double average = 0;
 		double averageLastProcent = 0;
 		Policy predatorPolicy = new EGreedyPolicy();
-		// Policy predatorPolicy = new SoftmaxPolicy();
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
 		XYSeries steps = new XYSeries("Sarsa with Alpha:" + alpha + " Gamma:" + gamma);
@@ -103,7 +105,6 @@ public class TestSarsa
 				a = aPrime;
 			} while (!s.isTerminal());
 
-			average += counter;
 			averageLastProcent += counter;
 			int averageStep = 100;
 
@@ -117,6 +118,17 @@ public class TestSarsa
 		return steps;
 	}
 
+	/**
+	 * Run the SARSA algorithmn
+	 * 
+	 * @param predatorPolicy
+	 * @param preyPolicy
+	 * @param alpha
+	 * @param gamma
+	 * @param episodeCount
+	 * @return a list, containing the number of steps used for catching the prey
+	 *         after each episode
+	 */
 	public static List<Integer> runSarsa(final Policy predatorPolicy, final Policy preyPolicy, final double alpha,
 			final double gamma, final int episodeCount)
 	{
