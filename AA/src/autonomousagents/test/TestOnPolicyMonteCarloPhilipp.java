@@ -2,8 +2,10 @@ package autonomousagents.test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import autonomousagents.actions.Action;
 import autonomousagents.agent.Predator;
@@ -14,7 +16,6 @@ import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Pair;
 import autonomousagents.util.PrettyPrint;
-import autonomousagents.util.Random;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
@@ -26,29 +27,37 @@ public class TestOnPolicyMonteCarloPhilipp
 		Policy predatorPolicy = new EGreedyPolicy();
 		PreyRandomPolicy preyPolicy = new PreyRandomPolicy();
 
-		int counter = 0;
-
 		Map<Pair<State, Action>, Pair<Double, Integer>> returns = new HashMap<Pair<State, Action>, Pair<Double, Integer>>();
-		while (counter < 1000)
+		Set<Pair<State, Action>> observedStateActions = new HashSet<Pair<State, Action>>();
+
+		int counter = 0;
+		while (counter < 10000)
 		{
 			counter++;
+
+			observedStateActions.clear();
 
 			// (a)
 			List<Pair<State, Action>> episode = generateEpisode(predatorPolicy, preyPolicy);
 			// PrettyPrint.printEpisode(episode);
 
 			// (b)
-
 			for (int i = 0; i < episode.size(); ++i)
 			{
 				if (!returns.containsKey(episode.get(i)))
 				{
 					returns.put(episode.get(i), new Pair<Double, Integer>(0.0d, 0));
 				}
-				double r = Math.pow(Constants.GAMMA, episode.size() - (i + 1)) * Constants.REWARD;
 
-				returns.get(episode.get(i)).setLeft(returns.get(episode.get(i)).getLeft() + r);
-				returns.get(episode.get(i)).setRight(returns.get(episode.get(i)).getRight() + 1);
+				if (!observedStateActions.contains(episode.get(i)))
+				{
+					observedStateActions.add(episode.get(i));
+
+					double r = Math.pow(Constants.GAMMA, episode.size() - (i + 1)) * Constants.REWARD;
+
+					returns.get(episode.get(i)).setLeft(returns.get(episode.get(i)).getLeft() + r);
+					returns.get(episode.get(i)).setRight(returns.get(episode.get(i)).getRight() + 1);
+				}
 			}
 
 			// (c)
@@ -56,11 +65,10 @@ public class TestOnPolicyMonteCarloPhilipp
 			{
 				pair.getRight().setActionValue(returns.get(pair).getLeft() / returns.get(pair).getRight());
 			}
-
 		}
 
 		// Test
-
+		// Constants.EPSILON = 0.0;
 		int stepCounter = 0;
 		for (int i = 0; i < 1000; i++)
 		{
@@ -95,8 +103,8 @@ public class TestOnPolicyMonteCarloPhilipp
 		PrettyPrint.printTable(predatorPolicy);
 		System.out.println();
 
-		State sTest = new State(new Point(5, 5), new Point(0, 0));
-		PrettyPrint.printAction(predatorPolicy, sTest);
+		// State sTest = new State(new Point(5, 5), new Point(0, 0));
+		// PrettyPrint.printAction(predatorPolicy, sTest);
 	}
 
 	/**
@@ -110,9 +118,13 @@ public class TestOnPolicyMonteCarloPhilipp
 
 		Environment e = new Environment();
 
-		Prey prey = new Prey(Random.randomPoint(), e, preyPolicy);
+		// Prey prey = new Prey(Random.randomPoint(), e, preyPolicy);
 		// Generate a random point, unequal to the prey position
-		Predator predator = new Predator(Random.randomPoint(prey.getPosition()), e, predatorPolicy);
+		// Predator predator = new
+		// Predator(Random.randomPoint(prey.getPosition()), e, predatorPolicy);
+
+		Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
+		Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
 
 		e.addAgent(predator);
 		e.addAgent(prey);
