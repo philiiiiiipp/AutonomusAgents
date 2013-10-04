@@ -48,7 +48,7 @@ public class GreedyPolicy extends Policy
 	}
 
 	/**
-	 * Returns the next action considering e-greedy
+	 * Returns the next action considering greedy
 	 */
 	@Override
 	public Action nextProbabilisticActionForState(final State s)
