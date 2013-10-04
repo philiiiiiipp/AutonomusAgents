@@ -91,7 +91,7 @@ public class TestOnPolicyMonteCarloPhilipp
 			}
 
 		}
-		System.out.println(stepCounter / 1000);
+		System.out.println(stepCounter / 1000.0d);
 		PrettyPrint.printTable(predatorPolicy);
 		System.out.println();
 
