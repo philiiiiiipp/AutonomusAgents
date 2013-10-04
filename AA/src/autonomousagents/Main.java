@@ -7,8 +7,8 @@ public class Main
 
 	public static void main(final String[] args)
 	{
+
 		TestOnPolicyMonteCarloPhilipp.test();
-		// TestQLearning.test();
-		// TestSarsa.test();
 	}
+
 }
