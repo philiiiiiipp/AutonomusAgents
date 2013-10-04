@@ -33,13 +33,15 @@ public class TestOnPolicyMonteCarloPhilipp
 		int counter = 0;
 		while (counter < 3000)
 		{
+			if (counter % 1000 == 0)
+				System.out.println(counter);
+
 			counter++;
 
 			observedStateActions.clear();
 
 			// (a)
 			List<Pair<State, Action>> episode = generateEpisode(predatorPolicy, preyPolicy);
-			// PrettyPrint.printEpisode(episode);
 
 			// (b)
 			for (int i = 0; i < episode.size(); ++i)
@@ -70,7 +72,7 @@ public class TestOnPolicyMonteCarloPhilipp
 		// Test
 		// Constants.EPSILON = 0.0;
 		int stepCounter = 0;
-		for (int i = 0; i < 1000; i++)
+		for (int i = 0; i < 10000; i++)
 		{
 			Environment e = new Environment();
 
@@ -99,12 +101,12 @@ public class TestOnPolicyMonteCarloPhilipp
 			}
 
 		}
-		System.out.println(stepCounter / 1000.0d);
+		System.out.println(stepCounter / 10000.0d);
 		PrettyPrint.printTable(predatorPolicy);
 		System.out.println();
 
-		// State sTest = new State(new Point(5, 5), new Point(0, 0));
-		// PrettyPrint.printAction(predatorPolicy, sTest);
+		State sTest = new State(new Point(0, 0), new Point(5, 5));
+		PrettyPrint.printAction(predatorPolicy, sTest);
 	}
 
 	/**
