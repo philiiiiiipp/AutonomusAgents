@@ -41,11 +41,11 @@ public class TestCompareAll
 
 		Random.resetRandom();
 		stepList = TestQLearning.runQLearning(new EGreedyPolicy(), new PreyRandomPolicy(), 0.1, 0.9, episodeCount);
-		dataset.addSeries(createDataseries(stepList, "Q-Learning with Alpha:0.1 Beta:0.9"));
+		dataset.addSeries(createDataseries(stepList, "Q-Learning with Alpha:0.1 Gamma:0.9"));
 
 		Random.resetRandom();
 		stepList = TestSarsa.runSarsa(new EGreedyPolicy(), new PreyRandomPolicy(), 0.1, 0.9, episodeCount);
-		dataset.addSeries(createDataseries(stepList, "Sarsa with Alpha:0.1 Beta:0.9"));
+		dataset.addSeries(createDataseries(stepList, "Sarsa with Alpha:0.1 Gamma:0.9"));
 
 		ApplicationFrame frame = new ApplicationFrame("");
 		NumberAxis xax = new NumberAxis("Episodes");
