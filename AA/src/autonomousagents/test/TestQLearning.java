@@ -26,7 +26,7 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	// private static final double alpha = 0.1d;
+	private static final int NUMBER_OF_EPISODES = 2000;
 
 	public static void test()
 	{
@@ -115,8 +115,9 @@ public class TestQLearning
 
 			average += counter;
 			averageLastProcent += counter;
-			int episodeStep = 10;
-			if (i % episodeStep == 0 || i + 1 == Constants.NUMBER_OF_EPISODES)
+
+			int episodeStep = 100;
+			if (i != 0 && i % episodeStep == 0 || i + 1 == NUMBER_OF_EPISODES)
 			{
 				steps.add(i, averageLastProcent / episodeStep);
 				averageLastProcent = 0;
