@@ -21,4 +21,5 @@ public class Constants
 	 */
 	public static double EPSILON = 0.1d;
 	public static double QValue = 15;
+	public static int NUMBER_OF_EPISODES = 1000;
 }

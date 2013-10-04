@@ -11,7 +11,6 @@ import autonomousagents.world.State;
 
 public class TestOffPolicyMC
 {
-	private static final int NUMBER_OF_EPISODES = 1000;
 	private static final double alpha = 0.1d;
 
 	public static void test()

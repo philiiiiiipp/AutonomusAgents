@@ -17,7 +17,6 @@ import autonomousagents.world.State;
 
 public class TestVariousQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 10000;
 	private static final double alpha = 0.1d;
 
 	public static void test()
@@ -48,7 +47,7 @@ public class TestVariousQLearning
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
 		double total = 0;
-		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
+		for (int i = 0; i < Constants.NUMBER_OF_EPISODES; ++i)
 		{
 			// Initialise s
 			Environment e = new Environment();
@@ -87,7 +86,7 @@ public class TestVariousQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			if (NUMBER_OF_EPISODES - 100 <= i)
+			if (Constants.NUMBER_OF_EPISODES - 100 <= i)
 			{
 				total += counter;
 			}
