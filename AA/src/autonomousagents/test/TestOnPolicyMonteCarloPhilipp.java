@@ -27,81 +27,71 @@ public class TestOnPolicyMonteCarloPhilipp
 		PreyRandomPolicy preyPolicy = new PreyRandomPolicy();
 
 		int counter = 0;
-		while (counter < 111)
+
+		Map<Pair<State, Action>, Pair<Double, Integer>> returns = new HashMap<Pair<State, Action>, Pair<Double, Integer>>();
+		while (counter < 100000)
 		{
 			counter++;
 
 			// (a)
 			List<Pair<State, Action>> episode = generateEpisode(predatorPolicy, preyPolicy);
-			PrettyPrint.printEpisode(episode);
+			// PrettyPrint.printEpisode(episode);
 
 			// (b)
-			Map<Pair<State, Action>, List<Double>> returns = new HashMap<Pair<State, Action>, List<Double>>();
-			for (Pair<State, Action> pair : episode)
-			{
-				if (!returns.containsKey(pair))
-				{
-					returns.put(pair, new ArrayList<Double>());
-				}
-			}
 
 			for (int i = 0; i < episode.size(); ++i)
 			{
-				// gamma^t * REWARD is the Return
-				double r = 0;
-				for (int j = i + 1; j < episode.size(); ++j)
+				if (!returns.containsKey(episode.get(i)))
 				{
-					r += Math.pow(Constants.GAMMA, episode.size() - (j - i)) * Constants.REWARD;
+					returns.put(episode.get(i), new Pair<Double, Integer>(0.0d, 0));
 				}
+				double r = Math.pow(Constants.GAMMA, episode.size() - (i + 1)) * Constants.REWARD;
 
-				returns.get(r);
-			}
-
-			for (Pair<State, Action> pair : returns.keySet())
-			{
-				List<Double> r = returns.get(pair);
-				double averageReturn = 0;
-				for (Double d : r)
-				{
-					averageReturn += d / r.size();
-				}
-
-				pair.getRight().setActionValue(averageReturn);
+				returns.get(episode.get(i)).setLeft(returns.get(episode.get(i)).getLeft() + r);
+				returns.get(episode.get(i)).setRight(returns.get(episode.get(i)).getRight() + 1);
 			}
 
 			// (c)
+			for (Pair<State, Action> pair : returns.keySet())
+			{
+				pair.getRight().setActionValue(returns.get(pair).getLeft() / returns.get(pair).getRight());
+			}
+
 		}
 
 		// Test
 
-		Environment e = new Environment();
-
-		Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
-		// Generate a random point, unequal to the prey position
-		Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
-
-		e.addAgent(predator);
-		e.addAgent(prey);
-
-		State s = e.getState();
 		int stepCounter = 0;
-		while (!s.isTerminal())
+		for (int i = 0; i < 1000; i++)
 		{
-			Action a = predatorPolicy.nextProbabilisticActionForState(s);
-			a.apply(predator);
+			Environment e = new Environment();
 
-			// If the current state is terminal, the prey is not moving once
-			// more, since its already eaten.
-			if (!e.getState().isTerminal())
+			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
+			// Generate a random point, unequal to the prey position
+			Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
+
+			e.addAgent(predator);
+			e.addAgent(prey);
+
+			State s = e.getState();
+			while (!s.isTerminal())
 			{
-				preyPolicy.nextProbabilisticActionForState(e.getState()).apply(prey);
+				Action a = predatorPolicy.nextProbabilisticActionForState(s);
+				a.apply(predator);
+
+				// If the current state is terminal, the prey is not moving once
+				// more, since its already eaten.
+				if (!e.getState().isTerminal())
+				{
+					preyPolicy.nextProbabilisticActionForState(e.getState()).apply(prey);
+				}
+
+				s = e.getState();
+				stepCounter++;
 			}
 
-			s = e.getState();
-			stepCounter++;
 		}
-
-		System.out.println(stepCounter);
+		System.out.println(stepCounter / 1000);
 		PrettyPrint.printTable(predatorPolicy);
 		System.out.println();
 
@@ -120,7 +110,7 @@ public class TestOnPolicyMonteCarloPhilipp
 
 		Environment e = new Environment();
 
-		Prey prey = new Prey(new Point(0, 0), e, preyPolicy);
+		Prey prey = new Prey(Random.randomPoint(), e, preyPolicy);
 		// Generate a random point, unequal to the prey position
 		Predator predator = new Predator(Random.randomPoint(prey.getPosition()), e, predatorPolicy);
 

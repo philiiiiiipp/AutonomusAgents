@@ -25,7 +25,7 @@ import autonomousagents.world.State;
 
 public class TestQLearning
 {
-	private static final int NUMBER_OF_EPISODES = 2000;
+	private static final int NUMBER_OF_EPISODES = 10000;
 
 	// private static final double alpha = 0.1d;
 
@@ -63,16 +63,19 @@ public class TestQLearning
 		frame.setVisible(true);
 	}
 
-	private static XYSeries generateSeries(final double alpha, final double gamma)
+	public static XYSeries generateSeries(final double alpha, final double gamma)
 	{
-		Policy predatorPolicy = new EGreedyPolicy();
-		// Policy predatorPolicy = new SoftmaxPolicy();
+		return generateSeries(alpha, gamma, new EGreedyPolicy());
+	}
+
+	public static XYSeries generateSeries(final double alpha, final double gamma, final Policy predatorPolicy)
+	{
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
 		double average = 0;
 		double averageLastProcent = 0;
 
-		XYSeries steps = new XYSeries("Steps with Alpha:" + alpha + " Gamma:" + gamma);
+		XYSeries steps = new XYSeries("Q-learning with " + predatorPolicy + " Alpha:" + alpha + " Gamma:" + gamma);
 		// XYSeries averageSteps = new XYSeries("Avg. all steps");
 		// XYSeries averageLastSteps = new XYSeries("Avg. over last 100 steps");
 		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
@@ -113,7 +116,7 @@ public class TestQLearning
 
 			average += counter;
 			averageLastProcent += counter;
-			int episodeStep = 10;
+			int episodeStep = 100;
 			if (i % episodeStep == 0 || i + 1 == NUMBER_OF_EPISODES)
 			{
 				steps.add(i, averageLastProcent / episodeStep);
@@ -122,6 +125,7 @@ public class TestQLearning
 				// averageSteps.add(i, average / (i + 1));
 			}
 
+			// steps.add(i, average / (i + 1));
 			// steps.add(i, counter);
 			// steps.add(i, counter);
 
