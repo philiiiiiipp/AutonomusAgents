@@ -1,5 +1,8 @@
 package autonomousagents.world;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import autonomousagents.util.GameField;
 
 /**
@@ -8,7 +11,7 @@ import autonomousagents.util.GameField;
  */
 public class State
 {
-	private Point predatorPoint;
+	private List<Point> predatorPoints;
 	private Point preyPoint;
 	private double value;
 
@@ -17,13 +20,18 @@ public class State
 	 */
 	private void mapToSimplifiedState()
 	{
-		int xdistance = this.predatorPoint.getX() - this.preyPoint.getX();
-		int ydistance = this.predatorPoint.getY() - this.preyPoint.getY();
+		List<Point> newPointList = new ArrayList<Point>();
+		for (Point p : this.predatorPoints)
+		{
+			int xdistance = p.getX() - this.preyPoint.getX();
+			int ydistance = p.getY() - this.preyPoint.getY();
 
-		xdistance = (xdistance < 0 ? GameField.XMAX + xdistance : xdistance);
-		ydistance = (ydistance < 0 ? GameField.YMAX + ydistance : ydistance);
+			xdistance = (xdistance < 0 ? GameField.XMAX + xdistance : xdistance);
+			ydistance = (ydistance < 0 ? GameField.YMAX + ydistance : ydistance);
 
-		this.predatorPoint = new Point(xdistance, ydistance);
+			newPointList.add(new Point(xdistance, ydistance));
+		}
+		this.predatorPoints = newPointList;
 		this.preyPoint = new Point(0, 0);
 
 		/*
@@ -47,7 +55,9 @@ public class State
 	 */
 	public State(final Point predatorPoint, final Point preyPoint)
 	{
-		this.predatorPoint = predatorPoint;
+		this.predatorPoints = new ArrayList<Point>();
+
+		this.predatorPoints.add(predatorPoint);
 		this.preyPoint = preyPoint;
 		this.value = 0;
 		this.mapToSimplifiedState();
@@ -63,17 +73,19 @@ public class State
 	 *            State to be reduced with its symmetrical state
 	 * @return
 	 */
-	@Deprecated
-	public static State translateState(final State s)
-	{
-		int xdistance = Math.abs(s.predatorPoint.getX() - s.preyPoint.getX());
-		int ydistance = Math.abs(s.predatorPoint.getY() - s.preyPoint.getY());
-
-		xdistance = Math.min(xdistance, 11 - xdistance);
-		ydistance = Math.min(ydistance, 11 - ydistance);
-
-		return new State(new Point(xdistance, ydistance), new Point(0, 0));
-	}
+	// @Deprecated
+	// public static State translateState(final State s)
+	// {
+	// // int xdistance = Math.abs(s.predatorPoint.getX() -
+	// // s.preyPoint.getX());
+	// // int ydistance = Math.abs(s.predatorPoint.getY() -
+	// // s.preyPoint.getY());
+	// //
+	// // xdistance = Math.min(xdistance, 11 - xdistance);
+	// // ydistance = Math.min(ydistance, 11 - ydistance);
+	//
+	// return new State(new Point(xdistance, ydistance), new Point(0, 0));
+	// }
 
 	/**
 	 * returns the Predator location on the grid
@@ -82,7 +94,17 @@ public class State
 	 */
 	public Point predatorPoint()
 	{
-		return this.predatorPoint;
+		return this.predatorPoints.get(0);
+	}
+
+	/**
+	 * returns the Predator location on the grid
+	 * 
+	 * @return Point
+	 */
+	public List<Point> predatorPoints()
+	{
+		return this.predatorPoints;
 	}
 
 	/**
@@ -103,7 +125,19 @@ public class State
 	 */
 	public boolean isTerminal()
 	{
-		return this.predatorPoint.equals(this.preyPoint);
+		for (int i = 0; i < this.predatorPoints.size(); ++i)
+		{
+			if (this.predatorPoints.get(i).equals(this.preyPoint))
+				return true;
+
+			for (int j = i + 1; j < this.predatorPoints.size(); j++)
+			{
+				if (this.predatorPoints.get(i).equals(this.predatorPoints.get(j)))
+					return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -144,10 +178,14 @@ public class State
 		int result = 0;
 		int power = 4;
 
-		result ^= this.predatorPoint.getX();
-		result = result << power;
-		result ^= this.predatorPoint.getY();
-		result <<= power;
+		for (Point p : this.predatorPoints)
+		{
+			result ^= p.getX();
+			result = result << power;
+			result ^= p.getY();
+			result <<= power;
+		}
+
 		result ^= this.preyPoint.getX();
 		result = result << power;
 		result ^= this.preyPoint.getY();
@@ -158,7 +196,11 @@ public class State
 	@Override
 	public String toString()
 	{
-		return "Predator(" + this.predatorPoint.getX() + "," + this.predatorPoint.getY() + ") : Prey("
-				+ this.preyPoint.getX() + "," + this.preyPoint.getY() + ")";
+		String result = "";
+		for (Point p : this.predatorPoints)
+		{
+			result += "Predator(" + p.getX() + "," + p.getY() + ") : ";
+		}
+		return result + "Prey(" + this.preyPoint.getX() + "," + this.preyPoint.getY() + ")";
 	}
 }
