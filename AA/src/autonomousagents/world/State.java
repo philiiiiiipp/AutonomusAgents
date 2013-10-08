@@ -191,7 +191,7 @@ public class State
 	public int hashCode()
 	{
 		int result = 0;
-		int power = 32 / (2 * (this.predatorPoints.size() + 1));
+		int power = 4;
 
 		for (Point p : this.predatorPoints)
 		{
