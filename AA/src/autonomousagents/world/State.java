@@ -185,13 +185,13 @@ public class State
 	}
 
 	/*
-	 * Works for up to 8 agents.
+	 * Works for up to 4 agents.
 	 */
 	@Override
 	public int hashCode()
 	{
 		int result = 0;
-		int power = 32 / (this.predatorPoints.size() + 1);
+		int power = 32 / (2 * (this.predatorPoints.size() + 1));
 
 		for (Point p : this.predatorPoints)
 		{
