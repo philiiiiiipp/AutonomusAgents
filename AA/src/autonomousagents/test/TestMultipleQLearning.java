@@ -29,7 +29,9 @@ public class TestMultipleQLearning
 		double gamma = 0.1;
 
 		// Random.resetRandom();
-		List<Integer> stepList = MultipleQLearning.runQLearning(EPISODE_COUNT, alpha, gamma);
+		List<Integer> stepList = null;
+		// List<Integer> stepList =
+		// MultipleQLearning.runQLearning(EPISODE_COUNT, alpha, gamma);
 		dataset.addSeries(JFreeChartHelper.createAverageDataseries(stepList, "Q-Learning with Alpha:" + alpha
 				+ " Gamma:" + gamma, 100));
 

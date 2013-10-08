@@ -25,22 +25,34 @@ public class MultipleQLearning
 	 * @return a list, containing the number of steps used for catching the prey
 	 *         after each episode
 	 */
-	public static List<Integer> runQLearning(final int episodeCount, final double alpha, final double gamma)
+	public static List<Integer> runQLearning(final int episodeCount, final double alpha, final double gamma,
+			final List<Point> predatorPoints, final Point preyPoint)
 	{
 		List<Integer> stepList = new ArrayList<Integer>();
+		List<Policy> policyList = new ArrayList<Policy>();
+
+		for (Point _ : predatorPoints)
+		{
+			policyList.add(new EGreedyPolicy());
+		}
+
+		Policy preyPolicy = new EGreedyPolicy();
 
 		for (int i = 0; i < episodeCount; ++i)
 		{
 			// Initialise s
 			Environment e = new Environment();
-			Policy predatorPolicy = new EGreedyPolicy();
-			Policy preyPolicy = new EGreedyPolicy();
 
-			Predator predator1 = new Predator(new Point(0, 0), e, predatorPolicy);
-			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
+			List<Predator> predatorList = new ArrayList<Predator>();
+			for (int j = 0; j < predatorList.size(); j++)
+			{
+				Predator p = new Predator(predatorPoints.get(j), e, policyList.get(j));
+				predatorList.add(p);
+				e.addPredator(p);
+			}
 
-			e.addAgent(predator1);
-			e.addAgent(prey);
+			Prey prey = new Prey(preyPoint, e, preyPolicy);
+			e.addPrey(prey);
 
 			State s = e.getState();
 
