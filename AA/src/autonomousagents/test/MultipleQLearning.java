@@ -71,8 +71,8 @@ public class MultipleQLearning
 					predatorActionXAction.apply(predatorList.get(predatorX));
 				}
 
-				Action preyAction1 = preyPolicy.nextProbabilisticActionForState(s);
-				preyAction1.apply(prey);
+				Action preyAction = preyPolicy.nextProbabilisticActionForState(s);
+				preyAction.apply(prey);
 
 				// Reward from this action
 				double predatorReward = (e.getState().isTerminal() ? 10 : 0);
@@ -82,22 +82,21 @@ public class MultipleQLearning
 
 				for (int predAction = 0; predAction < predatorActions.size(); predAction++)
 				{
-					Action predatorAction1 = predatorActions.get(predAction);
-					Predator predator1 = predatorList.get(predAction);
-					Policy predatorPolicy = policyList.get(predAction);
-					predatorAction1
-							.setActionValue(predatorAction1.getActionValue()
-									+ alpha
-									* (predatorReward + gamma
-											* maximisation(predator1, prey, predatorPolicy, preyPolicy, sPrime) - predatorAction1
-												.getActionValue()));
+					Action predatorActionX = predatorActions.get(predAction);
+
+					predatorActionX.setActionValue(predatorActionX.getActionValue()
+							+ alpha
+							* (predatorReward
+									+ gamma
+									* maximisationPredator(predAction, predatorList, prey, policyList, preyPolicy,
+											sPrime) - predatorActionX.getActionValue()));
 				}
 
-				preyAction1
-						.setActionValue(preyAction1.getActionValue()
+				preyAction
+						.setActionValue(preyAction.getActionValue()
 								+ alpha
 								* (preyReward + gamma
-										* maximisationPrey(prey, predator1, preyPolicy, predatorPolicy, sPrime) - preyAction1
+										* maximisationPrey(predatorList, prey, policyList, preyPolicy, sPrime) - preyAction
 											.getActionValue()));
 				s = sPrime;
 			} while (!s.isTerminal());
@@ -109,35 +108,45 @@ public class MultipleQLearning
 		return stepList;
 	}
 
-	private static double maximisation(final Predator predator1, final Prey prey, final Policy predatorPolicy,
-			final Policy preyPolicy, final State s)
+	private static double maximisationPredator(final int currentPredatorIndex, final List<Predator> predatorList,
+			final Prey prey, final List<Policy> policyList, final Policy preyPolicy, final State s)
 	{
-		List<Action> actionList = predatorPolicy.actionsForState(s);
-		Action preyAction = preyPolicy.nextProbabilisticActionForState(s);
-		preyAction.apply(prey);
-
-		double highestActionValue = 0;
-		for (Action a : actionList)
+		List<Action> actionList = policyList.get(currentPredatorIndex).actionsForState(s);
+		for (int i = 0; i < predatorList.size(); i++)
 		{
-			if (a.getActionValue() > highestActionValue)
-				highestActionValue = a.getActionValue();
+			if (i != currentPredatorIndex)
+			{
+				policyList.get(i).nextProbabilisticActionForState(s).apply(predatorList.get(i));
+			}
 		}
-
+		preyPolicy.nextProbabilisticActionForState(s).apply(prey);
+		double highestActionValue = 0;
+		for (Action action : actionList)
+		{
+			if (action.getActionValue() > highestActionValue)
+			{
+				highestActionValue = action.getActionValue();
+			}
+		}
 		return highestActionValue;
 	}
 
-	private static double maximisationPrey(final Prey prey, final Predator predator1, final Policy predatorPolicy,
-			final Policy preyPolicy, final State s)
+	private static double maximisationPrey(final List<Predator> predatorList, final Prey prey,
+			final List<Policy> policyList, final Policy preyPolicy, final State s)
 	{
 		List<Action> actionList = preyPolicy.actionsForState(s);
-		Action predatorAction = predatorPolicy.nextProbabilisticActionForState(s);
-		predatorAction.apply(predator1);
+		for (int i = 0; i < predatorList.size(); i++)
+		{
+			policyList.get(i).nextProbabilisticActionForState(s).apply(predatorList.get(i));
+		}
 
 		double highestActionValue = 0;
-		for (Action a : actionList)
+		for (Action action : actionList)
 		{
-			if (a.getActionValue() > highestActionValue)
-				highestActionValue = a.getActionValue();
+			if (action.getActionValue() > highestActionValue)
+			{
+				highestActionValue = action.getActionValue();
+			}
 		}
 
 		return highestActionValue;
