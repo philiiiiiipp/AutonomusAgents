@@ -11,7 +11,6 @@ import autonomousagents.policy.Policy;
 import autonomousagents.policy.predator.GreedyPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Pair;
-import autonomousagents.util.PrettyPrint;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
@@ -19,19 +18,24 @@ import autonomousagents.world.State;
 public class TestOffPolicyMonteCarlo
 {
 
+	/**
+	 * Run OffPolicy Monte Carlo
+	 * 
+	 * @param behaviorPolicyPredator
+	 * @param deterministicPolicyPredator
+	 * @param preyPolicy
+	 * @param episodeCount
+	 * @return a list, containing the number of steps used for catching the prey
+	 *         after each episode
+	 */
 	public static List<Integer> runOffPolicyMonteCarlo(final Policy behaviorPolicyPredator,
 			final GreedyPolicy deterministicPolicyPredator, final Policy preyPolicy, final int episodeCount)
 	{
 		List<Integer> resultList = new ArrayList<Integer>();
 
-		int counter = 0;
-		while (counter < episodeCount)
+		int outerCounter = 0;
+		while (outerCounter < episodeCount)
 		{
-			if (counter % 100 == 0)
-			{
-				System.out.println(counter);
-			}
-
 			// (a)
 			List<Pair<State, Action>> episodesOnPolicy = generateEpisode(behaviorPolicyPredator, preyPolicy);
 
@@ -49,9 +53,6 @@ public class TestOffPolicyMonteCarlo
 				}
 			}
 
-			if (tao == 0)
-				System.out.println("ZERRO");
-
 			// (c)
 			HashSet<Pair<State, Action>> done = new HashSet<Pair<State, Action>>();
 			for (int t = tao; t < episodesOnPolicy.size(); t++)
@@ -61,8 +62,6 @@ public class TestOffPolicyMonteCarlo
 					continue;
 
 				double w = createW(episodesOnPolicy, t, behaviorPolicyPredator);
-
-				// System.out.println(w);
 				double returnT = Math.pow(Constants.GAMMA, episodesOnPolicy.size() - (t + 1)) * Constants.REWARD;
 
 				current.getRight().setNumerator(current.getRight().getNumerator() + w * returnT);
@@ -87,12 +86,6 @@ public class TestOffPolicyMonteCarlo
 			// Test
 			Environment e = new Environment();
 
-			// Prey prey = new Prey(Random.randomPoint(), e, preyPolicy);
-			// Generate a random point, unequal to the prey position
-			// Predator predator = new
-			// Predator(Random.randomPoint(prey.getPosition()), e,
-			// predatorPolicy);
-
 			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
 			Predator predator = new Predator(new Point(0, 0), e, deterministicPolicyPredator);
 
@@ -116,18 +109,9 @@ public class TestOffPolicyMonteCarlo
 
 				s = e.getState();
 			}
-			// System.out.println(counter1);
 			resultList.add(counter1);
-			// resultList.add(episodesOnPolicy.size());
-
-			counter++;
+			outerCounter++;
 		}
-
-		//
-		// resultList.add(counter1);
-
-		PrettyPrint.printTable(deterministicPolicyPredator);
-		PrettyPrint.printAction(deterministicPolicyPredator, new State(new Point(0, 0), new Point(5, 5)));
 
 		return resultList;
 	}
@@ -155,20 +139,11 @@ public class TestOffPolicyMonteCarlo
 		return w;
 	}
 
-	{
-
-	}
-
 	private static List<Pair<State, Action>> generateEpisode(final Policy predatorPolicy, final Policy preyPolicy)
 	{
 		List<Pair<State, Action>> episode = new ArrayList<Pair<State, Action>>();
 
 		Environment e = new Environment();
-
-		// Prey prey = new Prey(Random.randomPoint(), e, preyPolicy);
-		// Generate a random point, unequal to the prey position
-		// Predator predator = new
-		// Predator(Random.randomPoint(prey.getPosition()), e, predatorPolicy);
 
 		Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
 		Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
