@@ -61,9 +61,16 @@ public class MultipleQLearning
 			do
 			{
 				counter++;
+				List<Action> predatorActions = new ArrayList<Action>();
 
-				Action predatorAction1 = predatorPolicy.nextProbabilisticActionForState(s);
-				predatorAction1.apply(predator1);
+				for (int predatorX = 0; predatorX < predatorList.size(); predatorX++)
+				{
+					Policy predatorPolicyX = policyList.get(i);
+					Action predatorActionXAction = predatorPolicyX.nextProbabilisticActionForState(s);
+					predatorActions.add(predatorActionXAction);
+					predatorActionXAction.apply(predatorList.get(predatorX));
+				}
+
 				Action preyAction1 = preyPolicy.nextProbabilisticActionForState(s);
 				preyAction1.apply(prey);
 
@@ -73,12 +80,19 @@ public class MultipleQLearning
 
 				State sPrime = e.getState();
 
-				predatorAction1
-						.setActionValue(predatorAction1.getActionValue()
-								+ alpha
-								* (predatorReward + gamma
-										* maximisation(predator1, prey, predatorPolicy, preyPolicy, sPrime) - predatorAction1
-											.getActionValue()));
+				for (int predAction = 0; predAction < predatorActions.size(); predAction++)
+				{
+					Action predatorAction1 = predatorActions.get(predAction);
+					Predator predator1 = predatorList.get(predAction);
+					Policy predatorPolicy = policyList.get(predAction);
+					predatorAction1
+							.setActionValue(predatorAction1.getActionValue()
+									+ alpha
+									* (predatorReward + gamma
+											* maximisation(predator1, prey, predatorPolicy, preyPolicy, sPrime) - predatorAction1
+												.getActionValue()));
+				}
+
 				preyAction1
 						.setActionValue(preyAction1.getActionValue()
 								+ alpha
