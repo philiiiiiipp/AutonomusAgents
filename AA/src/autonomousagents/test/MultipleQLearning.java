@@ -44,7 +44,7 @@ public class MultipleQLearning
 			Environment e = new Environment();
 
 			List<Predator> predatorList = new ArrayList<Predator>();
-			for (int j = 0; j < predatorList.size(); j++)
+			for (int j = 0; j < predatorPoints.size(); j++)
 			{
 				Predator p = new Predator(predatorPoints.get(j), e, policyList.get(j));
 				predatorList.add(p);
@@ -60,13 +60,12 @@ public class MultipleQLearning
 			int counter = 0;
 			do
 			{
-				// System.out.println("Hello");
 				counter++;
 				List<Action> predatorActions = new ArrayList<Action>();
 
 				for (int predatorX = 0; predatorX < predatorList.size(); predatorX++)
 				{
-					Policy predatorPolicyX = policyList.get(i);
+					Policy predatorPolicyX = policyList.get(predatorX);
 					Action predatorActionXAction = predatorPolicyX.nextProbabilisticActionForState(s);
 					predatorActions.add(predatorActionXAction);
 					predatorActionXAction.apply(predatorList.get(predatorX));
