@@ -65,7 +65,16 @@ public class State
 
 	public State(final List<Point> predatorPoints, final Point preyPoint)
 	{
+<<<<<<< HEAD
 		this.predatorPoints = predatorPoints;
+=======
+		this.predatorPoints = new ArrayList<Point>();
+
+		for (Point p : predatorPoints)
+		{
+			this.predatorPoints.add(p);
+		}
+>>>>>>> e93ab6c61092db3be893add209ecb45fdf7e4519
 		this.preyPoint = preyPoint;
 		this.value = 0;
 		this.mapToSimplifiedState();
@@ -144,7 +153,6 @@ public class State
 					return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -180,6 +188,9 @@ public class State
 		return false;
 	}
 
+	/*
+	 * Works for up to 4 agents.
+	 */
 	@Override
 	public int hashCode()
 	{

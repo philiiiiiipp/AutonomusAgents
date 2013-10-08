@@ -8,7 +8,6 @@ import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
 import autonomousagents.policy.predator.EGreedyPolicy;
-import autonomousagents.util.Constants;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
@@ -26,26 +25,36 @@ public class MultipleQLearning
 	 * @return a list, containing the number of steps used for catching the prey
 	 *         after each episode
 	 */
-	public static List<Integer> runQLearning()
+	public static List<Integer> runQLearning(final int episodeCount, final double alpha, final double gamma,
+			final List<Point> predatorPoints, final Point preyPoint)
 	{
 		List<Integer> stepList = new ArrayList<Integer>();
+		List<Policy> policyList = new ArrayList<Policy>();
 
-		for (int i = 0; i < 100; ++i)
+		for (Point _ : predatorPoints)
+		{
+			policyList.add(new EGreedyPolicy());
+		}
+
+		Policy preyPolicy = new EGreedyPolicy();
+
+		for (int i = 0; i < episodeCount; ++i)
 		{
 			// Initialise s
 			Environment e = new Environment();
-			Policy predatorPolicy = new EGreedyPolicy();
-			Policy preyPolicy = new EGreedyPolicy();
 
-			Predator predator1 = new Predator(new Point(0, 0), e, predatorPolicy);
-			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
+			List<Predator> predatorList = new ArrayList<Predator>();
+			for (int j = 0; j < predatorList.size(); j++)
+			{
+				Predator p = new Predator(predatorPoints.get(j), e, policyList.get(j));
+				predatorList.add(p);
+				e.addPredator(p);
+			}
 
-			e.addPredator(predator1);
+			Prey prey = new Prey(preyPoint, e, preyPolicy);
 			e.addPrey(prey);
 
 			State s = e.getState();
-			double alpha = 0.1;
-			double gamma = 0.1;
 
 			// Repeat for each step of the episode
 			int counter = 0;
@@ -59,26 +68,28 @@ public class MultipleQLearning
 				preyAction1.apply(prey);
 
 				// Reward from this action
-				double reward = (e.getState().isTerminal() ? Constants.REWARD : 0);
+				double predatorReward = (e.getState().isTerminal() ? 10 : 0);
+				double preyReward = (e.getState().isTerminal() ? -10 : 0);
 
 				State sPrime = e.getState();
 
 				predatorAction1
 						.setActionValue(predatorAction1.getActionValue()
 								+ alpha
-								* (reward + gamma * maximisation(predator1, prey, predatorPolicy, preyPolicy, sPrime) - predatorAction1
-										.getActionValue()));
+								* (predatorReward + gamma
+										* maximisation(predator1, prey, predatorPolicy, preyPolicy, sPrime) - predatorAction1
+											.getActionValue()));
 				preyAction1
 						.setActionValue(preyAction1.getActionValue()
 								+ alpha
-								* (reward + gamma
+								* (preyReward + gamma
 										* maximisationPrey(prey, predator1, preyPolicy, predatorPolicy, sPrime) - preyAction1
 											.getActionValue()));
 				s = sPrime;
 			} while (!s.isTerminal());
 
 			stepList.add(counter);
-			System.out.println(counter);
+			// System.out.println(counter);
 		}
 
 		return stepList;
