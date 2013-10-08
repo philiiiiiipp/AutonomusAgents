@@ -14,14 +14,19 @@ public class ValueMap
 	 * method that returns the value for a State s given the simplified
 	 * representation of the size of the state space
 	 * 
+	 * @deprecated Do not use, returns -1
+	 * 
 	 * @param s
 	 *            State to which we want to assign a value
 	 * @return double
 	 */
+	@Deprecated
 	public double getValueForState(final State s)
 	{
-		State simplifiedState = State.translateState(s);
-		return this.simplifiedValueMap[simplifiedState.predatorPoint().getX()][simplifiedState.predatorPoint().getY()];
+		// State simplifiedState = State.translateState(s);
+		// return
+		// this.simplifiedValueMap[simplifiedState.predatorPoint().getX()][simplifiedState.predatorPoint().getY()];
+		return -1;
 	}
 
 	/**
@@ -45,14 +50,18 @@ public class ValueMap
 	 * method that takes as input parameters a State s and a value and assigns
 	 * the respective value to the current State
 	 * 
+	 * @deprecated doesnt work anymore!
+	 * 
+	 * 
 	 * @param s
 	 * @param value
 	 */
+	@Deprecated
 	public void setValueForState(final State s, final double value)
 	{
-		State simplifiedState = State.translateState(s);
-		this.simplifiedValueMap[simplifiedState.predatorPoint().getX()][simplifiedState.predatorPoint().getY()] = value;
-
+		// State simplifiedState = State.translateState(s);
+		// this.simplifiedValueMap[simplifiedState.predatorPoint().getX()][simplifiedState.predatorPoint().getY()]
+		// = value;
 	}
 
 	/**

@@ -21,7 +21,6 @@ public class Environment
 	 * 
 	 * @return
 	 */
-	// the grid
 	public State getState()
 	{
 		return new State(this.agents.get(0).getPosition(), this.agents.get(1).getPosition());

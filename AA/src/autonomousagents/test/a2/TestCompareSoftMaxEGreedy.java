@@ -1,4 +1,4 @@
-package autonomousagents.test;
+package autonomousagents.test.a2;
 
 import java.awt.Color;
 import java.util.List;
@@ -44,8 +44,8 @@ public class TestCompareSoftMaxEGreedy
 
 		ApplicationFrame frame = new ApplicationFrame("");
 
-		NumberAxis xax = new NumberAxis("Episodes");
-		NumberAxis yax = new NumberAxis("Steps");
+		NumberAxis xax = new NumberAxis("Steps");
+		NumberAxis yax = new NumberAxis(" Episodes");
 		XYSplineRenderer a = new XYSplineRenderer();
 		// a.setBaseShapesVisible(false);
 		a.setSeriesPaint(2, Color.ORANGE);
