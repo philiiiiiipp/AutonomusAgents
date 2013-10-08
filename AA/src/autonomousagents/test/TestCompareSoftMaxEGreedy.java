@@ -16,6 +16,9 @@ import autonomousagents.util.Random;
 
 public class TestCompareSoftMaxEGreedy
 {
+	/**
+	 * Plots the difference between SoftMax and e-Greedy
+	 */
 	public static void test()
 	{
 		XYSeriesCollection dataset = new XYSeriesCollection();

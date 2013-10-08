@@ -1,7 +1,6 @@
-package autonomousagents.test;
+package autonomousagents.util;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import autonomousagents.actions.Action;
@@ -10,17 +9,19 @@ import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
 import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
-import autonomousagents.util.Constants;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-public class TestVariousQLearning
+/**
+ * Class to create Python lists, in order to analyse the results
+ * 
+ */
+public class PythonListCreator
 {
-	private static final int NUMBER_OF_EPISODES = 10000;
 	private static final double alpha = 0.1d;
 
-	public static void test()
+	public static void createList()
 	{
 		DecimalFormat df = new DecimalFormat("#.0000");
 		String pythonicList = "[";
@@ -48,7 +49,7 @@ public class TestVariousQLearning
 		PreyRandomPolicy preyPoly = new PreyRandomPolicy();
 
 		double total = 0;
-		for (int i = 0; i < NUMBER_OF_EPISODES; ++i)
+		for (int i = 0; i < Constants.NUMBER_OF_EPISODES; ++i)
 		{
 			// Initialise s
 			Environment e = new Environment();
@@ -87,7 +88,7 @@ public class TestVariousQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			if (NUMBER_OF_EPISODES - 100 <= i)
+			if (Constants.NUMBER_OF_EPISODES - 100 <= i)
 			{
 				total += counter;
 			}
@@ -106,18 +107,5 @@ public class TestVariousQLearning
 		}
 
 		return highestActionValue;
-	}
-
-	private static void pprint(final ArrayList<ArrayList<Double>> values)
-	{
-		DecimalFormat df = new DecimalFormat("#.00");
-		for (ArrayList<Double> row : values)
-		{
-			for (double v : row)
-			{
-				System.out.print(df.format(v) + "\t");
-			}
-			System.out.println();
-		}
 	}
 }

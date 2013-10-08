@@ -15,12 +15,11 @@ import autonomousagents.policy.predator.EGreedyPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Pair;
-import autonomousagents.util.PrettyPrint;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-public class TestOnPolicyMonteCarloPhilipp
+public class TestOnPolicyMonteCarlo
 {
 	public static void test()
 	{
@@ -31,11 +30,8 @@ public class TestOnPolicyMonteCarloPhilipp
 		Set<Pair<State, Action>> observedStateActions = new HashSet<Pair<State, Action>>();
 
 		int counter = 0;
-		while (counter < 3000)
+		while (counter < Constants.NUMBER_OF_EPISODES)
 		{
-			if (counter % 1000 == 0)
-				System.out.println(counter);
-
 			counter++;
 
 			observedStateActions.clear();
@@ -68,45 +64,63 @@ public class TestOnPolicyMonteCarloPhilipp
 				pair.getRight().setActionValue(returns.get(pair).getLeft() / returns.get(pair).getRight());
 			}
 		}
+	}
 
-		// Test
-		// Constants.EPSILON = 0.0;
-		int stepCounter = 0;
-		for (int i = 0; i < 10000; i++)
+	/**
+	 * Running a fixed amount of episodes with onpolicy monte carlo.
+	 * 
+	 * @param predatorPolicy
+	 * @param preyPolicy
+	 * @return a list, containing the steps it took for each episode to catch
+	 *         the prey
+	 */
+	public static List<Integer> runOnPolicyMonteCarlo(final Policy predatorPolicy, final Policy preyPolicy,
+			final int episodeCount)
+	{
+		List<Integer> resultList = new ArrayList<Integer>();
+
+		Map<Pair<State, Action>, Pair<Double, Integer>> returns = new HashMap<Pair<State, Action>, Pair<Double, Integer>>();
+		Set<Pair<State, Action>> observedStateActions = new HashSet<Pair<State, Action>>();
+
+		int counter = 0;
+		while (counter < episodeCount)
 		{
-			Environment e = new Environment();
+			observedStateActions.clear();
 
-			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
-			// Generate a random point, unequal to the prey position
-			Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
+			// (a)
+			List<Pair<State, Action>> episode = generateEpisode(predatorPolicy, preyPolicy);
 
-			e.addAgent(predator);
-			e.addAgent(prey);
-
-			State s = e.getState();
-			while (!s.isTerminal())
+			// (b)
+			for (int i = 0; i < episode.size(); ++i)
 			{
-				Action a = predatorPolicy.nextProbabilisticActionForState(s);
-				a.apply(predator);
-
-				// If the current state is terminal, the prey is not moving once
-				// more, since its already eaten.
-				if (!e.getState().isTerminal())
+				if (!returns.containsKey(episode.get(i)))
 				{
-					preyPolicy.nextProbabilisticActionForState(e.getState()).apply(prey);
+					returns.put(episode.get(i), new Pair<Double, Integer>(0.0d, 0));
 				}
 
-				s = e.getState();
-				stepCounter++;
+				if (!observedStateActions.contains(episode.get(i)))
+				{
+					observedStateActions.add(episode.get(i));
+
+					double r = Math.pow(Constants.GAMMA, episode.size() - (i + 1)) * Constants.REWARD;
+
+					returns.get(episode.get(i)).setLeft(returns.get(episode.get(i)).getLeft() + r);
+					returns.get(episode.get(i)).setRight(returns.get(episode.get(i)).getRight() + 1);
+				}
 			}
 
-		}
-		System.out.println(stepCounter / 10000.0d);
-		PrettyPrint.printTable(predatorPolicy);
-		System.out.println();
+			// (c)
+			for (Pair<State, Action> pair : returns.keySet())
+			{
+				pair.getRight().setActionValue(returns.get(pair).getLeft() / returns.get(pair).getRight());
+			}
 
-		State sTest = new State(new Point(0, 0), new Point(5, 5));
-		PrettyPrint.printAction(predatorPolicy, sTest);
+			resultList.add(episode.size());
+
+			counter++;
+		}
+
+		return resultList;
 	}
 
 	/**

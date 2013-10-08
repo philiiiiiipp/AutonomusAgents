@@ -10,25 +10,23 @@ import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 
-import autonomousagents.util.Constants;
 import autonomousagents.util.Random;
 
 public class TestCompareSarsaQLearning
 {
+	/**
+	 * Plot the difference between SARSA and Q-Learning
+	 */
 	public static void test()
 	{
-		double alpha = 0.1;
-
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		// dataset.addSeries(averageSteps);
-		// dataset.addSeries(averageLastSteps);
+		Random.resetRandom();
 		dataset.addSeries(TestSarsa.generateDataSeries(0.1, 0.1));
 		Random.resetRandom();
 		dataset.addSeries(TestQLearning.generateSeries(0.1, 0.1));
 
-		ApplicationFrame frame = new ApplicationFrame("Q-Learning with e-Greedy" + ", epsilon=" + Constants.EPSILON
-				+ " alpha=" + alpha + " gamma=" + Constants.GAMMA);
+		ApplicationFrame frame = new ApplicationFrame("");
 
 		NumberAxis xax = new NumberAxis("Episodes");
 		NumberAxis yax = new NumberAxis("Steps");

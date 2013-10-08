@@ -1,4 +1,4 @@
-package autonomousagents.test;
+package autonomousagents.test.a1;
 
 import java.text.DecimalFormat;
 
