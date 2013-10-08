@@ -63,6 +63,19 @@ public class State
 		this.mapToSimplifiedState();
 	}
 
+	public State(final List<Point> predatorPoints, final Point preyPoint)
+	{
+		this.predatorPoints = new ArrayList<Point>();
+
+		for (Point p : predatorPoints)
+		{
+			this.predatorPoints.add(p);
+		}
+		this.preyPoint = preyPoint;
+		this.value = 0;
+		this.mapToSimplifiedState();
+	}
+
 	/**
 	 * Method that associates the value of a state with the value of another
 	 * state in order to reduce the state space
@@ -136,7 +149,6 @@ public class State
 					return true;
 			}
 		}
-
 		return false;
 	}
 
@@ -172,11 +184,14 @@ public class State
 		return false;
 	}
 
+	/*
+	 * Works for up to 8 agents.
+	 */
 	@Override
 	public int hashCode()
 	{
 		int result = 0;
-		int power = 4;
+		int power = 32 / (this.predatorPoints.size() + 1);
 
 		for (Point p : this.predatorPoints)
 		{
