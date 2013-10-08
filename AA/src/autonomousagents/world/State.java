@@ -63,6 +63,14 @@ public class State
 		this.mapToSimplifiedState();
 	}
 
+	public State(final List<Point> predatorPoints, final Point preyPoint)
+	{
+		this.predatorPoints = predatorPoints;
+		this.preyPoint = preyPoint;
+		this.value = 0;
+		this.mapToSimplifiedState();
+	}
+
 	/**
 	 * Method that associates the value of a state with the value of another
 	 * state in order to reduce the state space

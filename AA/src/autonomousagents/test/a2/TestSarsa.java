@@ -38,8 +38,8 @@ public class TestSarsa
 			Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
 			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
 
-			e.addAgent(predator);
-			e.addAgent(prey);
+			e.addPredator(predator);
+			e.addPrey(prey);
 
 			State s = e.getState();
 			Action a = predatorPolicy.nextProbabilisticActionForState(s);

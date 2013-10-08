@@ -40,8 +40,8 @@ public class MultipleQLearning
 			Predator predator1 = new Predator(new Point(0, 0), e, predatorPolicy);
 			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
 
-			e.addAgent(predator1);
-			e.addAgent(prey);
+			e.addPredator(predator1);
+			e.addPrey(prey);
 
 			State s = e.getState();
 			double alpha = 0.1;

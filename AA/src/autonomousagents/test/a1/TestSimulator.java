@@ -32,8 +32,8 @@ public class TestSimulator
 			Predator p = new Predator(new Point(0, 0), e, pred);
 			Prey pr = new Prey(new Point(5, 5), e, preyPoly);
 
-			e.addAgent(p);
-			e.addAgent(pr);
+			e.addPredator(p);
+			e.addPrey(pr);
 
 			results.add(stepper(e));
 		}

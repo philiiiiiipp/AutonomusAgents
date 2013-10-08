@@ -56,8 +56,8 @@ public class PythonListCreator
 			Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
 			Prey prey = new Prey(new Point(5, 5), e, preyPoly);
 
-			e.addAgent(predator);
-			e.addAgent(prey);
+			e.addPredator(predator);
+			e.addPrey(prey);
 
 			State s = e.getState();
 			//

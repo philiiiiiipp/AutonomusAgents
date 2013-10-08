@@ -89,8 +89,8 @@ public class TestOffPolicyMonteCarlo
 			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
 			Predator predator = new Predator(new Point(0, 0), e, deterministicPolicyPredator);
 
-			e.addAgent(predator);
-			e.addAgent(prey);
+			e.addPredator(predator);
+			e.addPrey(prey);
 
 			int counter1 = 0;
 			State s = e.getState();
@@ -148,8 +148,8 @@ public class TestOffPolicyMonteCarlo
 		Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
 		Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
 
-		e.addAgent(predator);
-		e.addAgent(prey);
+		e.addPredator(predator);
+		e.addPrey(prey);
 
 		State s = e.getState();
 		while (!s.isTerminal())

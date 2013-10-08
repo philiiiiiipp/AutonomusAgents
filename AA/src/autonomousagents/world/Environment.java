@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import autonomousagents.agent.Agent;
+import autonomousagents.agent.Predator;
+import autonomousagents.agent.Prey;
 import autonomousagents.util.GameField;
 
 /**
@@ -13,7 +15,8 @@ import autonomousagents.util.GameField;
  */
 public class Environment
 {
-	List<Agent> agents = new ArrayList<Agent>();
+	private final List<Predator> predators = new ArrayList<Predator>();
+	private Prey prey;
 
 	/**
 	 * the State is made up of the positions of both Predator and Prey inside
@@ -21,9 +24,15 @@ public class Environment
 	 * 
 	 * @return
 	 */
+
 	public State getState()
 	{
-		return new State(this.agents.get(0).getPosition(), this.agents.get(1).getPosition());
+		List<Point> points = new ArrayList<Point>();
+		for (Agent a : this.predators)
+		{
+			points.add(a.getPosition());
+		}
+		return new State(points, this.prey.getPosition());
 	}
 
 	/**
@@ -32,9 +41,14 @@ public class Environment
 	 * @param a
 	 *            : the agent we want to add
 	 */
-	public void addAgent(final Agent a)
+	public void addPredator(final Predator predator)
 	{
-		this.agents.add(a);
+		this.predators.add(predator);
+	}
+
+	public void addPrey(final Prey prey)
+	{
+		this.prey = prey;
 	}
 
 	/**
@@ -44,7 +58,10 @@ public class Environment
 	 */
 	public List<Agent> getAgents()
 	{
-		return this.agents;
+		List<Agent> agents = new ArrayList<Agent>();
+		agents.addAll(this.predators);
+		agents.add(this.prey);
+		return agents;
 	}
 
 	/**
@@ -55,20 +72,7 @@ public class Environment
 	 */
 	public boolean isEndState()
 	{
-		boolean endState = false;
-		Agent agent = null;
-		for (Agent a : this.agents)
-		{
-			if (agent == null)
-			{
-				agent = a;
-				continue;
-			}
-
-			endState = endState || agent.getPosition().equals(a.getPosition());
-		}
-
-		return endState;
+		return getState().isTerminal();
 	}
 
 	// (0:0) North West
