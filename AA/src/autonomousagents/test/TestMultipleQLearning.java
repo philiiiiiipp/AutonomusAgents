@@ -1,6 +1,7 @@
 package autonomousagents.test;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.chart.ChartPanel;
@@ -12,10 +13,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 
 import autonomousagents.util.JFreeChartHelper;
+import autonomousagents.world.Point;
 
 public class TestMultipleQLearning
 {
-	private static final int EPISODE_COUNT = 1750;
+	private static final int EPISODE_COUNT = 10;
 
 	/**
 	 * Plot the difference between SARSA, Q-Learning and On-/Off-Policy Monte
@@ -28,10 +30,11 @@ public class TestMultipleQLearning
 		double alpha = 0.1;
 		double gamma = 0.1;
 
-		// Random.resetRandom();
-		List<Integer> stepList = null;
-		// List<Integer> stepList =
-		// MultipleQLearning.runQLearning(EPISODE_COUNT, alpha, gamma);
+		List<Point> predatorPoints = new ArrayList<Point>();
+		predatorPoints.add(new Point(5, 5));
+		Point preyPoint = new Point(0, 0);
+
+		List<Integer> stepList = MultipleQLearning.runQLearning(EPISODE_COUNT, alpha, gamma, predatorPoints, preyPoint);
 		dataset.addSeries(JFreeChartHelper.createAverageDataseries(stepList, "Q-Learning with Alpha:" + alpha
 				+ " Gamma:" + gamma, 100));
 

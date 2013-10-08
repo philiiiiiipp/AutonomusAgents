@@ -60,6 +60,7 @@ public class MultipleQLearning
 			int counter = 0;
 			do
 			{
+				// System.out.println("Hello");
 				counter++;
 				List<Action> predatorActions = new ArrayList<Action>();
 
@@ -101,6 +102,7 @@ public class MultipleQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
+			System.out.println(counter);
 			stepList.add(counter);
 			// System.out.println(counter);
 		}
