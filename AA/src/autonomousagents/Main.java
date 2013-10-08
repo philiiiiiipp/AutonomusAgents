@@ -1,6 +1,6 @@
 package autonomousagents;
 
-import autonomousagents.test.TestCompareAll;
+import autonomousagents.test.a2.TestCompareAll;
 
 public class Main
 {
