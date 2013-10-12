@@ -8,6 +8,7 @@ import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
 import autonomousagents.policy.predator.EGreedyPolicy;
+import autonomousagents.policy.predator.EGreedyPolicyWithTrip;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
@@ -36,7 +37,7 @@ public class MultipleQLearning
 			policyList.add(new EGreedyPolicy());
 		}
 
-		Policy preyPolicy = new EGreedyPolicy();
+		Policy preyPolicy = new EGreedyPolicyWithTrip();
 
 		for (int i = 0; i < episodeCount; ++i)
 		{
@@ -101,9 +102,7 @@ public class MultipleQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			System.out.println(counter);
 			stepList.add(counter);
-			// System.out.println(counter);
 		}
 
 		return stepList;
@@ -129,6 +128,7 @@ public class MultipleQLearning
 				highestActionValue = action.getActionValue();
 			}
 		}
+		// System.out.println(highestActionValue);
 		return highestActionValue;
 	}
 
