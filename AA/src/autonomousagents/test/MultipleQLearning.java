@@ -101,9 +101,7 @@ public class MultipleQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			System.out.println(counter);
 			stepList.add(counter);
-			// System.out.println(counter);
 		}
 
 		return stepList;
@@ -129,6 +127,7 @@ public class MultipleQLearning
 				highestActionValue = action.getActionValue();
 			}
 		}
+		// System.out.println(highestActionValue);
 		return highestActionValue;
 	}
 

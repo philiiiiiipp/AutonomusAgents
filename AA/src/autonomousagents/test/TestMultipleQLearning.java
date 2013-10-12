@@ -17,7 +17,7 @@ import autonomousagents.world.Point;
 
 public class TestMultipleQLearning
 {
-	private static final int EPISODE_COUNT = 1750;
+	private static final int EPISODE_COUNT = 2000;
 
 	/**
 	 * Plot the difference between SARSA, Q-Learning and On-/Off-Policy Monte
@@ -27,8 +27,8 @@ public class TestMultipleQLearning
 	{
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		double alpha = 0.1;
-		double gamma = 0.1;
+		double alpha = 0.5;
+		double gamma = 0.5;
 
 		List<Point> predatorPoints = new ArrayList<Point>();
 		predatorPoints.add(new Point(5, 5));
