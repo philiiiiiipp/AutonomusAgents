@@ -21,7 +21,7 @@ public class EGreedyPolicyWithTrip extends GreedyPolicy
 
 		double tripProbability = Random.RAND.nextDouble();
 
-		if (tripProbability < 0.2)
+		if (tripProbability < 0.5)
 		{
 			return new StayAction(1.0d / 5.0d);
 		}
