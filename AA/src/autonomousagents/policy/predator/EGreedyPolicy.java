@@ -17,7 +17,7 @@ public class EGreedyPolicy extends GreedyPolicy
 	public Action nextProbabilisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
-		System.out.println(this.currentPolicy.get(s));
+		// System.out.println(this.currentPolicy.get(s));
 		double probability = Random.RAND.nextDouble();
 
 		if (Constants.EPSILON > probability)
