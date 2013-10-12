@@ -36,6 +36,7 @@ public class MultipleQLearning
 		{
 			policyList.add(new EGreedyPolicy());
 		}
+		// System.out.println(policyList.size());
 
 		Policy preyPolicy = new EGreedyPolicyWithTrip();
 
@@ -67,6 +68,7 @@ public class MultipleQLearning
 				for (int predatorX = 0; predatorX < predatorList.size(); predatorX++)
 				{
 					Policy predatorPolicyX = policyList.get(predatorX);
+					// System.out.println(s);
 					Action predatorActionXAction = predatorPolicyX.nextProbabilisticActionForState(s);
 					predatorActions.add(predatorActionXAction);
 					predatorActionXAction.apply(predatorList.get(predatorX));
