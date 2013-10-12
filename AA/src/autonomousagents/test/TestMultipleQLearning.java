@@ -32,7 +32,7 @@ public class TestMultipleQLearning
 
 		List<Point> predatorPoints = new ArrayList<Point>();
 		predatorPoints.add(new Point(5, 5));
-		// predatorPoints.add(new Point(4, 4));
+		predatorPoints.add(new Point(4, 4));
 		Point preyPoint = new Point(0, 0);
 
 		List<Integer> stepList = MultipleQLearning.runQLearning(EPISODE_COUNT, alpha, gamma, predatorPoints, preyPoint);

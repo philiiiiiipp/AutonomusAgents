@@ -54,6 +54,7 @@ public class GreedyPolicy extends Policy
 	public Action nextProbabilisticActionForState(final State s)
 	{
 		List<Action> actionList = this.currentPolicy.get(s);
+		// System.out.println(actionList);
 
 		int bestAction = 0;
 		double highestActionValue = -1;
