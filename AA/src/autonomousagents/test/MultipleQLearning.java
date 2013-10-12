@@ -31,7 +31,7 @@ public class MultipleQLearning
 		List<Integer> stepList = new ArrayList<Integer>();
 		List<Policy> policyList = new ArrayList<Policy>();
 
-		for (Point _ : predatorPoints)
+		for (int i = 0; i < predatorPoints.size(); i++)
 		{
 			policyList.add(new EGreedyPolicy());
 		}
