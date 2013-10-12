@@ -16,35 +16,6 @@ public class State
 	private double value;
 
 	/**
-	 * method that reduces the size of the state space
-	 */
-	private void mapToSimplifiedState()
-	{
-		List<Point> newPointList = new ArrayList<Point>();
-		for (Point p : this.predatorPoints)
-		{
-			int xdistance = p.getX() - this.preyPoint.getX();
-			int ydistance = p.getY() - this.preyPoint.getY();
-
-			xdistance = (xdistance < 0 ? GameField.XMAX + xdistance : xdistance);
-			ydistance = (ydistance < 0 ? GameField.YMAX + ydistance : ydistance);
-
-			newPointList.add(new Point(xdistance, ydistance));
-		}
-		this.predatorPoints = newPointList;
-		this.preyPoint = new Point(0, 0);
-
-		/*
-		 * 
-		 * if (xdistance < ydistance) { int tmp = xdistance; xdistance =
-		 * ydistance; ydistance = tmp; }
-		 * 
-		 * this.predatorPoint = new Point(xdistance, ydistance); this.preyPoint
-		 * = new Point(0, 0);
-		 */
-	}
-
-	/**
 	 * constructor where we initialize the state with the position of the
 	 * Predator and the Prey
 	 * 
@@ -72,28 +43,33 @@ public class State
 	}
 
 	/**
-	 * Method that associates the value of a state with the value of another
-	 * state in order to reduce the state space
-	 * 
-	 * @deprecated because of old way of calculating the minimised statespace
-	 * 
-	 * @param s
-	 *            State to be reduced with its symmetrical state
-	 * @return
+	 * method that reduces the size of the state space
 	 */
-	// @Deprecated
-	// public static State translateState(final State s)
-	// {
-	// // int xdistance = Math.abs(s.predatorPoint.getX() -
-	// // s.preyPoint.getX());
-	// // int ydistance = Math.abs(s.predatorPoint.getY() -
-	// // s.preyPoint.getY());
-	// //
-	// // xdistance = Math.min(xdistance, 11 - xdistance);
-	// // ydistance = Math.min(ydistance, 11 - ydistance);
-	//
-	// return new State(new Point(xdistance, ydistance), new Point(0, 0));
-	// }
+	private void mapToSimplifiedState()
+	{
+		List<Point> newPointList = new ArrayList<Point>();
+		for (Point p : this.predatorPoints)
+		{
+			int xdistance = p.getX() - this.preyPoint.getX();
+			int ydistance = p.getY() - this.preyPoint.getY();
+
+			xdistance = (xdistance < 0 ? GameField.XMAX + xdistance : xdistance);
+			ydistance = (ydistance < 0 ? GameField.YMAX + ydistance : ydistance);
+
+			newPointList.add(new Point(xdistance, ydistance));
+		}
+		this.predatorPoints = newPointList;
+		this.preyPoint = new Point(0, 0);
+
+		/*
+		 * 
+		 * if (xdistance < ydistance) { int tmp = xdistance; xdistance =
+		 * ydistance; ydistance = tmp; }
+		 * 
+		 * this.predatorPoint = new Point(xdistance, ydistance); this.preyPoint
+		 * = new Point(0, 0);
+		 */
+	}
 
 	/**
 	 * returns the Predator location on the grid

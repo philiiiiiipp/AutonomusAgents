@@ -47,6 +47,30 @@ public class GreedyPolicy extends Policy
 		}
 	}
 
+	public GreedyPolicy(final int numberOfPredators)
+	{
+		List<Point> possiblePoints = new ArrayList();
+		for (int i = 0; i < 11; i++)
+		{
+			for (int j = 0; j < 11; j++)
+			{
+				possiblePoints.add(new Point(i, j));
+			}
+		}
+
+		List<List<Point>> subsets = new ArrayList();
+		// / calculate all subsets of size numberOfPredators
+
+		// / add states
+		for (int i = 0; i < 11; i++)
+		{
+			for (int j = 0; j < 11; j++)
+			{
+
+			}
+		}
+	}
+
 	/**
 	 * Returns the next action considering greedy
 	 */
