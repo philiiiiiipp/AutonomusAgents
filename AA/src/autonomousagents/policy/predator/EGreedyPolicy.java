@@ -9,6 +9,15 @@ import autonomousagents.world.State;
 
 public class EGreedyPolicy extends GreedyPolicy
 {
+	public EGreedyPolicy()
+	{
+		super();
+	}
+
+	public EGreedyPolicy(final int size)
+	{
+		super(size);
+	}
 
 	/**
 	 * Returns the next action considering e-greedy
