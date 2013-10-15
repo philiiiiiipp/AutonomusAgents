@@ -11,6 +11,11 @@ import autonomousagents.util.GameField;
  */
 public class State
 {
+	public enum TerminalStates
+	{
+		NOT_TERMINAL, PREY_WINS, PREDATOR_WINS
+	}
+
 	private List<Point> predatorPoints;
 	private Point preyPoint;
 	private double value;
@@ -121,6 +126,34 @@ public class State
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * check if a state is a terminal state, which occurs when the Predator is
+	 * located in the same position as the Prey
+	 * 
+	 * @return boolean
+	 */
+	public TerminalStates getTerminalState()
+	{
+		boolean preyCatched = false;
+
+		for (int i = 0; i < this.predatorPoints.size(); ++i)
+		{
+			if (this.predatorPoints.get(i).equals(this.preyPoint))
+				preyCatched = true;
+
+			for (int j = i + 1; j < this.predatorPoints.size(); j++)
+			{
+				if (this.predatorPoints.get(i).equals(this.predatorPoints.get(j)))
+					return TerminalStates.PREY_WINS;
+			}
+		}
+
+		if (preyCatched)
+			return TerminalStates.PREDATOR_WINS;
+
+		return TerminalStates.NOT_TERMINAL;
 	}
 
 	/**

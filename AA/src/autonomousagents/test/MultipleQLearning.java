@@ -12,6 +12,7 @@ import autonomousagents.policy.prey.EGreedyPolicyWithTrip;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
+import autonomousagents.world.State.TerminalStates;
 
 public class MultipleQLearning
 {
@@ -58,6 +59,8 @@ public class MultipleQLearning
 
 			State s = e.getState();
 
+			double totalReward = 0;
+
 			// Repeat for each step of the episode
 			int counter = 0;
 			do
@@ -78,9 +81,21 @@ public class MultipleQLearning
 				preyAction.apply(prey);
 
 				// Reward from this action
-				double predatorReward = (e.getState().isTerminal() ? 10 : 0);
-				double preyReward = (e.getState().isTerminal() ? -10 : 0);
+				TerminalStates state = e.getState().getTerminalState();
+				double predatorReward = 0;
+				double preyReward = 0;
 
+				if (state == TerminalStates.PREDATOR_WINS)
+				{
+					predatorReward = 10;
+					preyReward = -10;
+				} else if (state == TerminalStates.PREY_WINS)
+				{
+					predatorReward = -10;
+					preyReward = 10;
+				}
+
+				totalReward += predatorReward;
 				State sPrime = e.getState();
 
 				for (int predAction = 0; predAction < predatorActions.size(); predAction++)
@@ -104,7 +119,7 @@ public class MultipleQLearning
 				s = sPrime;
 			} while (!s.isTerminal());
 
-			stepList.add(counter);
+			stepList.add((int) totalReward);
 		}
 
 		return stepList;
