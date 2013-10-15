@@ -17,7 +17,7 @@ import autonomousagents.world.Point;
 
 public class TestMultipleQLearning
 {
-	private static final int EPISODE_COUNT = 10000;
+	private static final int EPISODE_COUNT = 200000;
 
 	/**
 	 * Plot the difference between SARSA, Q-Learning and On-/Off-Policy Monte
@@ -37,8 +37,10 @@ public class TestMultipleQLearning
 		Point preyPoint = new Point(0, 0);
 
 		List<Integer> stepList = MultipleQLearning.runQLearning(EPISODE_COUNT, alpha, gamma, predatorPoints, preyPoint);
-		dataset.addSeries(JFreeChartHelper.createAverageDataseries(stepList, "Q-Learning with Alpha:" + alpha
-				+ " Gamma:" + gamma, 1));
+		dataset.addSeries(JFreeChartHelper.createWinningDataseries(stepList, "Q-Learning with Alpha:" + alpha
+				+ " Learning:" + EPISODE_COUNT, 1));
+
+		dataset.addSeries(JFreeChartHelper.createLoosingDataseries(stepList, "Prey" + alpha + " Gamma:" + gamma, 1));
 
 		ApplicationFrame frame = new ApplicationFrame("");
 

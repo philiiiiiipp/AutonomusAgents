@@ -35,7 +35,7 @@ public class MultipleQLearning
 
 		for (int i = 0; i < predatorPoints.size(); i++)
 		{
-			policyList.add(new EGreedyPolicy());
+			policyList.add(new EGreedyPolicy(predatorPoints.size()));
 		}
 		// System.out.println(policyList.size());
 
@@ -59,19 +59,17 @@ public class MultipleQLearning
 
 			State s = e.getState();
 
-			double totalReward = 0;
-
 			// Repeat for each step of the episode
-			int counter = 0;
+			// int counter = 0;
 			do
 			{
-				counter++;
+				// counter++;
 				List<Action> predatorActions = new ArrayList<Action>();
 
 				for (int predatorX = 0; predatorX < predatorList.size(); predatorX++)
 				{
 					Policy predatorPolicyX = policyList.get(predatorX);
-					// System.out.println(s);
+
 					Action predatorActionXAction = predatorPolicyX.nextProbabilisticActionForState(s);
 					predatorActions.add(predatorActionXAction);
 					predatorActionXAction.apply(predatorList.get(predatorX));
@@ -95,7 +93,6 @@ public class MultipleQLearning
 					preyReward = 10;
 				}
 
-				totalReward += predatorReward;
 				State sPrime = e.getState();
 
 				for (int predAction = 0; predAction < predatorActions.size(); predAction++)
@@ -118,8 +115,38 @@ public class MultipleQLearning
 											.getActionValue()));
 				s = sPrime;
 			} while (!s.isTerminal());
+		}
 
-			stepList.add((int) totalReward);
+		for (int step = 0; step < 1000; step++)
+		{
+			// Initialise s
+			Environment e = new Environment();
+
+			List<Predator> predatorList = new ArrayList<Predator>();
+			for (int j = 0; j < predatorPoints.size(); j++)
+			{
+				Predator p = new Predator(predatorPoints.get(j), e, policyList.get(j));
+				predatorList.add(p);
+				e.addPredator(p);
+			}
+
+			Prey prey = new Prey(preyPoint, e, preyPolicy);
+			e.addPrey(prey);
+
+			State s = e.getState();
+
+			do
+			{
+				for (Predator p : predatorList)
+				{
+					p.step();
+				}
+
+				prey.step();
+				s = e.getState();
+			} while (!s.isTerminal());
+
+			stepList.add((s.getTerminalState() == TerminalStates.PREDATOR_WINS) ? 1 : 0);
 		}
 
 		return stepList;
@@ -128,15 +155,24 @@ public class MultipleQLearning
 	private static double maximisationPredator(final int currentPredatorIndex, final List<Predator> predatorList,
 			final Prey prey, final List<Policy> policyList, final Policy preyPolicy, final State s)
 	{
-		List<Action> actionList = policyList.get(currentPredatorIndex).actionsForState(s);
+
+		List<Point> newPredatorPoints = new ArrayList<Point>();
 		for (int i = 0; i < predatorList.size(); i++)
 		{
 			if (i != currentPredatorIndex)
 			{
-				policyList.get(i).nextProbabilisticActionForState(s).apply(predatorList.get(i));
+				newPredatorPoints.add(policyList.get(i).nextProbabilisticActionForState(s)
+						.apply((predatorList.get(i).getPosition())));
+			} else
+			{
+				newPredatorPoints.add(predatorList.get(i).getPosition());
 			}
 		}
-		preyPolicy.nextProbabilisticActionForState(s).apply(prey);
+
+		Point preyPoint = preyPolicy.nextProbabilisticActionForState(s).apply(prey.getPosition());
+
+		List<Action> actionList = policyList.get(currentPredatorIndex).actionsForState(
+				new State(newPredatorPoints, preyPoint));
 		double highestActionValue = 0;
 		for (Action action : actionList)
 		{
@@ -152,12 +188,14 @@ public class MultipleQLearning
 	private static double maximisationPrey(final List<Predator> predatorList, final Prey prey,
 			final List<Policy> policyList, final Policy preyPolicy, final State s)
 	{
-		List<Action> actionList = preyPolicy.actionsForState(s);
+		List<Point> newPredatorPoints = new ArrayList<Point>();
 		for (int i = 0; i < predatorList.size(); i++)
 		{
-			policyList.get(i).nextProbabilisticActionForState(s).apply(predatorList.get(i));
+			newPredatorPoints.add(policyList.get(i).nextProbabilisticActionForState(s)
+					.apply((predatorList.get(i).getPosition())));
 		}
 
+		List<Action> actionList = preyPolicy.actionsForState(new State(newPredatorPoints, prey.getPosition()));
 		double highestActionValue = 0;
 		for (Action action : actionList)
 		{
