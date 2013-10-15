@@ -58,17 +58,27 @@ public class State
 
 			newPointList.add(new Point(xdistance, ydistance));
 		}
+
 		this.predatorPoints = newPointList;
 		this.preyPoint = new Point(0, 0);
 
-		/*
-		 * 
-		 * if (xdistance < ydistance) { int tmp = xdistance; xdistance =
-		 * ydistance; ydistance = tmp; }
-		 * 
-		 * this.predatorPoint = new Point(xdistance, ydistance); this.preyPoint
-		 * = new Point(0, 0);
-		 */
+		int xSum = 0;
+		int ySum = 0;
+		for (Point p : this.predatorPoints)
+		{
+			xSum += p.getX();
+			ySum += p.getY();
+		}
+
+		if (xSum < ySum)
+		{
+			newPointList = new ArrayList<Point>();
+			for (Point p : this.predatorPoints)
+			{
+				newPointList.add(new Point(p.getY(), p.getX()));
+			}
+			this.predatorPoints = newPointList;
+		}
 	}
 
 	/**

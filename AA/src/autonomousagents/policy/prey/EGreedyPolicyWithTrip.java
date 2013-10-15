@@ -1,15 +1,20 @@
-package autonomousagents.policy.predator;
+package autonomousagents.policy.prey;
 
 import java.util.List;
 
 import autonomousagents.actions.Action;
 import autonomousagents.actions.StayAction;
+import autonomousagents.policy.predator.GreedyPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.Random;
 import autonomousagents.world.State;
 
 public class EGreedyPolicyWithTrip extends GreedyPolicy
 {
+	public EGreedyPolicyWithTrip(final int size)
+	{
+		super(size);
+	}
 
 	/**
 	 * Returns the next action considering e-greedy
@@ -41,6 +46,6 @@ public class EGreedyPolicyWithTrip extends GreedyPolicy
 	@Override
 	public String toString()
 	{
-		return "EGreedy";
+		return "EGreedyWithTrip";
 	}
 }

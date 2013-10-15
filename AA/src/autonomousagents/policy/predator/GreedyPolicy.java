@@ -10,6 +10,7 @@ import autonomousagents.actions.SouthAction;
 import autonomousagents.actions.StayAction;
 import autonomousagents.actions.WestAction;
 import autonomousagents.policy.Policy;
+import autonomousagents.util.GameField;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
@@ -61,27 +62,14 @@ public class GreedyPolicy extends Policy
 		// / calculate all subsets of size numberOfPredators
 		List<List<Point>> subsets = getSubSets(possiblePoints, numberOfPredators);
 
-		for (int i = 0; i < 11; i++)
+		for (List<Point> pList : subsets)
 		{
-			for (int j = 0; j < 11; j++)
+			for (int x = 0; x < GameField.XMAX; ++x)
 			{
-				Point prey = new Point(i, j);
-				for (List<Point> set : subsets)
+				for (int y = 0; y < GameField.YMAX; y++)
 				{
-					// Test if prey is not on one of the predators
-					boolean possible = true;
-					for (Point p : set)
-					{
-						if (p.equals(prey))
-						{
-							possible = false;
-							break;
-						}
-					}
-					if (!possible)
-						continue;
 
-					State s = new State(set, prey);
+					State s = new State(pList, new Point(x, y));
 					List<Action> actions = new ArrayList<Action>();
 					// the Predator can move to each of the 5 directions
 					// with equal probability
@@ -99,38 +87,30 @@ public class GreedyPolicy extends Policy
 
 	private static List<List<Point>> getSubSets(final List<Point> possiblePoints, final int numberOfPredators)
 	{
-		assert (numberOfPredators < 4);
-
 		List<List<Point>> subsets = new ArrayList<List<Point>>();
-		// generate subsets
-		for (int i = 0; i < possiblePoints.size(); i++)
+		for (Point p : possiblePoints)
 		{
-			List<Point> thisSubset = new ArrayList<Point>();
-			thisSubset.add(possiblePoints.get(i));
-			if (numberOfPredators == 1)
-				continue;
-			for (int j = 0; j < possiblePoints.size(); j++)
-			{
-				thisSubset.add(possiblePoints.get(j));
-				if (numberOfPredators == 2)
-					continue;
-				for (int k = 0; k < possiblePoints.size(); k++)
-				{
-					thisSubset.add(possiblePoints.get(k));
-				}
-			}
-			subsets.add(thisSubset);
+			List<Point> subsubSet = new ArrayList<Point>();
+			subsubSet.add(p);
+			subsets.add(subsubSet);
 		}
-		// Filter subsets for doubles
-		for (int i = 0; i < subsets.size() - 1; i++)
+
+		for (int i = 0; i < numberOfPredators - 1; i++)
 		{
-			for (int j = i; j < subsets.size(); j++)
+			List<List<Point>> newsubsets = new ArrayList<List<Point>>();
+			for (int subI = 0; subI < subsets.size(); subI++)
 			{
-				if (subsets.get(i) == subsets.get(j))
+				List<Point> subsubSet = subsets.get(subI);
+
+				for (int point = 0; point < possiblePoints.size(); point++)
 				{
-					subsets.remove(j);
+					List<Point> newSubSet = new ArrayList<Point>(subsubSet);
+					newSubSet.add(possiblePoints.get(point));
+
+					newsubsets.add(newSubSet);
 				}
 			}
+			subsets = newsubsets;
 		}
 
 		return subsets;
