@@ -35,7 +35,7 @@ public class MultipleQLearning
 
 		for (int i = 0; i < predatorPoints.size(); i++)
 		{
-			policyList.add(new EGreedyPolicy(predatorPoints.size()));
+			policyList.add(new EGreedyPolicy());
 		}
 		// System.out.println(policyList.size());
 
