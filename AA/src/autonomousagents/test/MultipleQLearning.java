@@ -8,7 +8,7 @@ import autonomousagents.agent.Predator;
 import autonomousagents.agent.Prey;
 import autonomousagents.policy.Policy;
 import autonomousagents.policy.predator.EGreedyPolicy;
-import autonomousagents.policy.predator.EGreedyPolicyWithTrip;
+import autonomousagents.policy.prey.EGreedyPolicyWithTrip;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
@@ -38,7 +38,7 @@ public class MultipleQLearning
 		}
 		// System.out.println(policyList.size());
 
-		Policy preyPolicy = new EGreedyPolicyWithTrip();
+		Policy preyPolicy = new EGreedyPolicyWithTrip(predatorPoints.size());
 
 		for (int i = 0; i < episodeCount; ++i)
 		{
