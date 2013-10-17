@@ -1,6 +1,6 @@
 package autonomousagents;
 
-import autonomousagents.test.TestMultipleQLearning;
+import autonomousagents.test.a3.TestMultipleQLearning;
 
 public class Main
 {
