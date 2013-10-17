@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/orsonpdf-1.2-eval.jar"/>
 	<classpathentry kind="lib" path="lib/servlet.jar"/>
 	<classpathentry kind="lib" path="lib/swtgraphics2d.jar"/>
+	<classpathentry kind="lib" path="lib/javailp-1.2a.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

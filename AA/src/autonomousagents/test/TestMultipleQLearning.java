@@ -17,7 +17,7 @@ import autonomousagents.world.Point;
 
 public class TestMultipleQLearning
 {
-	private static final int EPISODE_COUNT = 200000;
+	private static final int EPISODE_COUNT = 250000;
 
 	/**
 	 * Plot the difference between SARSA, Q-Learning and On-/Off-Policy Monte
