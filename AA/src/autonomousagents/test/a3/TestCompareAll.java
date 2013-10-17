@@ -1,4 +1,4 @@
-package autonomousagents.test;
+package autonomousagents.test.a3;
 
 import java.awt.Color;
 import java.util.List;

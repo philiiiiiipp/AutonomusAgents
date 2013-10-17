@@ -1,4 +1,4 @@
-package autonomousagents.test;
+package autonomousagents.test.a3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,24 +12,23 @@ import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
 import autonomousagents.world.State;
 
-public class TestSarsa
+public class TestQLearning
 {
-
 	/**
-	 * Run the SARSA algorithmn
+	 * Run Q-Learning
 	 * 
 	 * @param predatorPolicy
 	 * @param preyPolicy
 	 * @param alpha
-	 * @param gamma
+	 * @param gamme
 	 * @param episodeCount
 	 * @return a list, containing the number of steps used for catching the prey
 	 *         after each episode
 	 */
-	public static List<Integer> runSarsa(final Policy predatorPolicy, final Policy preyPolicy, final double alpha,
+	public static List<Integer> runQLearning(final Policy predatorPolicy, final Policy preyPolicy, final double alpha,
 			final double gamma, final int episodeCount)
 	{
-		List<Integer> stepsCount = new ArrayList<Integer>();
+		List<Integer> stepList = new ArrayList<Integer>();
 
 		for (int i = 0; i < episodeCount; ++i)
 		{
@@ -42,13 +41,14 @@ public class TestSarsa
 			e.addPrey(prey);
 
 			State s = e.getState();
-			Action a = predatorPolicy.nextProbabilisticActionForState(s);
 
 			// Repeat for each step of the episode
 			int counter = 0;
 			do
 			{
 				counter++;
+
+				Action a = predatorPolicy.nextProbabilisticActionForState(s);
 				a.apply(predator);
 
 				// Reward from this action
@@ -61,18 +61,27 @@ public class TestSarsa
 
 				State sPrime = e.getState();
 
-				Action aPrime = predatorPolicy.nextProbabilisticActionForState(sPrime);
-
 				a.setActionValue(a.getActionValue() + alpha
-						* (reward + gamma * aPrime.getActionValue() - a.getActionValue()));
+						* (reward + gamma * maximisation(predatorPolicy.actionsForState(sPrime)) - a.getActionValue()));
 
 				s = sPrime;
-				a = aPrime;
 			} while (!s.isTerminal());
 
-			stepsCount.add(counter);
+			stepList.add(counter);
 		}
 
-		return stepsCount;
+		return stepList;
+	}
+
+	private static double maximisation(final List<Action> actionList)
+	{
+		double highestActionValue = 0;
+		for (Action a : actionList)
+		{
+			if (a.getActionValue() > highestActionValue)
+				highestActionValue = a.getActionValue();
+		}
+
+		return highestActionValue;
 	}
 }
