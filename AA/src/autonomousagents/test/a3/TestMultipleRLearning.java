@@ -17,7 +17,7 @@ import autonomousagents.world.Point;
 
 public class TestMultipleRLearning
 {
-	private static final int EPISODE_COUNT = 10;
+	private static final int EPISODE_COUNT = 1000;
 
 	/**
 	 * Plot the performance of multiple Q-learning
@@ -26,8 +26,8 @@ public class TestMultipleRLearning
 	{
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		double alpha = 0.5;
-		double gamma = 0.5;
+		double alpha = 0.1;
+		double gamma = 0.1;
 
 		List<Point> predatorPoints = new ArrayList<Point>();
 		predatorPoints.add(new Point(5, 5));
@@ -35,7 +35,8 @@ public class TestMultipleRLearning
 		// predatorPoints.add(new Point(5, 3));
 		Point preyPoint = new Point(0, 0);
 
-		List<Integer> stepList = MultipleRLearning.runQLearning(EPISODE_COUNT, alpha, gamma, predatorPoints, preyPoint);
+		List<Integer> stepList = MultipleRLearning.runRLearning(EPISODE_COUNT, alpha, gamma, predatorPoints, preyPoint);
+
 		dataset.addSeries(JFreeChartHelper.createWinningDataseries(stepList, "Predator", 1));
 
 		System.out.println("Done");
