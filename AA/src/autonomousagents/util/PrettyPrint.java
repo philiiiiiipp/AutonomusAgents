@@ -33,6 +33,36 @@ public class PrettyPrint
 		System.out.println("---------------------------");
 	}
 
+	public static void printTableForProbabilities(final Policy predatorPolicy)
+	{
+		for (int yPred = 0; yPred < 11; yPred++)
+		{
+			System.out.print(" | ");
+			for (int xPred = 0; xPred < 11; xPred++)
+			{
+				State s = new State(new Point(xPred, yPred), new Point(5, 5));
+
+				if (s.isTerminal())
+				{
+					System.out.print("# ");
+					continue;
+				}
+
+				List<Action> aList = predatorPolicy.actionsForState(s);
+				Action a = aList.get(0);
+				for (Action ad : aList)
+				{
+					if (ad.getProbability() > a.getProbability())
+						a = ad;
+				}
+
+				System.out.print(a + " ");
+			}
+			System.out.println(" | ");
+		}
+		System.out.println("---------------------------");
+	}
+
 	public static void printAction(final Policy predatorPolicy, State s)
 	{
 

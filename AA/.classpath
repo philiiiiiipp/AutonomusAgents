@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="lib/LPSOLVESolverPack.jar"/>
 	<classpathentry kind="lib" path="lib/GLPKSolverPack.jar"/>
 	<classpathentry kind="lib" path="lib/SCPSolver.jar"/>
+	<classpathentry kind="lib" path="lib/lpsolve55j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
