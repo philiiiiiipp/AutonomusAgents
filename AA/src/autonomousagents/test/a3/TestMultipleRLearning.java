@@ -17,7 +17,7 @@ import autonomousagents.world.Point;
 
 public class TestMultipleRLearning
 {
-	private static final int EPISODE_COUNT = 7000;
+	private static final int EPISODE_COUNT = 10000;
 
 	/**
 	 * Plot the performance of multiple Q-learning

@@ -36,7 +36,6 @@ public class MultipleRLearning
 		List<Policy> policyList = new ArrayList<Policy>();
 
 		double beta = 0.1;
-		// double RoPred = 0;
 		double RoPrey = 0;
 		List<Double> predatorRhos = new ArrayList<Double>();
 
