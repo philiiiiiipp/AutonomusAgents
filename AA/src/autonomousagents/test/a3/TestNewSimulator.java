@@ -13,7 +13,7 @@ import autonomousagents.world.State.TerminalStates;
 
 public class TestNewSimulator
 {
-	private static final int ITERATIONS = 100;
+	private static final int ITERATIONS = 10000;
 
 	/**
 	 * Run the simulator ITERATIONS times, and print the Median, Average,
@@ -27,15 +27,17 @@ public class TestNewSimulator
 		for (int i = 0; i < ITERATIONS; i++)
 		{
 			Environment e = new Environment();
-			Predator firstPred = new Predator(new Point(1, 0), e, pred);
-			Predator secondPred = new Predator(new Point(4, 1), e, pred);
-			Predator thirdPred = new Predator(new Point(3, 2), e, pred);
+			Predator firstPred = new Predator(new Point(0, 0), e, pred);
+			Predator secondPred = new Predator(new Point(0, 4), e, pred);
+			Predator thirdPred = new Predator(new Point(4, 0), e, pred);
+			Predator fourthPred = new Predator(new Point(4, 4), e, pred);
 
-			Prey pr = new Prey(new Point(5, 5), e, pred);
+			Prey pr = new Prey(new Point(2, 2), e, pred);
 
 			e.addPredator(firstPred);
 			e.addPredator(secondPred);
 			e.addPredator(thirdPred);
+			e.addPredator(fourthPred);
 
 			e.addPrey(pr);
 			results.add(stepper(e));
