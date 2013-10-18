@@ -9,6 +9,7 @@ import autonomousagents.agent.Prey;
 import autonomousagents.policy.predator.RandomPolicy;
 import autonomousagents.world.Environment;
 import autonomousagents.world.Point;
+import autonomousagents.world.State.TerminalStates;
 
 public class TestNewSimulator
 {
@@ -45,6 +46,7 @@ public class TestNewSimulator
 
 	public static void pprintStatistics(final ArrayList<Integer> scores)
 	{
+		System.out.println(scores);
 		double total = 0;
 		double highest = Double.MIN_VALUE;
 		for (int i : scores)
@@ -86,10 +88,13 @@ public class TestNewSimulator
 			counterOfSteps++;
 			for (Agent agent : agents)
 			{
-				if (agent.step())
-				{
-					return counterOfSteps;
-				}
+				agent.step();
+			}
+			TerminalStates state = environment.getState().getTerminalState();
+
+			if (state != TerminalStates.NOT_TERMINAL)
+			{
+				return counterOfSteps;
 			}
 		}
 	}
