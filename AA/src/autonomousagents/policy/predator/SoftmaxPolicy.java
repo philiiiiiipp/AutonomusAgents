@@ -71,7 +71,6 @@ public class SoftmaxPolicy extends Policy
 				if (probability <= 0)
 				{
 					return pA.getObject();
-
 				}
 			}
 
