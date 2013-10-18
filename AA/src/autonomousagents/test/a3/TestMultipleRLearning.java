@@ -36,6 +36,7 @@ public class TestMultipleRLearning
 		Point preyPoint = new Point(0, 0);
 
 		List<Integer> stepList = MultipleRLearning.runRLearning(EPISODE_COUNT, alpha, gamma, predatorPoints, preyPoint);
+
 		dataset.addSeries(JFreeChartHelper.createWinningDataseries(stepList, "Predator", 1));
 
 		System.out.println("Done");
