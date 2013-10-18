@@ -17,11 +17,10 @@ import autonomousagents.world.Point;
 
 public class TestMultipleQLearning
 {
-	private static final int EPISODE_COUNT = 250000;
+	private static final int EPISODE_COUNT = 100000;
 
 	/**
-	 * Plot the difference between SARSA, Q-Learning and On-/Off-Policy Monte
-	 * Carlo
+	 * Plot the performance of multiple Q-learning
 	 */
 	public static void test()
 	{
@@ -32,20 +31,21 @@ public class TestMultipleQLearning
 
 		List<Point> predatorPoints = new ArrayList<Point>();
 		predatorPoints.add(new Point(5, 5));
-		predatorPoints.add(new Point(4, 4));
-		// predatorPoints.add(new Point(10, 10));
+		predatorPoints.add(new Point(5, 4));
+		// predatorPoints.add(new Point(5, 3));
 		Point preyPoint = new Point(0, 0);
 
 		List<Integer> stepList = MultipleQLearning.runQLearning(EPISODE_COUNT, alpha, gamma, predatorPoints, preyPoint);
-		dataset.addSeries(JFreeChartHelper.createWinningDataseries(stepList, "Q-Learning with Alpha:" + alpha
-				+ " Learning:" + EPISODE_COUNT, 1));
+		dataset.addSeries(JFreeChartHelper.createWinningDataseries(stepList, "Predator", 1));
 
-		dataset.addSeries(JFreeChartHelper.createLoosingDataseries(stepList, "Prey" + alpha + " Gamma:" + gamma, 1));
+		System.out.println("Done");
+
+		dataset.addSeries(JFreeChartHelper.createLoosingDataseries(stepList, "Prey", 1));
 
 		ApplicationFrame frame = new ApplicationFrame("");
 
 		NumberAxis xax = new NumberAxis("Episodes");
-		NumberAxis yax = new NumberAxis("Steps");
+		NumberAxis yax = new NumberAxis("Wins");
 		XYSplineRenderer a = new XYSplineRenderer();
 		a.setBaseShapesVisible(false);
 		a.setSeriesPaint(3, Color.RED);
