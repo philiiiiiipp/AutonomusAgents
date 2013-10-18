@@ -27,22 +27,23 @@ public class MultipleRLearning
 	 * @return a list, containing the number of steps used for catching the prey
 	 *         after each episode
 	 */
-	public static List<Integer> runQLearning(final int episodeCount, final double alpha, final double gamma,
+	public static List<Integer> runRLearning(final int episodeCount, final double alpha, final double gamma,
 			final List<Point> predatorPoints, final Point preyPoint)
 	{
+		System.out.println("Definitely running Remi-learning ");
 		List<Integer> stepList = new ArrayList<Integer>();
 		List<Policy> policyList = new ArrayList<Policy>();
 
-		double a = 0.1;
 		double beta = 0.1;
-		double RoPred = 0;
+		// double RoPred = 0;
 		double RoPrey = 0;
+		List<Double> predatorRhos = new ArrayList<Double>();
 
 		for (int i = 0; i < predatorPoints.size(); i++)
 		{
 			policyList.add(new EGreedyPolicy(predatorPoints.size()));
+			predatorRhos.add(0.0);
 		}
-		// System.out.println(policyList.size());
 
 		Policy preyPolicy = new EGreedyPolicyWithTrip(predatorPoints.size());
 
@@ -102,14 +103,15 @@ public class MultipleRLearning
 
 				for (int predAction = 0; predAction < predatorActions.size(); predAction++)
 				{
+					double RoPred = predatorRhos.get(predAction);
 					Action predatorActionX = predatorActions.get(predAction);
 
 					double maxPrime = maximisationPredator(predAction, predatorList, prey, policyList, preyPolicy,
 							sPrime);
 					double max = maximisationPredator(predAction, predatorList, prey, policyList, preyPolicy, s);
 
-					double newActionValue = predatorActionX.getActionValue() + a
-							* (predatorReward - RoPred + maxPrime - max);
+					double newActionValue = predatorActionX.getActionValue() + alpha
+							* (predatorReward - RoPred + maxPrime - predatorActionX.getActionValue());
 					predatorActionX.setActionValue(newActionValue);
 
 					if (max == predatorActionX.getActionValue())
@@ -119,12 +121,11 @@ public class MultipleRLearning
 
 				}
 
-				double maxPrime = maximisationPrey(predatorList, prey, policyList, preyPolicy, sPrime)
-						- preyAction.getActionValue();
-				double max = maximisationPrey(predatorList, prey, policyList, preyPolicy, s)
-						- preyAction.getActionValue();
+				double maxPrime = maximisationPrey(predatorList, prey, policyList, preyPolicy, sPrime);
+				double max = maximisationPrey(predatorList, prey, policyList, preyPolicy, s);
 
-				double newActionValue = preyAction.getActionValue() + a * (predatorReward - RoPred + maxPrime - max);
+				double newActionValue = preyAction.getActionValue() + alpha
+						* (preyReward - RoPrey + maxPrime - preyAction.getActionValue());
 				preyAction.setActionValue(newActionValue);
 
 				if (max == preyAction.getActionValue())
