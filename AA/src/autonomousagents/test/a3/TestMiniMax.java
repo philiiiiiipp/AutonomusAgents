@@ -12,6 +12,7 @@ import org.jfree.chart.renderer.xy.XYSplineRenderer;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 
+import scpsolver.problems.LPSolution;
 import scpsolver.problems.LPWizard;
 import autonomousagents.actions.Action;
 import autonomousagents.agent.Predator;
@@ -21,7 +22,6 @@ import autonomousagents.policy.predator.SoftPolicy;
 import autonomousagents.policy.prey.PreyRandomPolicy;
 import autonomousagents.util.Constants;
 import autonomousagents.util.JFreeChartHelper;
-import autonomousagents.util.PrettyPrint;
 import autonomousagents.util.QTable;
 import autonomousagents.util.Trupel;
 import autonomousagents.util.ValueTable;
@@ -31,9 +31,6 @@ import autonomousagents.world.State;
 
 public class TestMiniMax
 {
-
-	private static final int EPISODE_COUNT = 250000;
-
 	/**
 	 * Plot the difference between SARSA, Q-Learning and On-/Off-Policy Monte
 	 * Carlo
@@ -42,7 +39,7 @@ public class TestMiniMax
 	{
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		List<Integer> stepList = runMiniMax(new SoftPolicy(), new PreyRandomPolicy(), 1500);
+		List<Integer> stepList = runMiniMax(new SoftPolicy(), new PreyRandomPolicy(), 2000);
 		dataset.addSeries(JFreeChartHelper.createAverageDataseries(stepList, "Predator", 100));
 
 		ApplicationFrame frame = new ApplicationFrame("");
@@ -70,16 +67,12 @@ public class TestMiniMax
 		QTable predatorQ = new QTable();
 		ValueTable predatorV = new ValueTable();
 
-		QTable preyQ = new QTable();
-		ValueTable preyV = new ValueTable();
-
 		double gamma = 0.9;
-		LPWizard lpw = new LPWizard();
 
+		double alpha = 1;
+		double decay = 0.99999;
 		for (int step = 0; step < episodeCount; step++)
 		{
-			double alpha = 1;
-			double decay = 0.9;
 			if (step % 1000 == 0)
 				System.out.println(step);
 
@@ -158,46 +151,107 @@ public class TestMiniMax
 
 			resultList.add(stepCount);
 		}
-		int f = 0;
-		for (Integer i : resultList)
+		return resultList;
+	}
+
+	private static List<Integer> runMiniMax2(final Policy predatorPolicy, final Policy preyPolicy,
+			final int episodeCount)
+	{
+		List<Integer> resultList = new ArrayList<Integer>();
+
+		QTable predatorQ = new QTable();
+		ValueTable predatorV = new ValueTable();
+
+		// QTable preyQ = new QTable();
+		// ValueTable preyV = new ValueTable();
+
+		double gamma = 0.9;
+		LPWizard lpw = new LPWizard();
+
+		double alpha = 1;
+		double decay = 0.99999;
+		for (int step = 0; step < episodeCount; step++)
 		{
-			f += i;
+			if (step % 1000 == 0)
+				System.out.println(step);
+
+			// Initialise s
+			Environment e = new Environment();
+			Prey prey = new Prey(new Point(5, 5), e, preyPolicy);
+			Predator predator = new Predator(new Point(0, 0), e, predatorPolicy);
+
+			e.addPrey(prey);
+			e.addPredator(predator);
+
+			int stepCount = 0;
+			State s = null;
+			do
+			{
+				stepCount++;
+				s = e.getState();
+				Action predatorAction = predatorPolicy.nextProbabilisticActionForState(s);
+				predatorAction.apply(predator);
+
+				if (e.isEndState())
+				{
+					predatorV.setValue(e.getState(), Constants.REWARD);
+					break;
+				}
+
+				Action preyAction = preyPolicy.nextProbabilisticActionForState(s);
+				preyAction.apply(prey);
+
+				Trupel<State, Action, Action> saa = new Trupel<State, Action, Action>(s, predatorAction, preyAction);
+				predatorQ.setQValue(saa,
+						(1 - alpha) * predatorQ.getQValue(saa) + alpha * (gamma * predatorV.getValue(e.getState())));
+
+				List<Action> predActionList = predatorPolicy.actionsForState(e.getState());
+
+				lpw.setMinProblem(true);
+				int cNum = 0;
+				lpw.addConstraint("c" + cNum++, 1, "=").plus("a0").plus("a1").plus("a2").plus("a3").plus("a4");
+
+				for (int i = 0; i < predActionList.size(); i++)
+				{
+					lpw.addConstraint("c" + cNum++, 0, "<=").plus("a" + i);
+				}
+
+				double objective = Double.MAX_VALUE;
+				double[] prob = new double[5];
+
+				for (Action oPrime : preyPolicy.actionsForState(e.getState()))
+				{
+					for (int i = 0; i < predActionList.size(); ++i)
+					{
+						lpw.plus("a" + i, predatorQ.getQValue(new Trupel<State, Action, Action>(s, predActionList
+								.get(i), oPrime)));
+					}
+
+					LPSolution solution = lpw.solve();
+
+					if (solution.getObjectiveValue() < objective)
+					{
+						objective = solution.getObjectiveValue();
+						for (int x = 0; x < 5; x++)
+						{
+							prob[x] = solution.getDouble("a" + x);
+						}
+					}
+				}
+
+				for (int i = 0; i < 5; i++)
+				{
+					predActionList.get(i).setProbability(prob[i]);
+				}
+
+				predatorV.setValue(s, objective);
+
+				alpha *= decay;
+			} while (!e.getState().isTerminal());
+
+			resultList.add(stepCount);
 		}
 
-		PrettyPrint.printTableForProbabilities(predatorPolicy);
-
-		System.out.println(f / episodeCount);
 		return resultList;
 	}
 }
-
-/*
- * 
- * // lpw.setMinProblem(true); int cNum = 0; lpw.addConstraint("c" + cNum++, 1,
- * "=").plus("a0").plus("a1").plus("a2").plus("a3").plus("a4");
- * 
- * for (int i = 0; i < predActionList.size(); i++) { lpw.addConstraint("c" +
- * cNum++, 0, "<=").plus("a" + i); }
- * 
- * double objective = Double.MAX_VALUE; double[] prob = new double[5];
- * 
- * for (Action oPrime : preyPolicy.actionsForState(e.getState())) { for (int i =
- * 0; i < predActionList.size(); ++i) { lpw.plus("a" + i,
- * predatorQ.getQValue(new Trupel<State, Action, Action>(s, predActionList
- * .get(i), oPrime))); }
- * 
- * LPSolution solution = lpw.solve();
- * 
- * if (solution.getObjectiveValue() < objective) { objective =
- * solution.getObjectiveValue(); for (int x = 0; x < 5; x++) { prob[x] =
- * solution.getDouble("a" + x); }
- * 
- * System.out.println(objective); System.out.println(solution); } }
- * 
- * for (int i = 0; i < 5; i++) { predActionList.get(i).setProbability(prob[i]);
- * }
- * 
- * predatorV.setValue(s, objective);
- * 
- * alpha *= decay;
- */
