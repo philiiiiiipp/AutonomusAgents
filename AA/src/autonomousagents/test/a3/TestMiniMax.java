@@ -42,7 +42,7 @@ public class TestMiniMax
 	{
 		XYSeriesCollection dataset = new XYSeriesCollection();
 
-		List<Integer> stepList = runMiniMax(new SoftPolicy(), new PreyRandomPolicy(), 1500);
+		List<Integer> stepList = runMiniMax(new SoftPolicy(), new PreyRandomPolicy(), 2000);
 		dataset.addSeries(JFreeChartHelper.createAverageDataseries(stepList, "Predator", 100));
 
 		ApplicationFrame frame = new ApplicationFrame("");
@@ -76,10 +76,11 @@ public class TestMiniMax
 		double gamma = 0.9;
 		LPWizard lpw = new LPWizard();
 
+		double alpha = 1;
+		double decay = 0.999;
 		for (int step = 0; step < episodeCount; step++)
 		{
-			double alpha = 1;
-			double decay = 0.9;
+
 			if (step % 1000 == 0)
 				System.out.println(step);
 

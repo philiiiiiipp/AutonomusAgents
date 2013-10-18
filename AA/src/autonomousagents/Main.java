@@ -1,6 +1,6 @@
 package autonomousagents;
 
-import autonomousagents.test.a3.TestMultipleRLearning;
+import autonomousagents.test.a3.TestMiniMax;
 
 public class Main
 {
@@ -8,8 +8,8 @@ public class Main
 	{
 		// TestNewSimulator.test();
 		// TestMultipleQLearning.test();
-		TestMultipleRLearning.test();
-		// TestMiniMax.test();
+		// TestMultipleRLearning.test();
+		TestMiniMax.test();
 
 	}
 }
