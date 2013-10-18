@@ -31,6 +31,7 @@ public class MultipleRLearning
 			final List<Point> predatorPoints, final Point preyPoint)
 	{
 		System.out.println("Definitely running Remi-learning ");
+
 		List<Integer> stepList = new ArrayList<Integer>();
 		List<Policy> policyList = new ArrayList<Policy>();
 
@@ -47,102 +48,95 @@ public class MultipleRLearning
 
 		Policy preyPolicy = new EGreedyPolicyWithTrip(predatorPoints.size());
 
-		for (int i = 0; i < episodeCount; ++i)
+		Environment e = new Environment();
+
+		List<Predator> predatorList = new ArrayList<Predator>();
+		for (int j = 0; j < predatorPoints.size(); j++)
 		{
-			// Initialise s
-			Environment e = new Environment();
-
-			List<Predator> predatorList = new ArrayList<Predator>();
-			for (int j = 0; j < predatorPoints.size(); j++)
-			{
-				Predator p = new Predator(predatorPoints.get(j), e, policyList.get(j));
-				predatorList.add(p);
-				e.addPredator(p);
-			}
-
-			Prey prey = new Prey(preyPoint, e, preyPolicy);
-			e.addPrey(prey);
-
-			State s = e.getState();
-
-			// Repeat for each step of the episode
-			// int counter = 0;
-			do
-			{
-				// counter++;
-				List<Action> predatorActions = new ArrayList<Action>();
-
-				for (int predatorX = 0; predatorX < predatorList.size(); predatorX++)
-				{
-					Policy predatorPolicyX = policyList.get(predatorX);
-
-					Action predatorActionXAction = predatorPolicyX.nextProbabilisticActionForState(s);
-					predatorActions.add(predatorActionXAction);
-					predatorActionXAction.apply(predatorList.get(predatorX));
-				}
-
-				Action preyAction = preyPolicy.nextProbabilisticActionForState(s);
-				preyAction.apply(prey);
-
-				// Reward from this action
-				TerminalStates state = e.getState().getTerminalState();
-				double predatorReward = 0;
-				double preyReward = 0;
-
-				if (state == TerminalStates.PREDATOR_WINS)
-				{
-					predatorReward = 10;
-					preyReward = -10;
-				} else if (state == TerminalStates.PREY_WINS)
-				{
-					predatorReward = -10;
-					preyReward = 10;
-				}
-
-				State sPrime = e.getState();
-
-				for (int predAction = 0; predAction < predatorActions.size(); predAction++)
-				{
-					double RoPred = predatorRhos.get(predAction);
-					Action predatorActionX = predatorActions.get(predAction);
-
-					double maxPrime = maximisationPredator(predAction, predatorList, prey, policyList, preyPolicy,
-							sPrime);
-					double max = maximisationPredator(predAction, predatorList, prey, policyList, preyPolicy, s);
-
-					double newActionValue = predatorActionX.getActionValue() + alpha
-							* (predatorReward - RoPred + maxPrime - predatorActionX.getActionValue());
-					predatorActionX.setActionValue(newActionValue);
-
-					if (max == predatorActionX.getActionValue())
-					{
-						RoPred = RoPred + beta * (predatorReward - RoPred + maxPrime - max);
-					}
-
-				}
-
-				double maxPrime = maximisationPrey(predatorList, prey, policyList, preyPolicy, sPrime);
-				double max = maximisationPrey(predatorList, prey, policyList, preyPolicy, s);
-
-				double newActionValue = preyAction.getActionValue() + alpha
-						* (preyReward - RoPrey + maxPrime - preyAction.getActionValue());
-				preyAction.setActionValue(newActionValue);
-
-				if (max == preyAction.getActionValue())
-				{
-					RoPrey = RoPrey + beta * (preyReward - RoPrey + maxPrime - max);
-				}
-
-				s = sPrime;
-			} while (!s.isTerminal());
+			Predator p = new Predator(predatorPoints.get(j), e, policyList.get(j));
+			predatorList.add(p);
+			e.addPredator(p);
 		}
 
+		Prey prey = new Prey(preyPoint, e, preyPolicy);
+		e.addPrey(prey);
+
+		State s = e.getState();
+
+		for (int i = 0; i < episodeCount; ++i)
+		{
+			List<Action> predatorActions = new ArrayList<Action>();
+
+			for (int predatorX = 0; predatorX < predatorList.size(); predatorX++)
+			{
+				Policy predatorPolicyX = policyList.get(predatorX);
+
+				Action predatorActionXAction = predatorPolicyX.nextProbabilisticActionForState(s);
+				predatorActions.add(predatorActionXAction);
+				predatorActionXAction.apply(predatorList.get(predatorX));
+			}
+
+			Action preyAction = preyPolicy.nextProbabilisticActionForState(s);
+			preyAction.apply(prey);
+
+			// Reward from this action
+			TerminalStates state = e.getState().getTerminalState();
+			double predatorReward = 0;
+			double preyReward = 0;
+
+			if (state == TerminalStates.PREDATOR_WINS)
+			{
+				predatorReward = 10;
+				preyReward = -10;
+			} else if (state == TerminalStates.PREY_WINS)
+			{
+				predatorReward = -10;
+				preyReward = 10;
+			}
+
+			State sPrime = e.getState();
+
+			for (int predAction = 0; predAction < predatorActions.size(); predAction++)
+			{
+				double RoPred = predatorRhos.get(predAction);
+				Action predatorActionX = predatorActions.get(predAction);
+
+				double maxPrime = maximisationPredator(predAction, predatorList, prey, policyList, preyPolicy, sPrime);
+				double max = maximisationPredator(predAction, predatorList, prey, policyList, preyPolicy, s);
+
+				double newActionValue = predatorActionX.getActionValue() + alpha
+						* (predatorReward - RoPred + maxPrime - predatorActionX.getActionValue());
+				predatorActionX.setActionValue(newActionValue);
+
+				if (max == predatorActionX.getActionValue())
+				{
+					RoPred = RoPred + beta * (predatorReward - RoPred + maxPrime - max);
+				}
+
+			}
+
+			double maxPrime = maximisationPrey(predatorList, prey, policyList, preyPolicy, sPrime);
+			double max = maximisationPrey(predatorList, prey, policyList, preyPolicy, s);
+
+			double newActionValue = preyAction.getActionValue() + alpha
+					* (preyReward - RoPrey + maxPrime - preyAction.getActionValue());
+			preyAction.setActionValue(newActionValue);
+
+			if (max == preyAction.getActionValue())
+			{
+				RoPrey = RoPrey + beta * (preyReward - RoPrey + maxPrime - max);
+			}
+
+			s = sPrime;
+		}
+
+		// this is for the simulation
 		for (int step = 0; step < 1000; step++)
 		{
 			// Initialise s
-			Environment e = new Environment();
+			e = new Environment();
 
-			List<Predator> predatorList = new ArrayList<Predator>();
+			predatorList = new ArrayList<Predator>();
 			for (int j = 0; j < predatorPoints.size(); j++)
 			{
 				Predator p = new Predator(predatorPoints.get(j), e, policyList.get(j));
@@ -150,10 +144,10 @@ public class MultipleRLearning
 				e.addPredator(p);
 			}
 
-			Prey prey = new Prey(preyPoint, e, preyPolicy);
+			prey = new Prey(preyPoint, e, preyPolicy);
 			e.addPrey(prey);
 
-			State s = e.getState();
+			s = e.getState();
 
 			do
 			{
